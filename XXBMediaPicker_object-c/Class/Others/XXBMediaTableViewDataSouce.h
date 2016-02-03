@@ -26,7 +26,7 @@
  *
  *  @return 个数
  */
-- (NSInteger)numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)numberOfRowsInTableViewSection:(NSInteger)section;
 
 /**
  *  返回对应的标题

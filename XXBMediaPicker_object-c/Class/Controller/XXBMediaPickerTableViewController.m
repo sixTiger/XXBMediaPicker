@@ -8,9 +8,11 @@
 
 #import "XXBMediaPIckerTableViewController.h"
 #import "XXBMediaPHDataSouce.h"
+#import "XXBMediaPickerCollectionController.h"
 
 @interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic , weak) UITableView   *tableView;
+@property(nonatomic , weak) UITableView                             *tableView;
+@property(nonatomic , strong) XXBMediaPickerCollectionController    *mediaPickerCollectionController;
 @end
 
 @implementation XXBMediaPickerTableViewController
@@ -39,7 +41,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   return  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfRowsInSection:section];
+   return  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfRowsInTableViewSection:section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -57,5 +59,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaGroupAtIndexPath:indexPath];
+    [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce].collectionView = self.mediaPickerCollectionController.collectionView;
+    [self.mediaPickerCollectionController.collectionView reloadData];
+    [self.navigationController pushViewController:self.mediaPickerCollectionController animated:YES];
+}
+
+- (XXBMediaPickerCollectionController *)mediaPickerCollectionController
+{
+    if (_mediaPickerCollectionController == nil)
+    {
+        _mediaPickerCollectionController = [XXBMediaPickerCollectionController new];
+    }
+    return _mediaPickerCollectionController;
 }
 @end

@@ -27,7 +27,7 @@
  *
  *  @return 个数
  */
-- (NSInteger)numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section;
 
 /**
  *  对应的indexPath 的 XXBMediaAsset

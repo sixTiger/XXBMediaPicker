@@ -15,6 +15,9 @@
 		6261D2DF1C520F4200D7959D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6261D2DD1C520F4200D7959D /* LaunchScreen.storyboard */; };
 		6261D2ED1C52100A00D7959D /* XXBMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2EC1C52100A00D7959D /* XXBMediaPickerController.m */; };
 		6261D2F01C52107B00D7959D /* XXBMediaPHDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2EF1C52107B00D7959D /* XXBMediaPHDataSouce.m */; };
+		62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */; };
+		62B404D71C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D61C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m */; };
+		62B404DA1C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D91C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m */; };
 		62DC4BD21C61AD8B00968A0F /* XXBMediaCollectionDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BD11C61AD8B00968A0F /* XXBMediaCollectionDataSouce.m */; };
 		62DC4BD51C61AEBE00968A0F /* XXBMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BD41C61AEBE00968A0F /* XXBMediaAsset.m */; };
 		62DC4BD81C61D7C400968A0F /* XXBMediaTableViewDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BD71C61D7C400968A0F /* XXBMediaTableViewDataSouce.m */; };
@@ -36,6 +39,12 @@
 		6261D2EC1C52100A00D7959D /* XXBMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerController.m; sourceTree = "<group>"; };
 		6261D2EE1C52107B00D7959D /* XXBMediaPHDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaPHDataSouce.h; sourceTree = "<group>"; };
 		6261D2EF1C52107B00D7959D /* XXBMediaPHDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPHDataSouce.m; sourceTree = "<group>"; };
+		62B404D21C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerCollectionController.h; sourceTree = "<group>"; };
+		62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerCollectionController.m; sourceTree = "<group>"; };
+		62B404D51C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XXBMediaPickerCollectionCell.h; path = Class/Controller/XXBMediaPickerCollectionCell.h; sourceTree = SOURCE_ROOT; };
+		62B404D61C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XXBMediaPickerCollectionCell.m; path = Class/Controller/XXBMediaPickerCollectionCell.m; sourceTree = SOURCE_ROOT; };
+		62B404D81C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XXBMediaPickerVideoCollectionCell.h; path = Class/Controller/XXBMediaPickerVideoCollectionCell.h; sourceTree = SOURCE_ROOT; };
+		62B404D91C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XXBMediaPickerVideoCollectionCell.m; path = Class/Controller/XXBMediaPickerVideoCollectionCell.m; sourceTree = SOURCE_ROOT; };
 		62DC4BD01C61AD8B00968A0F /* XXBMediaCollectionDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaCollectionDataSouce.h; sourceTree = "<group>"; };
 		62DC4BD11C61AD8B00968A0F /* XXBMediaCollectionDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaCollectionDataSouce.m; sourceTree = "<group>"; };
 		62DC4BD31C61AEBE00968A0F /* XXBMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaAsset.h; sourceTree = "<group>"; };
@@ -116,6 +125,8 @@
 				6261D2EC1C52100A00D7959D /* XXBMediaPickerController.m */,
 				62DC4BD91C61DA9E00968A0F /* XXBMediaPickerTableViewController.h */,
 				62DC4BDA1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m */,
+				62B404D21C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.h */,
+				62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -145,6 +156,10 @@
 		6261D2EA1C520FA100D7959D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				62B404D51C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.h */,
+				62B404D61C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m */,
+				62B404D81C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.h */,
+				62B404D91C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -222,8 +237,11 @@
 				6261D2ED1C52100A00D7959D /* XXBMediaPickerController.m in Sources */,
 				62DC4BD21C61AD8B00968A0F /* XXBMediaCollectionDataSouce.m in Sources */,
 				6261D2D71C520F4200D7959D /* ViewController.m in Sources */,
+				62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */,
 				62DC4BDB1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m in Sources */,
+				62B404DA1C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m in Sources */,
 				6261D2D41C520F4200D7959D /* AppDelegate.m in Sources */,
+				62B404D71C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m in Sources */,
 				62DC4BD51C61AEBE00968A0F /* XXBMediaAsset.m in Sources */,
 				62DC4BD81C61D7C400968A0F /* XXBMediaTableViewDataSouce.m in Sources */,
 				6261D2D11C520F4200D7959D /* main.m in Sources */,

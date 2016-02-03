@@ -27,5 +27,5 @@
  *
  *  @param indexParh
  */
-- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexParh;
+- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath;
 @end
