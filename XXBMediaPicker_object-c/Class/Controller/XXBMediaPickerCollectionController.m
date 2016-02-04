@@ -69,6 +69,7 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
     else
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:nomalCell forIndexPath:indexPath];
+        [(XXBMediaPickerCollectionCell *)cell setMediaAsset:[[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] mediaAssetOfIndexPath:indexPath]];
     }
     return cell;
 }

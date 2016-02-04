@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XXBMediaAssetDataSouce.h"
 
 @protocol XXBMediaCollectionDataSouce <NSObject>
-
+@optional
 /**
  *  有多少组
  *
@@ -17,7 +18,7 @@
  *
  *  @return 组数
  */
-- (NSInteger)numberOfSectionsInCollectionView;
+- (NSInteger) numberOfSectionsInCollectionView;
 
 /**
  *  对应的组里边有多少数据
@@ -27,7 +28,7 @@
  *
  *  @return 个数
  */
-- (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section;
+- (NSInteger) numberOfRowsInCollectionViewSection:(NSInteger)section;
 
 /**
  *  对应的indexPath 的 XXBMediaAsset
@@ -36,7 +37,7 @@
  *
  *  @return XXBMediaAsset
  */
-- (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath;
+- (id<XXBMediaAssetDataSouce>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath;
 
 @end
 @interface XXBMediaCollectionDataSouce : NSObject

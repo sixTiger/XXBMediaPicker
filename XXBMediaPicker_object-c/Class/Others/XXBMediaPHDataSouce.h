@@ -12,7 +12,8 @@
 #import "XXBMediaCollectionDataSouce.h"
 
 @interface XXBMediaPHDataSouce : NSObject <XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce>
-+ (instancetype)sharedXXBMediaPHDataSouce;
++ (instancetype) sharedXXBMediaPHDataSouce;
++ (PHImageManager *) sharedImageManager;
 /**
  *  当前展示数据的 tableView
  */

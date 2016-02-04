@@ -16,32 +16,15 @@
 @end
 
 @implementation XXBMediaPHDataSouce
-static id _instance = nil;
 
-+ (id)allocWithZone:(struct _NSZone *)zone
++ (PHImageManager *) sharedImageManager
 {
-    if (_instance == nil)
-    {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            _instance = [super allocWithZone:zone];
-        });
-    }
-    return _instance;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return _instance;
-}
-
-+ (instancetype)sharedXXBMediaPHDataSouce
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _instance = [[self alloc] init];
+    static id _sharedImageManager = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _sharedImageManager = [[PHCachingImageManager alloc] init];
     });
-    return _instance;
+    return _sharedImageManager;
 }
 
 - (instancetype)init
@@ -243,5 +226,10 @@ static id _instance = nil;
 - (NSInteger)numberOfSectionsInCollectionView
 {
     return 1;
+}
+
+- (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath
+{
+    return self.seleectPHFetchResult[indexPath.row];;
 }
 @end

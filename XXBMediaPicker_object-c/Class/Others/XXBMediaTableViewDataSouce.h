@@ -10,6 +10,7 @@
 
 @protocol XXBMediaTableViewDataSouce <NSObject>
 
+@optional
 /**
  *  有多少组
  *
