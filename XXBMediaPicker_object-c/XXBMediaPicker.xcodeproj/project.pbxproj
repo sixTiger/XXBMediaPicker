@@ -17,6 +17,7 @@
 		6261D2F01C52107B00D7959D /* XXBMediaPHDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2EF1C52107B00D7959D /* XXBMediaPHDataSouce.m */; };
 		62A285751C62FADE00EF8BD8 /* XXBMediaAssetDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A285741C62FADE00EF8BD8 /* XXBMediaAssetDataSouce.m */; };
 		62A285781C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A285771C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m */; };
+		62A2857E1C631AB000EF8BD8 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A2857D1C631AB000EF8BD8 /* NSIndexSet+Convenience.m */; };
 		62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */; };
 		62B404D71C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D61C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m */; };
 		62B404DA1C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D91C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m */; };
@@ -44,6 +45,8 @@
 		62A285741C62FADE00EF8BD8 /* XXBMediaAssetDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaAssetDataSouce.m; sourceTree = "<group>"; };
 		62A285761C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PHAsset+XXBMediaPHAsset.h"; sourceTree = "<group>"; };
 		62A285771C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PHAsset+XXBMediaPHAsset.m"; sourceTree = "<group>"; };
+		62A2857C1C631AB000EF8BD8 /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
+		62A2857D1C631AB000EF8BD8 /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
 		62B404D21C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerCollectionController.h; sourceTree = "<group>"; };
 		62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerCollectionController.m; sourceTree = "<group>"; };
 		62B404D51C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XXBMediaPickerCollectionCell.h; path = Class/Controller/XXBMediaPickerCollectionCell.h; sourceTree = SOURCE_ROOT; };
@@ -146,6 +149,8 @@
 		6261D2E91C520FA100D7959D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				62A2857C1C631AB000EF8BD8 /* NSIndexSet+Convenience.h */,
+				62A2857D1C631AB000EF8BD8 /* NSIndexSet+Convenience.m */,
 				6261D2EE1C52107B00D7959D /* XXBMediaPHDataSouce.h */,
 				6261D2EF1C52107B00D7959D /* XXBMediaPHDataSouce.m */,
 				62DC4BD01C61AD8B00968A0F /* XXBMediaCollectionDataSouce.h */,
@@ -249,6 +254,7 @@
 				62B404DA1C62087F001D2BB9 /* XXBMediaPickerVideoCollectionCell.m in Sources */,
 				6261D2D41C520F4200D7959D /* AppDelegate.m in Sources */,
 				62B404D71C61FCA7001D2BB9 /* XXBMediaPickerCollectionCell.m in Sources */,
+				62A2857E1C631AB000EF8BD8 /* NSIndexSet+Convenience.m in Sources */,
 				62DC4BD81C61D7C400968A0F /* XXBMediaTableViewDataSouce.m in Sources */,
 				6261D2D11C520F4200D7959D /* main.m in Sources */,
 				6261D2F01C52107B00D7959D /* XXBMediaPHDataSouce.m in Sources */,

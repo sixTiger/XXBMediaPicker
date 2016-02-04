@@ -7,6 +7,7 @@
 //
 
 #import "XXBMediaPHDataSouce.h"
+#import "NSIndexSet+Convenience.h"
 
 @interface XXBMediaPHDataSouce ()<PHPhotoLibraryChangeObserver>
 
@@ -16,6 +17,35 @@
 @end
 
 @implementation XXBMediaPHDataSouce
+
+static id _instance = nil;
++ (id)allocWithZone:(struct _NSZone *)zone
+{
+    if (_instance == nil)
+    {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            
+            _instance = [super allocWithZone:zone];
+        });
+    }
+    return _instance;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return _instance;
+}
+
++ (instancetype)sharedXXBMediaPHDataSouce
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _instance = [[super alloc] init];
+    });
+    return _instance;
+}
+
 
 + (PHImageManager *) sharedImageManager
 {
@@ -105,7 +135,7 @@
          */
         // Get the new fetch result.
         self.seleectPHFetchResult = [collectionChanges fetchResultAfterChanges];
-        [self.collectionView reloadData];
+        //        [self.collectionView reloadData];
         
         if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
         {
@@ -119,22 +149,22 @@
              Tell the collection view to animate insertions and deletions if we
              have incremental diffs.
              */
-            //[collectionView performBatchUpdates:^{
-            //    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-            //    if ([removedIndexes count] > 0) {
-            //        [collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-            //    }
-            //
-            //    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-            //    if ([insertedIndexes count] > 0) {
-            //        [collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-            //    }
-            //
-            //    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-            //    if ([changedIndexes count] > 0) {
-            //        [collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-            //    }
-            //} completion:NULL];
+            [self.collectionView performBatchUpdates:^{
+                NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+                if ([removedIndexes count] > 0) {
+                    [self.collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+                }
+                
+                NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+                if ([insertedIndexes count] > 0) {
+                    [self.collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+                }
+                
+                NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+                if ([changedIndexes count] > 0) {
+                    [self.collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+                }
+            } completion:NULL];
         }
         
     });
@@ -145,18 +175,18 @@
 - (void)setSectionFetchResults:(NSArray *)sectionFetchResults
 {
     _sectionFetchResults = sectionFetchResults;
-//    NSMutableArray *updatedSectionFetchResults = [_sectionFetchResults mutableCopy];
-//    __block BOOL reloadRequired = NO;
-//    [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
-//            [updatedSectionFetchResults removeObjectAtIndex:index];
-//            reloadRequired = YES;
-//    }];
-//    
-//    if (reloadRequired)
-//    {
-//        _sectionFetchResults = updatedSectionFetchResults;
-//    }
-
+    //    NSMutableArray *updatedSectionFetchResults = [_sectionFetchResults mutableCopy];
+    //    __block BOOL reloadRequired = NO;
+    //    [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
+    //            [updatedSectionFetchResults removeObjectAtIndex:index];
+    //            reloadRequired = YES;
+    //    }];
+    //
+    //    if (reloadRequired)
+    //    {
+    //        _sectionFetchResults = updatedSectionFetchResults;
+    //    }
+    
 }
 
 #pragma mark - XXBMediaTableViewDataSouce
