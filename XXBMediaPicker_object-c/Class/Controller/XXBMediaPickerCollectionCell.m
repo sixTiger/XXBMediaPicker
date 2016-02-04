@@ -8,10 +8,12 @@
 
 #import "XXBMediaPickerCollectionCell.h"
 #import "PHAsset+XXBMediaPHAsset.h"
+#import "XXBMediaPHDataSouce.h"
 
 @interface XXBMediaPickerCollectionCell ()
-@property(nonatomic , weak) UIImageView   *imageView;
+@property(nonatomic , weak) UIImageView     *imageView;
 //@property(nonatomic , strong) UIImage   *image;
+@property(nonatomic , weak) UIView          *coverView;
 @end
 
 @implementation XXBMediaPickerCollectionCell
@@ -26,7 +28,7 @@
 {
     _mediaAsset = mediaAsset;
     __block XXBMediaRequestID requestKey = 0;
-//    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
+    //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
     requestKey = [_mediaAsset imageWithSize:self.frame.size completionHandler:^(UIImage *result, NSError *error) {
         if (error)
         {
@@ -50,27 +52,34 @@
         }
     }];
     self.tag = requestKey;
-//    NSString *label = @"";
-//    NSString *caption = @"";
-//    WPMediaType assetType = _asset.assetType;
-//    switch (assetType) {
-//        case WPMediaTypeImage:
-//            label = [NSString stringWithFormat:NSLocalizedString(@"Image, %@", @"Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image."),
-//                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
-//            break;
-//        case WPMediaTypeVideo:
-//            label = [NSString stringWithFormat:NSLocalizedString(@"Video, %@", @"Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video."),
-//                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
-//            NSTimeInterval duration = [asset duration];
-//            caption = [self stringFromTimeInterval:duration];
-//            break;
-//        default:
-//            break;
-//    }
-//    self.imageView.accessibilityLabel = label;
-//    [self setCaption:caption];
+    
+    self.selected =  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] indexOfAssetInSelectedMediaAsset:_mediaAsset] != NSNotFound;
+    //    NSString *label = @"";
+    //    NSString *caption = @"";
+    //    WPMediaType assetType = _asset.assetType;
+    //    switch (assetType) {
+    //        case WPMediaTypeImage:
+    //            label = [NSString stringWithFormat:NSLocalizedString(@"Image, %@", @"Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image."),
+    //                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
+    //            break;
+    //        case WPMediaTypeVideo:
+    //            label = [NSString stringWithFormat:NSLocalizedString(@"Video, %@", @"Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video."),
+    //                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
+    //            NSTimeInterval duration = [asset duration];
+    //            caption = [self stringFromTimeInterval:duration];
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    self.imageView.accessibilityLabel = label;
+    //    [self setCaption:caption];
 }
 
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    self.coverView.backgroundColor = selected ? [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:1.0] : [UIColor clearColor];
+}
 
 - (UIImageView *)imageView
 {
@@ -82,5 +91,17 @@
         _imageView = imageView;
     }
     return _imageView;
+}
+
+- (UIView *)coverView
+{
+    if (_coverView == nil)
+    {
+        UIView *coverView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+        [self.contentView addSubview:coverView];
+        coverView.autoresizingMask = (1 << 6) - 1;
+        _coverView = coverView;
+    }
+    return _coverView;
 }
 @end

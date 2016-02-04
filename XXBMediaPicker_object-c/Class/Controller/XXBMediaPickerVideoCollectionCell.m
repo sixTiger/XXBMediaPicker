@@ -21,15 +21,19 @@
 @implementation XXBMediaPickerVideoCollectionCell
 
 
-- (void)layoutSubviews
+
+- (void)start
 {
-    [super layoutSubviews];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [self p_getPhoto];
-    });
+    [self p_getPhoto];
 }
 
+- (void)stop
+{
+    if ([self.session isRunning])
+    {
+        [self.session stopRunning];
+    }
+}
 - (void)p_getPhoto
 {
     dispatch_async(self.cameraQueue, ^{

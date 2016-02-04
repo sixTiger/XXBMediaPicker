@@ -11,6 +11,7 @@
 
 @interface XXBMediaPickerVideoCollectionCell : UICollectionViewCell
 
-@property(nonatomic , strong) id<XXBMediaAssetDataSouce>   asset;
+- (void)start;
 
+- (void)stop;
 @end

@@ -10,6 +10,7 @@
 #import <Photos/Photos.h>
 #import "XXBMediaTableViewDataSouce.h"
 #import "XXBMediaCollectionDataSouce.h"
+#import "XXBMediaAssetDataSouce.h"
 
 @interface XXBMediaPHDataSouce : NSObject <XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce>
 + (instancetype) sharedXXBMediaPHDataSouce;
@@ -29,4 +30,14 @@
  *  @param indexParh
  */
 - (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath;
+
+
+/**
+ *  选中的对应的分组
+ *
+ *  @param indexPath
+ */
+- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath;
+
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset;
 @end

@@ -37,12 +37,19 @@
                                                             }];
     
 }
+
 - (void)cancelImageRequest:(XXBMediaRequestID)requestID
 {
     
 }
+
 - (XXBMediaType)assetType
 {
     return XXBMediaTypeAudio;
+}
+
+- (NSString *)identifier
+{
+    return self.localIdentifier;
 }
 @end

@@ -28,6 +28,7 @@ typedef int32_t XXBMediaRequestID;
 - (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler;
 - (void)cancelImageRequest:(XXBMediaRequestID)requestID;
 - (XXBMediaType)assetType;
+- (NSString *)identifier;
 @end
 
 @interface XXBMediaAssetDataSouce : NSObject

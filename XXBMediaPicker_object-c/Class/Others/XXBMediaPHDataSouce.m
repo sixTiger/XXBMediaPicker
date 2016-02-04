@@ -11,9 +11,9 @@
 
 @interface XXBMediaPHDataSouce ()<PHPhotoLibraryChangeObserver>
 
-@property(nonatomic , strong) NSArray   *sectionFetchResults;
-@property(nonatomic , strong) PHFetchResult   *seleectPHFetchResult;
-
+@property(nonatomic , strong) NSMutableArray    *sectionFetchResults;
+@property(nonatomic , strong) PHFetchResult     *seleectPHFetchResult;
+@property(nonatomic , strong) NSMutableArray    *selectAssetArray;
 @end
 
 @implementation XXBMediaPHDataSouce
@@ -25,7 +25,6 @@ static id _instance = nil;
     {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            
             _instance = [super allocWithZone:zone];
         });
     }
@@ -61,6 +60,7 @@ static id _instance = nil;
 {
     if (self = [super init])
     {
+        [self p_getAllPhotos];
         [self p_registerPhotoServers];
     }
     return self;
@@ -71,20 +71,37 @@ static id _instance = nil;
  */
 - (void)p_registerPhotoServers
 {
-    PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
-    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
-    
-    PHFetchOptions *smartAlbumsOptions = [[PHFetchOptions alloc] init];
-    smartAlbumsOptions.fetchLimit = 1;
-    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:smartAlbumsOptions];
-    
-    PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
-    self.sectionFetchResults = @[allPhotos, smartAlbums, topLevelUserCollections];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
+- (void)p_getAllPhotos
+{
+    [self.sectionFetchResults removeAllObjects];
+    PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
+    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
+    [self.sectionFetchResults addObject:allPhotos];
+    for (PHAssetCollectionSubtype i = 201; i < 212; i++)
+    {
+        PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:i options:nil];
+        PHCollection *collection = [smartAlbums firstObject];
+        if (![collection isKindOfClass:[PHAssetCollection class]])
+        {
+            return;
+        }
+        // Configure the AAPLAssetGridViewController with the asset collection.
+        PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
+        PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+        if (assetsFetchResult.count > 0)
+        {
+            [self.sectionFetchResults addObject:smartAlbums];
+        }
+    }
+    
+    PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+    [self.sectionFetchResults addObject:topLevelUserCollections];
+    
+}
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
@@ -98,6 +115,8 @@ static id _instance = nil;
      */
     dispatch_async(dispatch_get_main_queue(), ^{
         
+//        [self p_getAllPhotos];
+//        NSLog(@"%@",self.sectionFetchResults);
         /**
          *  看一下当前的是否有新创建的相册
          */
@@ -117,7 +136,9 @@ static id _instance = nil;
         if (reloadRequired)
         {
             self.sectionFetchResults = updatedSectionFetchResults;
+            [self.tableView reloadData];
         }
+        
         
         
         PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
@@ -172,23 +193,36 @@ static id _instance = nil;
 }
 
 
-- (void)setSectionFetchResults:(NSArray *)sectionFetchResults
+
+
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset
 {
-    _sectionFetchResults = sectionFetchResults;
-    //    NSMutableArray *updatedSectionFetchResults = [_sectionFetchResults mutableCopy];
-    //    __block BOOL reloadRequired = NO;
-    //    [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
-    //            [updatedSectionFetchResults removeObjectAtIndex:index];
-    //            reloadRequired = YES;
-    //    }];
-    //
-    //    if (reloadRequired)
-    //    {
-    //        _sectionFetchResults = updatedSectionFetchResults;
-    //    }
-    
+    NSUInteger position = [self.selectAssetArray indexOfObjectPassingTest:^BOOL(id<XXBMediaAssetDataSouce> loopAsset, NSUInteger idx, BOOL *stop) {
+        return   [[mediaAsset identifier]  isEqual:[loopAsset identifier]];
+    }];
+    NSLog(@"%@",@(position));
+    return position;
 }
 
+#pragma mark - layzeload
+
+- (NSMutableArray *)sectionFetchResults
+{
+    if (_sectionFetchResults == nil)
+    {
+        _sectionFetchResults = [NSMutableArray array];
+    }
+    return _sectionFetchResults;
+}
+
+- (NSMutableArray *)selectAssetArray
+{
+    if (_selectAssetArray == nil)
+    {
+        _selectAssetArray = [NSMutableArray array];
+    }
+    return _selectAssetArray;
+}
 #pragma mark - XXBMediaTableViewDataSouce
 
 - (NSInteger)numberOfSectionsInTableView
@@ -246,12 +280,20 @@ static id _instance = nil;
     }
 }
 
+- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row >= self.selectAssetArray.count)
+    {
+        return;
+    }
+    [self.selectAssetArray addObject:self.seleectPHFetchResult[indexPath.row]];
+}
 
 #pragma mark - XXBMediaCollectionViewViewDataSouce
 
 - (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section
 {
-    return self.seleectPHFetchResult.count;
+    return self.seleectPHFetchResult.count + 1;
 }
 - (NSInteger)numberOfSectionsInCollectionView
 {
@@ -260,6 +302,13 @@ static id _instance = nil;
 
 - (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath
 {
-    return self.seleectPHFetchResult[indexPath.row];;
+    if (indexPath.row < self.seleectPHFetchResult.count)
+    {
+        return self.seleectPHFetchResult[indexPath.row];;
+    }
+    else
+    {
+        return nil;
+    }
 }
 @end

@@ -23,6 +23,25 @@
 static NSString *nomalCell = @"XXBMediaPickerCollectionCell";
 static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]])
+    {
+        [cell stop];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]])
+    {
+        [cell start];
+    }
+}
 
 - (UICollectionView *)collectionView
 {
@@ -62,15 +81,26 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 {
     
     UICollectionViewCell *cell ;
-    if (indexPath.row == 0)
+    id<XXBMediaAssetDataSouce> mediaAsset = [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] mediaAssetOfIndexPath:indexPath];
+    if (mediaAsset == nil)
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:videoCell forIndexPath:indexPath];
+        [(XXBMediaPickerVideoCollectionCell *)cell start];
+        
     }
     else
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:nomalCell forIndexPath:indexPath];
-        [(XXBMediaPickerCollectionCell *)cell setMediaAsset:[[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] mediaAssetOfIndexPath:indexPath]];
+        [(XXBMediaPickerCollectionCell *)cell setMediaAsset:mediaAsset];
     }
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaItemAtIndexPath:indexPath];
+    XXBMediaPickerCollectionCell * cell = (XXBMediaPickerCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    cell.selected = !cell.selected;
 }
 @end
