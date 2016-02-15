@@ -27,14 +27,13 @@
     _asset = asset;
     
     __block XXBMediaRequestID requestKey = 0;
-    //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
     requestKey = [_asset imageWithSize:CGSizeMake(80, 80) completionHandler:^(UIImage *result, NSError *error) {
         if (error)
         {
             NSLog(@"%@", [error localizedDescription]);
             return;
         }
-        // Did this request changed meanwhile
+        // 结果返回的时候判断是否已经重用了cell
         if (requestKey != self.tag)
         {
             return;
@@ -63,6 +62,7 @@
     self.titleLabel.frame = CGRectMake(margin + height, margin, width, height - margin * 2);
     self.rightView.frame = CGRectMake(width - height, 0, height, height);
 }
+
 - (UILabel *)titleLabel
 {
     if (_titleLabel == nil)
@@ -81,6 +81,7 @@
         UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [self.contentView addSubview:iconImageView];
         iconImageView.contentMode = UIViewContentModeScaleAspectFill;
+        iconImageView.clipsToBounds = YES;
         _iconImageView = iconImageView;
         return _iconImageView;
     }
