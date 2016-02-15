@@ -252,6 +252,7 @@ static id _instance = nil;
     }
     return numberOfRows;
 }
+
 - (NSString *)titleOfIndex:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0)
@@ -265,6 +266,30 @@ static id _instance = nil;
         return  collection.localizedTitle;
     }
 }
+
+- (id<XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath
+{
+    id<XXBMediaAssetDataSouce> result = nil;
+    PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
+    if (indexPath.section == 0)
+    {
+        result = [fetchResult objectAtIndex:0];
+    }
+    else
+    {
+        PHCollection *collection = fetchResult[indexPath.row];
+        if (![collection isKindOfClass:[PHAssetCollection class]])
+        {
+            return nil;
+        }
+        // Configure the AAPLAssetGridViewController with the asset collection.
+        PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
+        PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+        result = [assetsFetchResult objectAtIndex:0];
+    }
+    return result;
+}
+
 - (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath
 {
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];

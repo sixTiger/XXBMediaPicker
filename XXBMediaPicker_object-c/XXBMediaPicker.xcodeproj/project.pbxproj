@@ -32,6 +32,9 @@
 		629F4ADC1C71A3A4001CEB32 /* XXBVideo_L_B@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F4AD01C71A3A4001CEB32 /* XXBVideo_L_B@2x.png */; };
 		629F4ADD1C71A3A4001CEB32 /* XXBVideo_L_B@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F4AD11C71A3A4001CEB32 /* XXBVideo_L_B@3x.png */; };
 		629F4AE01C71B7F3001CEB32 /* XXBMediaDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 629F4ADF1C71B7F3001CEB32 /* XXBMediaDataSouce.m */; };
+		629F4AE31C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 629F4AE21C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m */; };
+		629F4AE61C71C282001CEB32 /* XXBMakePhotoRow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F4AE41C71C282001CEB32 /* XXBMakePhotoRow@2x.png */; };
+		629F4AE71C71C282001CEB32 /* XXBMakePhotoRow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F4AE51C71C282001CEB32 /* XXBMakePhotoRow@3x.png */; };
 		62A285781C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A285771C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m */; };
 		62A2857E1C631AB000EF8BD8 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A2857D1C631AB000EF8BD8 /* NSIndexSet+Convenience.m */; };
 		62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */; };
@@ -75,6 +78,10 @@
 		629F4AD11C71A3A4001CEB32 /* XXBVideo_L_B@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "XXBVideo_L_B@3x.png"; sourceTree = "<group>"; };
 		629F4ADE1C71B7F3001CEB32 /* XXBMediaDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaDataSouce.h; sourceTree = "<group>"; };
 		629F4ADF1C71B7F3001CEB32 /* XXBMediaDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaDataSouce.m; sourceTree = "<group>"; };
+		629F4AE11C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerTableViewCell.h; sourceTree = "<group>"; };
+		629F4AE21C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerTableViewCell.m; sourceTree = "<group>"; };
+		629F4AE41C71C282001CEB32 /* XXBMakePhotoRow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "XXBMakePhotoRow@2x.png"; sourceTree = "<group>"; };
+		629F4AE51C71C282001CEB32 /* XXBMakePhotoRow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "XXBMakePhotoRow@3x.png"; sourceTree = "<group>"; };
 		62A285731C62FADE00EF8BD8 /* XXBMediaAssetDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaAssetDataSouce.h; sourceTree = "<group>"; };
 		62A285761C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PHAsset+XXBMediaPHAsset.h"; sourceTree = "<group>"; };
 		62A285771C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PHAsset+XXBMediaPHAsset.m"; sourceTree = "<group>"; };
@@ -201,6 +208,8 @@
 				629F4ABE1C719822001CEB32 /* XXBMediaPickerCollectionCell.m */,
 				629F4ABF1C719822001CEB32 /* XXBMediaPickerVideoCollectionCell.h */,
 				629F4AC01C719822001CEB32 /* XXBMediaPickerVideoCollectionCell.m */,
+				629F4AE11C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.h */,
+				629F4AE21C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,6 +217,8 @@
 		629F4AC51C71A3A4001CEB32 /* res */ = {
 			isa = PBXGroup;
 			children = (
+				629F4AE41C71C282001CEB32 /* XXBMakePhotoRow@2x.png */,
+				629F4AE51C71C282001CEB32 /* XXBMakePhotoRow@3x.png */,
 				629F4AC61C71A3A4001CEB32 /* XXBMakePhoto@2x.png */,
 				629F4AC71C71A3A4001CEB32 /* XXBMakePhoto@3x.png */,
 				629F4AC81C71A3A4001CEB32 /* XXBMakeVideo@2x.png */,
@@ -282,10 +293,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6261D2DF1C520F4200D7959D /* LaunchScreen.storyboard in Resources */,
+				629F4AE71C71C282001CEB32 /* XXBMakePhotoRow@3x.png in Resources */,
 				629F4ADA1C71A3A4001CEB32 /* XXBPhotoSelected@2x.png in Resources */,
 				629F4AD61C71A3A4001CEB32 /* XXBPageNumber@2x.png in Resources */,
 				629F4AD51C71A3A4001CEB32 /* XXBMakeVideo@3x.png in Resources */,
 				629F4AD31C71A3A4001CEB32 /* XXBMakePhoto@3x.png in Resources */,
+				629F4AE61C71C282001CEB32 /* XXBMakePhotoRow@2x.png in Resources */,
 				629F4AD81C71A3A4001CEB32 /* XXBPhoto@2x.png in Resources */,
 				629F4ADD1C71A3A4001CEB32 /* XXBVideo_L_B@3x.png in Resources */,
 				6261D2DC1C520F4200D7959D /* Assets.xcassets in Resources */,
@@ -306,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				629F4AE31C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m in Sources */,
 				6261D2ED1C52100A00D7959D /* XXBMediaPickerController.m in Sources */,
 				6261D2D71C520F4200D7959D /* ViewController.m in Sources */,
 				62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */,

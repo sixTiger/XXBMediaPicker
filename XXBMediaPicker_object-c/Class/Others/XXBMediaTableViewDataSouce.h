@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XXBMediaAssetDataSouce.h"
+
 
 @protocol XXBMediaTableViewDataSouce <NSObject>
 
@@ -35,6 +37,13 @@
  *  @return 标题
  */
 - (NSString *)titleOfIndex:(NSIndexPath *)indexPath;
+
+/**
+ *  返回对应的分组的第一个图片资源
+ *
+ *  @return 第一个图片资源
+ */
+- (id <XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath;
 
 @end
 

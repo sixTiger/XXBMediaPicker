@@ -48,5 +48,6 @@
 @interface XXBMediaDataSouce : NSObject
 
 + (instancetype ) sharedMediaDataSouce;
-@property(nonatomic , strong) id<XXBMediaDataSouce,XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce>   dataSouce;
+
+@property(nonatomic , strong) id<XXBMediaDataSouce,XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce> dataSouce;
 @end

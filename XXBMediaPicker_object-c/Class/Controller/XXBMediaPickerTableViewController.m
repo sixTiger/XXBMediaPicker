@@ -9,6 +9,7 @@
 #import "XXBMediaPIckerTableViewController.h"
 #import "XXBMediaDataSouce.h"
 #import "XXBMediaPickerCollectionController.h"
+#import "XXBMediaPickerTableViewCell.h"
 
 @interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic , weak) UITableView                             *tableView;
@@ -16,7 +17,7 @@
 @end
 
 @implementation XXBMediaPickerTableViewController
-
+static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,7 +34,9 @@
         tableView.autoresizingMask = (1 << 6) - 1;
         tableView.delegate = self;
         tableView.dataSource = self;
+        [tableView registerClass:[XXBMediaPickerTableViewCell class] forCellReuseIdentifier:mediaPickerTableViewCellID];
         [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce setTableView:tableView];
+        
         _tableView = tableView;
     }
     return _tableView;
@@ -51,8 +54,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-    cell.textLabel.text = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce titleOfIndex:indexPath];
+   XXBMediaPickerTableViewCell *cell = (XXBMediaPickerTableViewCell *)[tableView dequeueReusableCellWithIdentifier:mediaPickerTableViewCellID];
+    cell.title = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce titleOfIndex:indexPath];
+    cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce imageOfIndex:indexPath];
     return cell;
 }
 

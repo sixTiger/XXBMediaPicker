@@ -42,6 +42,9 @@ static id _instance = nil;
 {
     if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0)
     {
+        /**
+         *  ios8一下暂时没有支持
+         */
         return nil;
     }
     else
