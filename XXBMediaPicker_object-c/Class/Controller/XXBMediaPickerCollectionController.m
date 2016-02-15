@@ -56,6 +56,7 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
         layout.sectionInset = UIEdgeInsetsMake(layout.minimumInteritemSpacing, layout.minimumInteritemSpacing, layout.minimumLineSpacing, layout.minimumInteritemSpacing);
         layout.footerReferenceSize = CGSizeMake(300.0f, 50.0f);
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        collectionView.backgroundColor = [UIColor colorWithRed:232/255.0 green:232/255.0 blue:232/255.0 alpha:1.0];
         [self.view addSubview:collectionView];
         collectionView.autoresizingMask = (1 << 6) - 1;
         [collectionView registerClass:[XXBMediaPickerCollectionCell class] forCellWithReuseIdentifier:nomalCell];
