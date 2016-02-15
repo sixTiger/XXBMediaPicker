@@ -31,6 +31,18 @@
 
 - (void)setMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset
 {
+    NSInteger index = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:mediaAsset];
+    if (index != NSNotFound)
+    {
+        self.selected = YES;
+        [self.bageButton setBadgeValue:index + 1];
+    }
+    else
+    {
+        [self.bageButton setBadgeValue:0];
+        self.selected = NO;
+    }
+
     _mediaAsset = mediaAsset;
     __block XXBMediaRequestID requestKey = 0;
     //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
@@ -57,17 +69,6 @@
         }
     }];
     self.tag = requestKey;
-    NSInteger index = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:_mediaAsset];
-    if (index != NSNotFound)
-    {
-        self.selected = YES;
-        [self.bageButton setBadgeValue:index + 1];
-    }
-    else
-    {
-        [self.bageButton setBadgeValue:0];
-        self.selected = NO;
-    }
 }
 
 - (void)setSelected:(BOOL)selected
@@ -94,7 +95,7 @@
     if (_coverView == nil)
     {
         UIView *coverView = [[UIView alloc] initWithFrame:self.contentView.bounds];
-        [self.contentView addSubview:coverView];
+        [self.contentView insertSubview:coverView aboveSubview:self.imageView];
         coverView.autoresizingMask = (1 << 6) - 1;
         _coverView = coverView;
     }
