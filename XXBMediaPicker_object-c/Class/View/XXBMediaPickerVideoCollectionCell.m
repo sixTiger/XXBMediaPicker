@@ -14,17 +14,25 @@
 @property (nonatomic, strong) dispatch_queue_t              cameraQueue;
 @property (nonatomic, strong) AVCaptureSession              *session;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer    *captureVideoPreviewLayer;
-
 @property (weak, nonatomic)  UIImageView                    *videoLayer;
+@property(nonatomic , weak) UIImageView                     *iconImageView;
 @end
 
 @implementation XXBMediaPickerVideoCollectionCell
 
-
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.contentView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+        self.iconImageView.image = [UIImage imageNamed:@"XXBMakePhoto"];
+    });
+}
 
 - (void)start
 {
-    [self p_getPhoto];
+    [self performSelectorOnMainThread:@selector(p_getPhoto) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
 }
 
 - (void)stop
@@ -94,5 +102,17 @@
         _videoLayer = videoLayer;
     }
     return _videoLayer;
+}
+
+- (UIImageView *)iconImageView
+{
+    if (_iconImageView == nil)
+    {
+        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
+        [self.contentView insertSubview:iconImageView aboveSubview:self.videoLayer];
+        iconImageView.contentMode = UIViewContentModeCenter;
+        _iconImageView = iconImageView;
+    }
+    return _iconImageView;
 }
 @end

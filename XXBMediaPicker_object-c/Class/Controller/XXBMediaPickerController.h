@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface XXBMediaPickerController : UINavigationController
-
+/**
+ *  是否展示左上角标
+ */
+@property(nonatomic , assign) BOOL   showBadgeValue;
 @end

@@ -58,6 +58,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaGroupAtIndexPath:indexPath];
     [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce].collectionView = self.mediaPickerCollectionController.collectionView;
     [self.mediaPickerCollectionController.collectionView reloadData];

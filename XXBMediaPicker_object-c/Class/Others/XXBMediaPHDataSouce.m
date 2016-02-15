@@ -8,6 +8,7 @@
 
 #import "XXBMediaPHDataSouce.h"
 #import "NSIndexSet+Convenience.h"
+#import "PHAsset+XXBMediaPHAsset.h"
 
 @interface XXBMediaPHDataSouce ()<PHPhotoLibraryChangeObserver>
 
@@ -200,7 +201,6 @@ static id _instance = nil;
     NSUInteger position = [self.selectAssetArray indexOfObjectPassingTest:^BOOL(id<XXBMediaAssetDataSouce> loopAsset, NSUInteger idx, BOOL *stop) {
         return   [[mediaAsset identifier]  isEqual:[loopAsset identifier]];
     }];
-    NSLog(@"%@",@(position));
     return position;
 }
 
@@ -282,11 +282,37 @@ static id _instance = nil;
 
 - (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row >= self.selectAssetArray.count)
+    if (indexPath.row >= self.seleectPHFetchResult.count)
     {
         return;
     }
-    [self.selectAssetArray addObject:self.seleectPHFetchResult[indexPath.row]];
+    PHAsset *asset = self.seleectPHFetchResult[indexPath.row];
+    NSInteger index = [self indexOfAssetInSelectedMediaAsset:asset];
+    if (  index != NSNotFound)
+    {
+        [self.selectAssetArray removeObject:asset];
+        NSMutableArray *cellIndexArray = [NSMutableArray array];
+        NSInteger count = self.selectAssetArray.count;
+        while (count > index)
+        {
+            count --;
+            PHAsset *asset = self.selectAssetArray[count];
+            NSInteger assetIndex = [self.seleectPHFetchResult indexOfObject:asset];
+            if (assetIndex != NSNotFound)
+            {
+                [cellIndexArray addObject:[NSIndexPath indexPathForRow:assetIndex inSection:0]];
+            }
+        }
+        /**
+         *  刷新列表防止顺序错乱
+         */
+        [self.collectionView reloadItemsAtIndexPaths:cellIndexArray];
+        
+    }
+    else
+    {
+        [self.selectAssetArray addObject:self.seleectPHFetchResult[indexPath.row]];
+    }
 }
 
 #pragma mark - XXBMediaCollectionViewViewDataSouce

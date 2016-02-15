@@ -9,11 +9,16 @@
 #import "XXBMediaPickerCollectionCell.h"
 #import "PHAsset+XXBMediaPHAsset.h"
 #import "XXBMediaPHDataSouce.h"
+#import "XXBBadgeValueBtn.h"
 
 @interface XXBMediaPickerCollectionCell ()
-@property(nonatomic , weak) UIImageView     *imageView;
-//@property(nonatomic , strong) UIImage   *image;
-@property(nonatomic , weak) UIView          *coverView;
+@property(nonatomic , weak) UIImageView         *imageView;
+
+@property(nonatomic , weak) UIView              *coverView;
+@property(nonatomic , weak)UIButton             *coverButton;
+@property(nonatomic , weak)XXBBadgeValueBtn     *bageButton;
+@property(nonatomic , weak) UILabel             *messageLabel;
+@property(nonatomic , weak) UIView              *videoBgView;
 @end
 
 @implementation XXBMediaPickerCollectionCell
@@ -52,33 +57,24 @@
         }
     }];
     self.tag = requestKey;
-    
-    self.selected =  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] indexOfAssetInSelectedMediaAsset:_mediaAsset] != NSNotFound;
-    //    NSString *label = @"";
-    //    NSString *caption = @"";
-    //    WPMediaType assetType = _asset.assetType;
-    //    switch (assetType) {
-    //        case WPMediaTypeImage:
-    //            label = [NSString stringWithFormat:NSLocalizedString(@"Image, %@", @"Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image."),
-    //                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
-    //            break;
-    //        case WPMediaTypeVideo:
-    //            label = [NSString stringWithFormat:NSLocalizedString(@"Video, %@", @"Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video."),
-    //                     [[[self class] dateFormatter] stringFromDate:_asset.date]];
-    //            NSTimeInterval duration = [asset duration];
-    //            caption = [self stringFromTimeInterval:duration];
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //    self.imageView.accessibilityLabel = label;
-    //    [self setCaption:caption];
+    NSInteger index = [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] indexOfAssetInSelectedMediaAsset:_mediaAsset];
+    if (index != NSNotFound)
+    {
+        self.selected = YES;
+        [self.bageButton setBadgeValue:index + 1];
+    }
+    else
+    {
+        [self.bageButton setBadgeValue:0];
+        self.selected = NO;
+    }
 }
 
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    self.coverView.backgroundColor = selected ? [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:1.0] : [UIColor clearColor];
+    self.coverView.backgroundColor = selected ? [UIColor colorWithWhite:1.0 alpha:0.3] : [UIColor clearColor];
+    self.coverButton.selected = selected;
 }
 
 - (UIImageView *)imageView
@@ -103,5 +99,36 @@
         _coverView = coverView;
     }
     return _coverView;
+}
+
+- (UIButton *)coverButton
+{
+    if (_coverButton == nil)
+    {
+        //右上角的小图标的尺寸
+        CGFloat margin = 5.0;
+        CGFloat width = 22;
+        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        coverButton.frame = CGRectMake(self.bounds.size.width - width - margin,  margin , width , width);
+        [self.coverView addSubview:coverButton];
+#warning 预先展示的图片可以去掉
+        [coverButton setImage:[UIImage imageNamed:@"XXBPhoto"] forState:UIControlStateNormal];
+        [coverButton setImage:[UIImage imageNamed:@"XXBPhotoSelected"] forState:UIControlStateSelected];
+        coverButton.userInteractionEnabled = NO;
+        _coverButton =coverButton;
+    }
+    return _coverButton;
+}
+
+- (XXBBadgeValueBtn *)bageButton
+{
+    if (_bageButton == nil )
+    {
+        XXBBadgeValueBtn *bageButton = [[XXBBadgeValueBtn alloc] init];
+        [self.coverView addSubview:bageButton];
+        bageButton.frame = CGRectMake(5, 5, 10, 10);
+        _bageButton = bageButton;
+    }
+    return _bageButton;
 }
 @end

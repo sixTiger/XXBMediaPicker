@@ -101,7 +101,6 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaItemAtIndexPath:indexPath];
-    XXBMediaPickerCollectionCell * cell = (XXBMediaPickerCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = !cell.selected;
+    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
 @end
