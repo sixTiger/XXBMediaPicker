@@ -8,7 +8,6 @@
 
 #import "XXBMediaPickerCollectionController.h"
 #import "XXBMediaPickerCollectionCell.h"
-#import "XXBMediaPHDataSouce.h"
 #import "XXBMediaPickerVideoCollectionCell.h"
 
 @interface XXBMediaPickerCollectionController ()<UICollectionViewDataSource,UICollectionViewDelegate>
@@ -70,19 +69,19 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfSectionsInCollectionView];
+    return [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfSectionsInCollectionView];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfRowsInCollectionViewSection:section];
+    return [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:section];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
     UICollectionViewCell *cell ;
-    id<XXBMediaAssetDataSouce> mediaAsset = [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] mediaAssetOfIndexPath:indexPath];
+    id<XXBMediaAssetDataSouce> mediaAsset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce mediaAssetOfIndexPath:indexPath];
     if (mediaAsset == nil)
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:videoCell forIndexPath:indexPath];
@@ -100,7 +99,7 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaItemAtIndexPath:indexPath];
+    [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaItemAtIndexPath:indexPath];
     [collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
 @end

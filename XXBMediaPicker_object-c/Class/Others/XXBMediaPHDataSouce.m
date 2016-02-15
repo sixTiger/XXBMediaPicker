@@ -11,7 +11,14 @@
 #import "PHAsset+XXBMediaPHAsset.h"
 
 @interface XXBMediaPHDataSouce ()<PHPhotoLibraryChangeObserver>
-
+/**
+ *  当前展示数据的 tableView
+ */
+@property(nonatomic , weak) UITableView             *tableView;
+/**
+ *  当前展示数据的 collectionView
+ */
+@property(nonatomic , weak) UICollectionView        *collectionView;
 @property(nonatomic , strong) NSMutableArray    *sectionFetchResults;
 @property(nonatomic , strong) PHFetchResult     *seleectPHFetchResult;
 @property(nonatomic , strong) NSMutableArray    *selectAssetArray;

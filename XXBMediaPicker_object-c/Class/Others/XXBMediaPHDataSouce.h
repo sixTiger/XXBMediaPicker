@@ -11,33 +11,9 @@
 #import "XXBMediaTableViewDataSouce.h"
 #import "XXBMediaCollectionDataSouce.h"
 #import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaDataSouce.h"
 
-@interface XXBMediaPHDataSouce : NSObject <XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce>
+@interface XXBMediaPHDataSouce : NSObject <XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce,XXBMediaDataSouce>
 + (instancetype) sharedXXBMediaPHDataSouce;
 + (PHImageManager *) sharedImageManager;
-/**
- *  当前展示数据的 tableView
- */
-@property(nonatomic , weak) UITableView             *tableView;
-/**
- *  当前展示数据的 collectionView
- */
-@property(nonatomic , weak) UICollectionView        *collectionView;
-
-/**
- *  选中的对应的分组
- *
- *  @param indexParh
- */
-- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath;
-
-
-/**
- *  选中的对应的分组
- *
- *  @param indexPath
- */
-- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath;
-
-- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset;
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "XXBMediaPIckerTableViewController.h"
-#import "XXBMediaPHDataSouce.h"
+#import "XXBMediaDataSouce.h"
 #import "XXBMediaPickerCollectionController.h"
 
 @interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -33,7 +33,7 @@
         tableView.autoresizingMask = (1 << 6) - 1;
         tableView.delegate = self;
         tableView.dataSource = self;
-        [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce].tableView = tableView;
+        [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce setTableView:tableView];
         _tableView = tableView;
     }
     return _tableView;
@@ -41,26 +41,26 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   return  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfRowsInTableViewSection:section];
+   return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInTableViewSection:section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return  [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] numberOfSectionsInTableView];
+    return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfSectionsInTableView];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-    cell.textLabel.text = [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] titleOfIndex:indexPath];
+    cell.textLabel.text = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce titleOfIndex:indexPath];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] didselectMediaGroupAtIndexPath:indexPath];
-    [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce].collectionView = self.mediaPickerCollectionController.collectionView;
+    [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaGroupAtIndexPath:indexPath];
+    [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce setCollectionView:self.mediaPickerCollectionController.collectionView];
     [self.mediaPickerCollectionController.collectionView reloadData];
     [self.navigationController pushViewController:self.mediaPickerCollectionController animated:YES];
 }

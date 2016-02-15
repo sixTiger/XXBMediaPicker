@@ -8,7 +8,7 @@
 
 #import "XXBMediaPickerCollectionCell.h"
 #import "PHAsset+XXBMediaPHAsset.h"
-#import "XXBMediaPHDataSouce.h"
+#import "XXBMediaDataSouce.h"
 #import "XXBBadgeValueBtn.h"
 
 @interface XXBMediaPickerCollectionCell ()
@@ -57,7 +57,7 @@
         }
     }];
     self.tag = requestKey;
-    NSInteger index = [[XXBMediaPHDataSouce sharedXXBMediaPHDataSouce] indexOfAssetInSelectedMediaAsset:_mediaAsset];
+    NSInteger index = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:_mediaAsset];
     if (index != NSNotFound)
     {
         self.selected = YES;
@@ -111,7 +111,7 @@
         UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
         coverButton.frame = CGRectMake(self.bounds.size.width - width - margin,  margin , width , width);
         [self.coverView addSubview:coverButton];
-#warning 预先展示的图片可以去掉
+//FIXME: 预先展示的图片可以去掉
         [coverButton setImage:[UIImage imageNamed:@"XXBPhoto"] forState:UIControlStateNormal];
         [coverButton setImage:[UIImage imageNamed:@"XXBPhotoSelected"] forState:UIControlStateSelected];
         coverButton.userInteractionEnabled = NO;
