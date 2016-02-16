@@ -13,8 +13,4 @@
  *  要显示的数字
  */
 @property(nonatomic , assign) NSInteger                     number;
-/**
- *  选择媒体的类型 默认是照片
- */
-@property(nonatomic, assign) XXBMediaType                   chooseMediaType;
 @end

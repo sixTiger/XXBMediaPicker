@@ -12,6 +12,7 @@
 @property(nonatomic , weak) UILabel         *titleLabel;
 @property(nonatomic , weak) UIImageView     *iconImageView;
 @property(nonatomic , weak) UIImageView     *rightView;
+@property(nonatomic , weak) UIView          *lineView;
 @end
 @implementation XXBMediaPickerTableViewCell
 
@@ -61,6 +62,7 @@
     self.iconImageView.frame = CGRectMake(margin, margin, height - margin * 2, height - margin * 2);
     self.titleLabel.frame = CGRectMake(margin + height, margin, width, height - margin * 2);
     self.rightView.frame = CGRectMake(width - height, 0, height, height);
+    self.lineView.frame = CGRectMake(0, height - 1, width, 0.5);
 }
 
 - (UILabel *)titleLabel
@@ -99,5 +101,17 @@
         _rightView = rightView;
     }
     return _rightView;
+}
+
+- (UIView *)lineView
+{
+    if (_lineView == nil)
+    {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        lineView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+        [self.contentView addSubview:lineView];
+        _lineView = lineView;
+    }
+    return _lineView;
 }
 @end

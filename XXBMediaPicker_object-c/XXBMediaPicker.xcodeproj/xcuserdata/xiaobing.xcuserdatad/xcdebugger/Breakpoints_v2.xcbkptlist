@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Class/Others/XXBMediaPHDataSouce.m"
-            timestampString = "477219516.669418"
+            timestampString = "477301791.925321"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
+            startingLineNumber = "323"
+            endingLineNumber = "323"
             landmarkName = "-didselectMediaItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,22 +90,6 @@
             startingLineNumber = "44"
             endingLineNumber = "44"
             landmarkName = "-setBadgeValue:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Class/Controller/XXBMediaPickerCollectionController.m"
-            timestampString = "477215866.025771"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

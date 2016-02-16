@@ -91,6 +91,12 @@ static id _instance = nil;
     [self.sectionFetchResults addObject:allPhotos];
     for (PHAssetCollectionSubtype i = 201; i < 212; i++)
     {
+        if (i == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded || i == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
+        {
+            // 最近添加的忽略 相机交卷忽略
+            continue;
+        }
+        
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:i options:nil];
         PHCollection *collection = [smartAlbums firstObject];
         if (![collection isKindOfClass:[PHAssetCollection class]])

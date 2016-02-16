@@ -9,6 +9,7 @@
 #import "XXBMediaPickerCollectionController.h"
 #import "XXBMediaPickerCollectionCell.h"
 #import "XXBMediaPickerVideoCollectionCell.h"
+#import "XXBCollectionFootView.h"
 
 @interface XXBMediaPickerCollectionController ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
@@ -21,6 +22,7 @@
 
 static NSString *nomalCell = @"XXBMediaPickerCollectionCell";
 static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
+static NSString *collectionFooter = @"XXBCollectionFootView";
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -42,6 +44,13 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
     }
 }
 
+- (void)scrollToButtom
+{
+    if ([[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] == 0)
+        return;
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0]- 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+}
+
 - (UICollectionView *)collectionView
 {
     if (_collectionView == nil)
@@ -60,6 +69,7 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
         collectionView.autoresizingMask = (1 << 6) - 1;
         [collectionView registerClass:[XXBMediaPickerCollectionCell class] forCellWithReuseIdentifier:nomalCell];
         [collectionView registerClass:[XXBMediaPickerVideoCollectionCell class] forCellWithReuseIdentifier:videoCell];
+        [collectionView registerClass:[XXBCollectionFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:collectionFooter];
         collectionView.delegate = self;
         collectionView.dataSource = self;
         _collectionView = collectionView;
@@ -94,6 +104,23 @@ static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
         [(XXBMediaPickerCollectionCell *)cell setMediaAsset:mediaAsset];
     }
     return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    XXBCollectionFootView *reusableview = nil;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        
+    }
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        
+        reusableview = [collectionView  dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:collectionFooter forIndexPath:indexPath];
+        reusableview.number = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:indexPath.section] - 1;
+    }
+    return reusableview;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

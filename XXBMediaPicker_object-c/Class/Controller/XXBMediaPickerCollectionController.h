@@ -11,4 +11,6 @@
 @interface XXBMediaPickerCollectionController : UIViewController
 
 @property(nonatomic , weak , readonly) UICollectionView        *collectionView;
+
+- (void)scrollToButtom;
 @end

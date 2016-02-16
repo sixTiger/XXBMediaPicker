@@ -16,27 +16,7 @@
 - (void)setNumber:(NSInteger)number
 {
     _number = number;
-    NSString *string;
-    switch (self.chooseMediaType) {
-        case XXBMediaTypeImage:
-        {
-            string = [NSString stringWithFormat:@"照片总数：%@",@(number)];
-            break;
-        }
-        case XXBMediaTypeVideo:
-        {
-            string = [NSString stringWithFormat:@"视频总数：%@",@(number)];
-            break;
-        }
-        case XXBMediaTypeAudio:
-        {
-            string = [NSString stringWithFormat:@"多媒体总数：%@",@(number)];
-            break;
-        }
-        default:
-            break;
-    }
-    self.countNumberLabel.text = string;
+    self.countNumberLabel.text = [NSString stringWithFormat:@"%@",@(number)];
 }
 
 - (UILabel *)countNumberLabel

@@ -29,6 +29,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     if (_tableView == nil)
     {
         UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.rowHeight = 60;
         [self.view addSubview:tableView];
         tableView.autoresizingMask = (1 << 6) - 1;
@@ -66,6 +67,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaGroupAtIndexPath:indexPath];
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce setCollectionView:self.mediaPickerCollectionController.collectionView];
     [self.mediaPickerCollectionController.collectionView reloadData];
+    [self.mediaPickerCollectionController scrollToButtom];
     [self.navigationController pushViewController:self.mediaPickerCollectionController animated:YES];
 }
 
