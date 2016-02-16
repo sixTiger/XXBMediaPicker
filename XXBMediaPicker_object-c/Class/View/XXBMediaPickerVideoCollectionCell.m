@@ -20,18 +20,10 @@
 
 @implementation XXBMediaPickerVideoCollectionCell
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        self.contentView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
-        self.iconImageView.image = [UIImage imageNamed:@"XXBMakePhoto"];
-    });
-}
-
 - (void)start
 {
+    self.contentView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+    self.iconImageView.image = [UIImage imageNamed:@"XXBMakePhoto"];
     [self performSelectorOnMainThread:@selector(p_getPhoto) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
 }
 

@@ -133,7 +133,6 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:videoCell forIndexPath:indexPath];
         [(XXBMediaPickerVideoCollectionCell *)cell start];
-        
     }
     else
     {
