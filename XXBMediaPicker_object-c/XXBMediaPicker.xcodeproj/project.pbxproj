@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6257D84A1C7317070038D484 /* XXBImagePickerTabr.m in Sources */ = {isa = PBXBuildFile; fileRef = 6257D8491C7317070038D484 /* XXBImagePickerTabr.m */; };
 		6261D2D11C520F4200D7959D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2D01C520F4200D7959D /* main.m */; };
 		6261D2D41C520F4200D7959D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2D31C520F4200D7959D /* AppDelegate.m */; };
 		6261D2D71C520F4200D7959D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6261D2D61C520F4200D7959D /* ViewController.m */; };
@@ -42,6 +43,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6257D8481C7317070038D484 /* XXBImagePickerTabr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBImagePickerTabr.h; sourceTree = "<group>"; };
+		6257D8491C7317070038D484 /* XXBImagePickerTabr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBImagePickerTabr.m; sourceTree = "<group>"; };
 		6261D2CC1C520F4200D7959D /* XXBMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XXBMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6261D2D01C520F4200D7959D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6261D2D21C520F4200D7959D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 		629F4AB81C719822001CEB32 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6257D8481C7317070038D484 /* XXBImagePickerTabr.h */,
+				6257D8491C7317070038D484 /* XXBImagePickerTabr.m */,
 				629F4AB91C719822001CEB32 /* XXBBadgeValueBtn.h */,
 				629F4ABA1C719822001CEB32 /* XXBBadgeValueBtn.m */,
 				629F4ABB1C719822001CEB32 /* XXBCollectionFootView.h */,
@@ -330,6 +335,7 @@
 				629F4AC41C719822001CEB32 /* XXBMediaPickerVideoCollectionCell.m in Sources */,
 				6261D2D11C520F4200D7959D /* main.m in Sources */,
 				6261D2F01C52107B00D7959D /* XXBMediaPHDataSouce.m in Sources */,
+				6257D84A1C7317070038D484 /* XXBImagePickerTabr.m in Sources */,
 				629F4AC11C719822001CEB32 /* XXBBadgeValueBtn.m in Sources */,
 				629F4AE01C71B7F3001CEB32 /* XXBMediaDataSouce.m in Sources */,
 				629F4AC21C719822001CEB32 /* XXBCollectionFootView.m in Sources */,

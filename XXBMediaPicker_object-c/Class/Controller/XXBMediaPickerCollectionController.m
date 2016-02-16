@@ -10,10 +10,13 @@
 #import "XXBMediaPickerCollectionCell.h"
 #import "XXBMediaPickerVideoCollectionCell.h"
 #import "XXBCollectionFootView.h"
+#import "XXBImagePickerTabr.h"
 
-@interface XXBMediaPickerCollectionController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface XXBMediaPickerCollectionController ()<UICollectionViewDataSource,UICollectionViewDelegate,XXBImagePickerTabrDelegate>
 
 @property(nonatomic , weak) UICollectionView        *collectionView;
+@property(nonatomic , weak)XXBImagePickerTabr       *imagePickerTar;
+@property(nonatomic , assign) BOOL                  shouldScrollBottom;
 
 @end
 
@@ -27,7 +30,7 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
     if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]])
     {
         [cell stop];
@@ -37,18 +40,43 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]])
+    [self.view setNeedsLayout];
+    self.imagePickerTar.delegate = self;
+    if (self.shouldScrollBottom)
     {
-        [cell start];
+        self.shouldScrollBottom = NO;
+        [self p_scrollToBottom];
     }
 }
 
-- (void)scrollToButtom
+- (void)scrollToBottom
 {
     if ([[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] == 0)
         return;
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0]- 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    self.shouldScrollBottom = YES;
+}
+
+- (void)p_scrollToBottom
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0]- 1 inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+}
+
+- (XXBImagePickerTabr *)imagePickerTar
+{
+    if (_imagePickerTar == nil) {
+        XXBImagePickerTabr *imagePickerTar = [[XXBImagePickerTabr alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+        [self.view insertSubview:imagePickerTar aboveSubview:self.collectionView];
+        _imagePickerTar = imagePickerTar;
+        
+        imagePickerTar.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *imagePickerTarRight = [NSLayoutConstraint constraintWithItem:imagePickerTar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+        NSLayoutConstraint *imagePickerTarLeft = [NSLayoutConstraint constraintWithItem:imagePickerTar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        NSLayoutConstraint *imagePickerTarBottom = [NSLayoutConstraint constraintWithItem:imagePickerTar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *imagePickerTarHeight = [NSLayoutConstraint constraintWithItem:imagePickerTar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44];
+        [self.view addConstraints:@[imagePickerTarLeft, imagePickerTarRight,imagePickerTarBottom,imagePickerTarHeight]];
+    }
+    return _imagePickerTar;
 }
 
 - (UICollectionView *)collectionView
@@ -63,19 +91,28 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
         layout.itemSize = CGSizeMake(itemWidth, itemWidth);
         layout.sectionInset = UIEdgeInsetsMake(layout.minimumInteritemSpacing, layout.minimumInteritemSpacing, layout.minimumLineSpacing, layout.minimumInteritemSpacing);
         layout.footerReferenceSize = CGSizeMake(300.0f, 50.0f);
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:[UIScreen mainScreen].bounds collectionViewLayout:layout];
         collectionView.backgroundColor = [UIColor colorWithRed:232/255.0 green:232/255.0 blue:232/255.0 alpha:1.0];
         [self.view addSubview:collectionView];
-        collectionView.autoresizingMask = (1 << 6) - 1;
+        _collectionView = collectionView;
+        
         [collectionView registerClass:[XXBMediaPickerCollectionCell class] forCellWithReuseIdentifier:nomalCell];
         [collectionView registerClass:[XXBMediaPickerVideoCollectionCell class] forCellWithReuseIdentifier:videoCell];
         [collectionView registerClass:[XXBCollectionFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:collectionFooter];
         collectionView.delegate = self;
         collectionView.dataSource = self;
-        _collectionView = collectionView;
+        collectionView.alwaysBounceVertical = YES;
+        collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *collectionViewRight = [NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+        NSLayoutConstraint *collectionViewLeft = [NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        NSLayoutConstraint *collectionViewBottom = [NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-44];
+        NSLayoutConstraint *collectionViewTop = [NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+        [self.view addConstraints:@[collectionViewLeft, collectionViewRight,collectionViewTop,collectionViewBottom]];
     }
     return _collectionView;
 }
+
+#pragma mark - collectionView delegate datasouce
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -128,5 +165,12 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaItemAtIndexPath:indexPath];
     [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+}
+
+#pragma mark - XXBImagePickerTabrDelegate
+
+- (void)imagePickerTabrFinishClick
+{
+    
 }
 @end

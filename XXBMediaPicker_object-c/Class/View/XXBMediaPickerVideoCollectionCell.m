@@ -37,11 +37,9 @@
 
 - (void)stop
 {
-    if ([self.session isRunning])
-    {
-        [self.session stopRunning];
-    }
+    [self performSelectorOnMainThread:@selector(p_stop) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
 }
+
 - (void)p_getPhoto
 {
     dispatch_async(self.cameraQueue, ^{
@@ -82,6 +80,14 @@
         }
     });
     
+}
+
+- (void)p_stop
+{
+    if ([self.session isRunning])
+    {
+        [self.session stopRunning];
+    }
 }
 
 - (dispatch_queue_t)cameraQueue

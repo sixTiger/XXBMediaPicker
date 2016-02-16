@@ -12,5 +12,5 @@
 
 @property(nonatomic , weak , readonly) UICollectionView        *collectionView;
 
-- (void)scrollToButtom;
+- (void)scrollToBottom;
 @end
