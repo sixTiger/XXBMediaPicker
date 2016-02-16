@@ -42,11 +42,13 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     [super viewWillAppear:animated];
     [self.view setNeedsLayout];
     self.imagePickerTar.delegate = self;
-    if (self.shouldScrollBottom)
-    {
-        self.shouldScrollBottom = NO;
-        [self p_scrollToBottom];
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.shouldScrollBottom)
+        {
+            self.shouldScrollBottom = NO;
+            [self p_scrollToBottom];
+        }
+    });
 }
 
 - (void)scrollToBottom
