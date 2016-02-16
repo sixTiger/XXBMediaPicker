@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Class/View/XXBMediaPickerCollectionCell.m"
-            timestampString = "477220406.294541"
+            timestampString = "477300511.191783"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "-setSelected:"
             landmarkType = "5">
          </BreakpointContent>
@@ -107,54 +107,6 @@
             endingLineNumber = "41"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Class/View/XXBMediaPickerCollectionCell.m"
-            timestampString = "477220547.785602"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "-setMediaAsset:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[XXBMediaPickerCollectionCell setMediaAsset:]"
-                  moduleName = "XXBMediaPicker"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiaobing/Documents/Code/Github/XXBMediaPicker/XXBMediaPicker_object-c/Class/View/XXBMediaPickerCollectionCell.m"
-                  timestampString = "477220547.796368"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "49"
-                  endingLineNumber = "49"
-                  offsetFromSymbolStart = "712">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__46-[XXBMediaPickerCollectionCell setMediaAsset:]_block_invoke"
-                  moduleName = "XXBMediaPicker"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiaobing/Documents/Code/Github/XXBMediaPicker/XXBMediaPicker_object-c/Class/View/XXBMediaPickerCollectionCell.m"
-                  timestampString = "477220547.796605"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "49"
-                  endingLineNumber = "49"
-                  offsetFromSymbolStart = "42">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

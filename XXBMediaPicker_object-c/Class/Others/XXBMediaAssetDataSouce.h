@@ -10,10 +10,11 @@
 #import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
-    XXBMediaTypeUnknown = 0,
-    XXBMediaTypeImage   = 1,
-    XXBMediaTypeVideo   = 2,
-    XXBMediaTypeAudio   = 3,
+    XXBMediaTypeUnknown     = 0,
+    XXBMediaTypeImage       = 1,
+    XXBMediaTypeVideo       = 2,
+    XXBMediaTypeAudio       = 3,
+    XXBMediaTypeLivePhoto   = 4,
 } XXBMediaType;
 
 @protocol XXBMediaAssetDataSouce <NSObject>
@@ -27,7 +28,8 @@ typedef int32_t XXBMediaRequestID;
 
 - (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler;
 - (void)cancelImageRequest:(XXBMediaRequestID)requestID;
-- (XXBMediaType)assetType;
+- (XXBMediaType)mediaAssetType;
+- (double )mediaAssetTime;
 - (NSString *)identifier;
 @end
 

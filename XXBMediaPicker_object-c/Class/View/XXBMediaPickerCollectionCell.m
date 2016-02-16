@@ -19,6 +19,7 @@
 @property(nonatomic , weak)XXBBadgeValueBtn     *bageButton;
 @property(nonatomic , weak) UILabel             *messageLabel;
 @property(nonatomic , weak) UIView              *videoBgView;
+@property(nonatomic , weak) UIImageView         *videoIconView;
 @end
 
 @implementation XXBMediaPickerCollectionCell
@@ -42,7 +43,7 @@
         [self.bageButton setBadgeValue:0];
         self.selected = NO;
     }
-
+    
     _mediaAsset = mediaAsset;
     __block XXBMediaRequestID requestKey = 0;
     //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
@@ -69,6 +70,48 @@
         }
     }];
     self.tag = requestKey;
+    
+    XXBMediaType mediaType = [mediaAsset mediaAssetType];
+    switch (mediaType) {
+        case XXBMediaTypeUnknown:
+        {
+            _messageLabel.text = nil;
+            _videoBgView.hidden = YES;
+            _videoIconView.hidden = YES;
+            break;
+        }
+        case XXBMediaTypeImage:
+        {
+            _messageLabel.text = nil;
+            _videoBgView.hidden = YES;
+            _videoIconView.hidden = YES;
+            break;
+        }
+        case XXBMediaTypeVideo:
+        {
+            self.videoBgView.hidden = NO;
+            self.videoIconView.hidden = NO;
+            self.messageLabel.text = [self timeFromeNumber:(int)([mediaAsset mediaAssetTime])];
+            break;
+        }
+        case XXBMediaTypeAudio:
+        {
+            self.videoBgView.hidden = NO;
+            self.videoIconView.hidden = NO;
+            self.messageLabel.text = [self timeFromeNumber:(int)([mediaAsset mediaAssetTime])];
+            break;
+        }
+        case XXBMediaTypeLivePhoto:
+        {
+            _messageLabel.text = nil;
+            _videoBgView.hidden = YES;
+            _videoIconView.hidden = YES;
+            self.videoIconView.hidden = NO;
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)setSelected:(BOOL)selected
@@ -83,6 +126,8 @@
     if (_imageView == nil)
     {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         [self.contentView addSubview:imageView];
         imageView.autoresizingMask = (1 << 6) - 1;
         _imageView = imageView;
@@ -112,7 +157,7 @@
         UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
         coverButton.frame = CGRectMake(self.bounds.size.width - width - margin,  margin , width , width);
         [self.coverView addSubview:coverButton];
-//FIXME: 预先展示的图片可以去掉
+        //FIXME: 预先展示的图片可以去掉
         [coverButton setImage:[UIImage imageNamed:@"XXBPhoto"] forState:UIControlStateNormal];
         [coverButton setImage:[UIImage imageNamed:@"XXBPhotoSelected"] forState:UIControlStateSelected];
         coverButton.userInteractionEnabled = NO;
@@ -131,5 +176,90 @@
         _bageButton = bageButton;
     }
     return _bageButton;
+}
+
+
+- (UILabel *)messageLabel
+{
+    if (_messageLabel == nil)
+    {
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        messageLabel.font = [UIFont systemFontOfSize:12];
+        messageLabel.textColor = [UIColor whiteColor];
+        [self.videoBgView addSubview:messageLabel];
+        messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *rightMessageLabel = [NSLayoutConstraint constraintWithItem:messageLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.videoBgView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-3];
+        NSLayoutConstraint *bottomMessageLabel = [NSLayoutConstraint constraintWithItem:messageLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem: self.videoBgView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *topMessageLabel = [NSLayoutConstraint constraintWithItem:messageLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem: self.videoBgView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+        
+        [self.videoBgView addConstraints:@[rightMessageLabel, bottomMessageLabel,topMessageLabel]];
+        _messageLabel = messageLabel;
+    }
+    return _messageLabel;
+}
+
+- (UIView *)videoBgView
+{
+    if (_videoBgView == nil)
+    {
+        
+        UIView *videoBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        videoBgView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
+        [self.contentView addSubview:videoBgView];
+        videoBgView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *lefttVideoBgView = [NSLayoutConstraint constraintWithItem:videoBgView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        NSLayoutConstraint *rightVideoBgView = [NSLayoutConstraint constraintWithItem:videoBgView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+        NSLayoutConstraint *bottomVideoBgView = [NSLayoutConstraint constraintWithItem:videoBgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem: self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *heightVideoBgView = [NSLayoutConstraint constraintWithItem:videoBgView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem: nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20];
+        [self.contentView addConstraints:@[lefttVideoBgView, rightVideoBgView,bottomVideoBgView,heightVideoBgView]];
+        _videoBgView = videoBgView;
+    }
+    return _videoBgView;
+}
+
+- (UIImageView *)videoIconView
+{
+    if (_videoIconView == nil)
+    {
+        UIImageView *videoIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        videoIconView.image = [UIImage imageNamed:@"XXBVideo_L_B"];
+        videoIconView.contentMode = UIViewContentModeCenter;
+        [self.videoBgView addSubview:videoIconView];
+        videoIconView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *lefttVideoBgView = [NSLayoutConstraint constraintWithItem:videoIconView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.videoBgView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        NSLayoutConstraint *bottomVideoBgView = [NSLayoutConstraint constraintWithItem:videoIconView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem: self.videoBgView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *heightVideoBgView = [NSLayoutConstraint constraintWithItem:videoIconView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem: self.videoBgView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
+        NSLayoutConstraint *wightVideoBgView = [NSLayoutConstraint constraintWithItem:videoIconView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem: self.videoBgView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
+        [self.contentView addConstraints:@[lefttVideoBgView,bottomVideoBgView,heightVideoBgView,wightVideoBgView]];
+        _videoIconView = videoIconView;
+    }
+    return _videoIconView;
+}
+
+- (NSString *)timeFromeNumber:(int )second
+{
+    int times[3];
+    memset(times, 0, sizeof(times));
+    int i = 0;
+    while (i < 2)
+    {
+        int time = second % 60;
+        second /= 60;
+        times[i] = time;
+        i ++;
+    }
+    times[i] = second;
+    NSString * time = @"";
+    while (i > 0)
+    {
+        if (i >= 2 && times[i] <= 0 && time.length <= 0) {
+            i-- ;
+            continue;
+        }
+        time = [NSString stringWithFormat:@"%@%02d:",time,times[i]];
+        i--;
+    }
+    time = [NSString stringWithFormat:@"%@%02d",time,times[i]];
+    return time;
 }
 @end

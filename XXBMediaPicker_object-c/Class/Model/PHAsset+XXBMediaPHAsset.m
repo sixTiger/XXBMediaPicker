@@ -43,13 +43,49 @@
     
 }
 
-- (XXBMediaType)assetType
+- (XXBMediaType)mediaAssetType
 {
-    return XXBMediaTypeAudio;
+    XXBMediaType type = XXBMediaTypeUnknown;
+    switch (self.mediaType) {
+        case PHAssetMediaTypeUnknown:
+        {
+            type = XXBMediaTypeUnknown;
+            break;
+        }
+        case PHAssetMediaTypeImage:
+        {
+            type = XXBMediaTypeImage;
+            break;
+        }
+        case PHAssetMediaTypeVideo:
+        {
+            type = XXBMediaTypeVideo;
+            break;
+        }
+        case PHAssetMediaTypeAudio:
+        {
+            type = XXBMediaTypeAudio;
+            break;
+        }
+        default:
+            break;
+    }
+    
+    if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive)
+    {
+        type = XXBMediaTypeLivePhoto;
+    }
+    return type;
+}
+
+- (double )mediaAssetTime
+{
+    return self.duration;
 }
 
 - (NSString *)identifier
 {
     return self.localIdentifier;
 }
+
 @end
