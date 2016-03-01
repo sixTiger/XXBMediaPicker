@@ -275,10 +275,16 @@ static id _instance = nil;
 
 - (id<XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath
 {
+    if(indexPath.section >= self.sectionFetchResults.count) {
+        return nil;
+    }
     id<XXBMediaAssetDataSouce> result = nil;
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
     if (indexPath.section == 0)
     {
+        if (indexPath.row >= fetchResult.count) {
+            return nil;
+        }
         result = [fetchResult objectAtIndex:0];
     }
     else
