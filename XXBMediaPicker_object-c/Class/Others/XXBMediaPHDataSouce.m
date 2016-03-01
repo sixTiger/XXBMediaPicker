@@ -283,17 +283,11 @@ static id _instance = nil;
     
     if (indexPath.section == 0)
     {
-        if (indexPath.row >= fetchResult.count) {
-            return nil;
-        }
-        result = [fetchResult objectAtIndex:0];
+        result = [fetchResult firstObject];
     }
     else
     {
         result = [fetchResult firstObject];
-        if (result == nil) {
-            return nil;
-        }
         PHCollection *collection = fetchResult[indexPath.row];
         if (![collection isKindOfClass:[PHAssetCollection class]])
         {
