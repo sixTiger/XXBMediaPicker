@@ -129,8 +129,8 @@ static id _instance = nil;
      */
     dispatch_async(dispatch_get_main_queue(), ^{
         
-//        [self p_getAllPhotos];
-//        NSLog(@"%@",self.sectionFetchResults);
+        //        [self p_getAllPhotos];
+        //        NSLog(@"%@",self.sectionFetchResults);
         /**
          *  看一下当前的是否有新创建的相册
          */
@@ -280,6 +280,7 @@ static id _instance = nil;
     }
     id<XXBMediaAssetDataSouce> result = nil;
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
+    
     if (indexPath.section == 0)
     {
         if (indexPath.row >= fetchResult.count) {
@@ -289,6 +290,10 @@ static id _instance = nil;
     }
     else
     {
+        result = [fetchResult firstObject];
+        if (result == nil) {
+            return nil;
+        }
         PHCollection *collection = fetchResult[indexPath.row];
         if (![collection isKindOfClass:[PHAssetCollection class]])
         {
@@ -297,7 +302,7 @@ static id _instance = nil;
         // Configure the AAPLAssetGridViewController with the asset collection.
         PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
         PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
-        result = [assetsFetchResult objectAtIndex:0];
+        result = [assetsFetchResult firstObject];
     }
     return result;
 }
