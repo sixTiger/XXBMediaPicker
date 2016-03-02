@@ -7,16 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62183C801C85DBC100214FCB /* XXBMediaGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C7C1C85DBC100214FCB /* XXBMediaGroupVC.swift */; };
+		62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */; };
+		62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */; };
+		62183C851C85E6D800214FCB /* XXBMediaItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */; };
 		62DC5EF11C51298F00FD6C5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC5EF01C51298F00FD6C5A /* AppDelegate.swift */; };
 		62DC5EF31C51298F00FD6C5A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC5EF21C51298F00FD6C5A /* ViewController.swift */; };
 		62DC5EF61C51298F00FD6C5A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62DC5EF41C51298F00FD6C5A /* Main.storyboard */; };
 		62DC5EF81C51298F00FD6C5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62DC5EF71C51298F00FD6C5A /* Assets.xcassets */; };
 		62DC5EFB1C51298F00FD6C5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62DC5EF91C51298F00FD6C5A /* LaunchScreen.storyboard */; };
-		62DC5F061C512BFA00FD6C5A /* XXBMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC5F051C512BFA00FD6C5A /* XXBMediaPicker.swift */; };
-		62DC5F081C512CB700FD6C5A /* XXBMediaGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC5F071C512CB700FD6C5A /* XXBMediaGroupVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62183C7C1C85DBC100214FCB /* XXBMediaGroupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaGroupVC.swift; sourceTree = "<group>"; };
+		62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaPicker.swift; sourceTree = "<group>"; };
+		62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaGroupCell.swift; sourceTree = "<group>"; };
+		62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaItemVC.swift; sourceTree = "<group>"; };
 		62DC5EED1C51298F00FD6C5A /* XXBMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XXBMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62DC5EF01C51298F00FD6C5A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62DC5EF21C51298F00FD6C5A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,8 +30,6 @@
 		62DC5EF71C51298F00FD6C5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		62DC5EFA1C51298F00FD6C5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		62DC5EFC1C51298F00FD6C5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		62DC5F051C512BFA00FD6C5A /* XXBMediaPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaPicker.swift; sourceTree = "<group>"; };
-		62DC5F071C512CB700FD6C5A /* XXBMediaGroupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaGroupVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		62183C7B1C85DBC100214FCB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				62183C7C1C85DBC100214FCB /* XXBMediaGroupVC.swift */,
+				62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */,
+				62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		62183C7E1C85DBC100214FCB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		62183C7F1C85DBC100214FCB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		62DC5EE41C51298F00FD6C5A = {
 			isa = PBXGroup;
 			children = (
@@ -72,8 +101,9 @@
 		62DC5F021C512B9300FD6C5A /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				62DC5F051C512BFA00FD6C5A /* XXBMediaPicker.swift */,
-				62DC5F071C512CB700FD6C5A /* XXBMediaGroupVC.swift */,
+				62183C7B1C85DBC100214FCB /* Controller */,
+				62183C7E1C85DBC100214FCB /* Model */,
+				62183C7F1C85DBC100214FCB /* View */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -149,10 +179,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62DC5F081C512CB700FD6C5A /* XXBMediaGroupVC.swift in Sources */,
 				62DC5EF31C51298F00FD6C5A /* ViewController.swift in Sources */,
+				62183C801C85DBC100214FCB /* XXBMediaGroupVC.swift in Sources */,
 				62DC5EF11C51298F00FD6C5A /* AppDelegate.swift in Sources */,
-				62DC5F061C512BFA00FD6C5A /* XXBMediaPicker.swift in Sources */,
+				62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */,
+				62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */,
+				62183C851C85E6D800214FCB /* XXBMediaItemVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +334,7 @@
 				62DC5F011C51298F00FD6C5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
