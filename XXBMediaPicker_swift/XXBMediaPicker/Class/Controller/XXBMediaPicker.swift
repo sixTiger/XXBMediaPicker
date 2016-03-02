@@ -8,10 +8,10 @@
 
 import UIKit
 
-class XXBMediaPicker: UINavigationController {
+public class XXBMediaPicker: UINavigationController {
 
     var mediaGroupVC : XXBMediaGroupVC?
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         mediaGroupVC = XXBMediaGroupVC()
         self.addChildViewController(mediaGroupVC!)
     }    

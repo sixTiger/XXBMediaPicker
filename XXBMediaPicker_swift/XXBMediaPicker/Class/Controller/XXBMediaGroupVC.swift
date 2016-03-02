@@ -8,16 +8,16 @@
 
 import UIKit
 
-class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
+public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
  
     var _tableView : UITableView?
     let cellID = "XXBMediaGroupVCCell"
     lazy var mediaItemVC:XXBMediaItemVC = XXBMediaItemVC()
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         print("\(__FUNCTION__)")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         _initView()
     }
@@ -34,18 +34,24 @@ class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableViewDelegat
     }
     //MARK:-
     //MARK:tableViewDelegate && tableViewDataSouce
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
+    
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return XXBDataSouce.sharedInstance.mediaTableViewDataSouceNumberOfSection(_tableView!)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return XXBDataSouce.sharedInstance.mediaTableViewDataSouce(_tableView!, numberOfRowsInSection: section)
+    }
+    
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID)
         return cell!
     }
     
     //MARK:-
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.navigationController?.pushViewController(mediaItemVC, animated: true)
     }
     
