@@ -20,6 +20,9 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
     override public func viewDidLoad() {
         super.viewDidLoad()
         _initView()
+        dispatch_after(1, dispatch_get_main_queue()) { () -> Void in
+            self._tableView?.reloadData()
+        }
     }
     
     //MARK:-
@@ -46,6 +49,7 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID)
+        cell?.textLabel?.text = XXBDataSouce.sharedInstance.mediaTableViewDataSouce(tableView, titleOfCellAtIndexPath: indexPath)
         return cell!
     }
     

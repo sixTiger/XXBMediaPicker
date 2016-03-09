@@ -11,6 +11,8 @@
 		62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */; };
 		62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */; };
 		62183C851C85E6D800214FCB /* XXBMediaItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */; };
+		62A05F501C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A05F4F1C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift */; };
+		62A05F521C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */; };
 		62CF09B01C868BDF00CA0B72 /* XXBDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */; };
 		62CF09B21C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF09B11C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift */; };
 		62DC5EF11C51298F00FD6C5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC5EF01C51298F00FD6C5A /* AppDelegate.swift */; };
@@ -25,6 +27,8 @@
 		62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaPicker.swift; sourceTree = "<group>"; };
 		62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaGroupCell.swift; sourceTree = "<group>"; };
 		62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaItemVC.swift; sourceTree = "<group>"; };
+		62A05F4F1C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+XXBMediaPHAsset.swift"; sourceTree = "<group>"; };
+		62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaAssetDataSouce.swift; sourceTree = "<group>"; };
 		62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBDataSouce.swift; sourceTree = "<group>"; };
 		62CF09B11C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaTableViewDataSouce.swift; sourceTree = "<group>"; };
 		62DC5EED1C51298F00FD6C5A /* XXBMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XXBMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +64,7 @@
 		62183C7E1C85DBC100214FCB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				62A05F4F1C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -77,6 +82,7 @@
 			children = (
 				62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */,
 				62CF09B11C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift */,
+				62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -193,9 +199,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62A05F521C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift in Sources */,
 				62DC5EF31C51298F00FD6C5A /* ViewController.swift in Sources */,
 				62183C801C85DBC100214FCB /* XXBMediaGroupVC.swift in Sources */,
 				62CF09B21C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift in Sources */,
+				62A05F501C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift in Sources */,
 				62DC5EF11C51298F00FD6C5A /* AppDelegate.swift in Sources */,
 				62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */,
 				62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */,

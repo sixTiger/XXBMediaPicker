@@ -15,6 +15,8 @@ public protocol XXBMediaTableViewDataSouce : NSObjectProtocol {
     
     @available(iOS 2.0, *)
     func mediaTableViewDataSouceNumberOfSection(tableView:UITableView) -> Int
+    @available(iOS 2.0, *)
+    func mediaTableViewDataSouce(tableView:UITableView , titleOfCellAtIndexPath indexPath: NSIndexPath) -> String
     
 //    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
 //    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)

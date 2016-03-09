@@ -19,9 +19,9 @@
  *  当前展示数据的 collectionView
  */
 @property(nonatomic , weak) UICollectionView        *collectionView;
-@property(nonatomic , strong) NSMutableArray    *sectionFetchResults;
-@property(nonatomic , strong) PHFetchResult     *seleectPHFetchResult;
-@property(nonatomic , strong) NSMutableArray    *selectAssetArray;
+@property(nonatomic , strong) NSMutableArray        *sectionFetchResults;
+@property(nonatomic , strong) PHFetchResult         *seleectPHFetchResult;
+@property(nonatomic , strong) NSMutableArray        *selectAssetArray;
 @end
 
 @implementation XXBMediaPHDataSouce
