@@ -15,7 +15,7 @@ public class XXBMediaPicker: UINavigationController {
     }()
     
     override public func viewDidLoad() {
-        self.addChildViewController(mediaGroupVC)
+        self.pushViewController(mediaGroupVC, animated: true)
     }
     
     override public class func initialize() {

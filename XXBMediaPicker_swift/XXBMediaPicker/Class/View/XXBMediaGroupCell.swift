@@ -17,13 +17,10 @@ public class XXBMediaGroupCell: UITableViewCell {
     }
     var mediaAsset: XXBMediaAssetDataSouce? {
         didSet {
-            if (mediaAsset == nil) {
+            guard ((mediaAsset) != nil) else {
                 return
             }
-            let id = 1
             self.mediaID  = mediaAsset!.imageWithSize(CGSizeMake(60, 60), completionHandler: { (image: UIImage?, info) -> Void in
-                if id == 1 {
-                }
                 if Int(self.mediaID!) == self.tag {
                     self.iconImageView.image = image
                 }

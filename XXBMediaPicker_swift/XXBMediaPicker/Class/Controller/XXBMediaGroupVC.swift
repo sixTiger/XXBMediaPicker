@@ -9,7 +9,7 @@
 import UIKit
 
 public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
- 
+    
     var _tableView : UITableView?
     let cellID = "XXBMediaGroupVCCell"
     lazy var mediaItemVC:XXBMediaItemVC = XXBMediaItemVC()
@@ -20,13 +20,24 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
     override public func viewDidLoad() {
         super.viewDidLoad()
         _initView()
-        dispatch_after(1, dispatch_get_main_queue()) { () -> Void in
-            self._tableView?.reloadData()
-        }
+        self._tableView?.reloadData()
     }
     
     //MARK:-
     //MARK: view
+    
+    func _initNavigation() {
+        let rightItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.Camera, target: self, action: "_dismess")
+        
+        self.navigationItem.rightBarButtonItem = rightItem
+    }
+    
+    func _dismess() {
+        self.dismissViewControllerAnimated(true) { () -> Void in
+            
+        }
+    }
+    
     func _initView() {
         _tableView = UITableView(frame: self.view.bounds, style: UITableViewStyle.Plain)
         self.view.addSubview(_tableView!)
@@ -34,6 +45,8 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
         _tableView?.dataSource = self
         _tableView?.registerClass(XXBMediaGroupCell.self, forCellReuseIdentifier: cellID)
         _tableView?.rowHeight = 80
+        
+        XXBDataSouce.sharedInstance.tableView = _tableView
     }
     //MARK:-
     //MARK:tableViewDelegate && tableViewDataSouce
@@ -57,6 +70,7 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
     //MARK:-
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        XXBDataSouce.sharedInstance.mediaTableViewDataSouce(tableView, didSelectCellAtIndexPath: indexPath)
         self.navigationController?.pushViewController(mediaItemVC, animated: true)
     }
     

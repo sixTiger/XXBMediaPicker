@@ -10,7 +10,7 @@ import UIKit
 
 import Photos
 
-public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
+public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryChangeObserver{
     
     static let sharedInstance = XXBDataSouce()
     static let sharedImageManager: PHImageManager = PHCachingImageManager()
@@ -30,7 +30,13 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
     private override init() {
         super.init()
         getAllPhotos()
+        registerPhotoServers()
     } //This prevents others from using the default '()' initializer for this class.
+    
+    deinit {
+        removerPhotoServers()
+    }
+    
     public func mediaTableViewDataSouceNumberOfSection(tableView:UITableView) -> Int {
         return sectionFetchResults.count;
     }
@@ -78,6 +84,21 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
             }
             let assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection as! PHAssetCollection, options: nil)
             return assetsFetchResult.firstObject as? XXBMediaAssetDataSouce
+        }
+    }
+    
+    public func mediaTableViewDataSouce(tableView: UITableView, didSelectCellAtIndexPath indexPath: NSIndexPath) {
+        
+        let fetchResult = sectionFetchResults[indexPath.section]
+        if (indexPath.section == 0) {
+            seleectPHFetchResult = fetchResult;
+        } else {
+            let collection = fetchResult[indexPath.row] as! PHCollection
+            if ((collection as? PHAssetCollection) == nil) {
+                return;
+            }
+            let assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection as! PHAssetCollection, options: nil)
+            seleectPHFetchResult = assetsFetchResult;
         }
     }
     
@@ -145,5 +166,115 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
         
     }
     //MARK: -
+    //MARK: 相册信息发生变化的时候
+    func registerPhotoServers() {
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+    }
+    
+    func removerPhotoServers() {
+        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+    }
+    
+    public func photoLibraryDidChange(changeInstance: PHChange) {
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            /**
+             *  看一下当前的是否有新创建的相册
+             */
+            
+            var  reloadRequired = false;
+            
+            for (index, collectionsFetchResult) in self.sectionFetchResults.enumerate() {
+                
+                let changeDetails = changeInstance.changeDetailsForFetchResult(collectionsFetchResult)
+                if (changeDetails != nil) {
+                    self.sectionFetchResults[index] = (changeDetails?.fetchResultAfterChanges)!
+                    reloadRequired = true
+                }
+            }
+            
+            if (reloadRequired)
+            {
+//                self.sectionFetchResults = updatedSectionFetchResults;
+                self.tableView?.reloadData()
+            }
+            
+        }
+        
+        //
+        //            //        [self p_getAllPhotos];
+        //            //        NSLog(@"%@",self.sectionFetchResults);
+        //
+        //            // Loop through the section fetch results, replacing any fetch results that have been updated.
+        //            NSMutableArray *updatedSectionFetchResults = [self.sectionFetchResults mutableCopy];
+        //            __block BOOL reloadRequired = NO;
+        //            [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
+        //                PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
+        //
+        //                if (changeDetails != nil)
+        //                {
+        //                [updatedSectionFetchResults replaceObjectAtIndex:index withObject:[changeDetails fetchResultAfterChanges]];
+        //                reloadRequired = YES;
+        //                }
+        //                }];
+        //
+        //            if (reloadRequired)
+        //            {
+        //                self.sectionFetchResults = updatedSectionFetchResults;
+        //                [self.tableView reloadData];
+        //            }
+        //
+        //
+        //
+        //            PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
+        //            if (collectionChanges == nil)
+        //            {
+        //                /**
+        //                *  当前选中的
+        //                */
+        //                return;
+        //            }
+        //
+        //            /*
+        //            Change notifications may be made on a background queue. Re-dispatch to the
+        //            main queue before acting on the change as we'll be updating the UI.
+        //            */
+        //            // Get the new fetch result.
+        //            self.seleectPHFetchResult = [collectionChanges fetchResultAfterChanges];
+        //            //        [self.collectionView reloadData];
+        //
+        //            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+        //            {
+        //                // Reload the collection view if the incremental diffs are not available
+        //                // 相册被移除
+        //
+        //            }
+        //            else
+        //            {
+        //                /*
+        //                Tell the collection view to animate insertions and deletions if we
+        //                have incremental diffs.
+        //                */
+        //                [self.collectionView performBatchUpdates:^{
+        //                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+        //                    if ([removedIndexes count] > 0) {
+        //                    [self.collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+        //                    }
+        //
+        //                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+        //                    if ([insertedIndexes count] > 0) {
+        //                    [self.collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+        //                    }
+        //                    
+        //                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+        //                    if ([changedIndexes count] > 0) {
+        //                    [self.collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+        //                    }
+        //                    } completion:NULL];
+        //            }
+        //            
+        //            });
+    }
+    
     //MARK: -
 }

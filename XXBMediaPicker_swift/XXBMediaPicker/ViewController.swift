@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = rightItem
     }
     func p_open(){
-        self.presentViewController(XXBMediaPicker(), animated: true) { () -> Void in
+        self.navigationController!.presentViewController(XXBMediaPicker(), animated: true) { () -> Void in
             print("opened")
         }
     }
