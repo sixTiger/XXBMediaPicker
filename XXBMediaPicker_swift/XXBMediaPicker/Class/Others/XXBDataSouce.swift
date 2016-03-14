@@ -10,7 +10,7 @@ import UIKit
 
 import Photos
 
-public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryChangeObserver{
+public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollectionViewDataSouce, PHPhotoLibraryChangeObserver{
     
     static let sharedInstance = XXBDataSouce()
     static let sharedImageManager: PHImageManager = PHCachingImageManager()
@@ -37,6 +37,7 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryC
         removerPhotoServers()
     }
     
+    //MARK:- tableView数据源方法
     public func mediaTableViewDataSouceNumberOfSection(tableView:UITableView) -> Int {
         return sectionFetchResults.count;
     }
@@ -100,9 +101,35 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryC
             let assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection as! PHAssetCollection, options: nil)
             seleectPHFetchResult = assetsFetchResult;
         }
+        collectionView?.reloadData()
     }
     
-    //MARK: photoData
+    //MARK:- collectionView 数据源方法
+    
+    public func mediaCollectionViewDataSouceNumberOfSection(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    public func mediaCollectionViewDataSouce(collectionView: UICollectionView, numberOfRowsInSection section: Int) -> Int {
+        return seleectPHFetchResult!.count
+    }
+    
+    public func mediaCollectionViewDataSouce(collectionView: UICollectionView, mediaAssetOfCellAtIndexPath indexPath: NSIndexPath) -> XXBMediaAssetDataSouce? {
+        if (indexPath.row < seleectPHFetchResult!.count) {
+            return seleectPHFetchResult![indexPath.row] as? XXBMediaAssetDataSouce;
+        } else {
+            return nil;
+        }
+    }
+    
+    public func mediaCollectionViewDataSouce(collectionView: UICollectionView, typeOfMediaAtIndexPath indexPath: NSIndexPath) -> XXBMediaType {
+        return XXBMediaType.Unknown
+    }
+    
+    public func mediaCollectionViewDataSouce(collectionView: UICollectionView, didSelectCellAtIndexPath indexPath: NSIndexPath) {
+    }
+    
+    //MARK:- photoData
     
     func getAllPhotos () {
         sectionFetchResults.removeAll()
@@ -183,7 +210,6 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryC
              */
             
             var  reloadRequired = false;
-            
             for (index, collectionsFetchResult) in self.sectionFetchResults.enumerate() {
                 
                 let changeDetails = changeInstance.changeDetailsForFetchResult(collectionsFetchResult)
@@ -195,7 +221,6 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce ,PHPhotoLibraryC
             
             if (reloadRequired)
             {
-//                self.sectionFetchResults = updatedSectionFetchResults;
                 self.tableView?.reloadData()
             }
             

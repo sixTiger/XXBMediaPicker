@@ -11,6 +11,8 @@
 		62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */; };
 		62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */; };
 		62183C851C85E6D800214FCB /* XXBMediaItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */; };
+		622A64EF1C96AA25006D5114 /* XXBMediaCollectionViewDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A64EE1C96AA25006D5114 /* XXBMediaCollectionViewDataSouce.swift */; };
+		622A64F11C96AE0E006D5114 /* XXBMediaItemNomalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A64F01C96AE0E006D5114 /* XXBMediaItemNomalCell.swift */; };
 		62A05F501C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A05F4F1C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift */; };
 		62A05F521C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */; };
 		62CF09B01C868BDF00CA0B72 /* XXBDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */; };
@@ -27,6 +29,8 @@
 		62183C7D1C85DBC100214FCB /* XXBMediaPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaPicker.swift; sourceTree = "<group>"; };
 		62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaGroupCell.swift; sourceTree = "<group>"; };
 		62183C841C85E6D800214FCB /* XXBMediaItemVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaItemVC.swift; sourceTree = "<group>"; };
+		622A64EE1C96AA25006D5114 /* XXBMediaCollectionViewDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaCollectionViewDataSouce.swift; sourceTree = "<group>"; };
+		622A64F01C96AE0E006D5114 /* XXBMediaItemNomalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaItemNomalCell.swift; sourceTree = "<group>"; };
 		62A05F4F1C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+XXBMediaPHAsset.swift"; sourceTree = "<group>"; };
 		62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBMediaAssetDataSouce.swift; sourceTree = "<group>"; };
 		62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXBDataSouce.swift; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				62183C821C85E11F00214FCB /* XXBMediaGroupCell.swift */,
+				622A64F01C96AE0E006D5114 /* XXBMediaItemNomalCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -83,6 +88,7 @@
 				62CF09AF1C868BDF00CA0B72 /* XXBDataSouce.swift */,
 				62CF09B11C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift */,
 				62A05F511C8FCD6D00C5D699 /* XXBMediaAssetDataSouce.swift */,
+				622A64EE1C96AA25006D5114 /* XXBMediaCollectionViewDataSouce.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -205,9 +211,11 @@
 				62CF09B21C868CFC00CA0B72 /* XXBMediaTableViewDataSouce.swift in Sources */,
 				62A05F501C8FCBE400C5D699 /* PHAsset+XXBMediaPHAsset.swift in Sources */,
 				62DC5EF11C51298F00FD6C5A /* AppDelegate.swift in Sources */,
+				622A64F11C96AE0E006D5114 /* XXBMediaItemNomalCell.swift in Sources */,
 				62183C811C85DBC100214FCB /* XXBMediaPicker.swift in Sources */,
 				62183C831C85E11F00214FCB /* XXBMediaGroupCell.swift in Sources */,
 				62183C851C85E6D800214FCB /* XXBMediaItemVC.swift in Sources */,
+				622A64EF1C96AA25006D5114 /* XXBMediaCollectionViewDataSouce.swift in Sources */,
 				62CF09B01C868BDF00CA0B72 /* XXBDataSouce.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
