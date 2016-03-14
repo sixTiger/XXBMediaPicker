@@ -8,7 +8,18 @@
 
 import UIKit
 
-public protocol XXBMediaAssetDataSouce : NSObjectProtocol {
+
+public enum XXBMediaType : NSInteger {
     
+    // PHAssetCollectionTypeAlbum regular subtypes
+    case Unknown
+    case Image
+    case Video
+    case Audio
+    case LivePhoto
+}
+public typealias XXBMediaRequestID = Int32
+public protocol XXBMediaAssetDataSouce : NSObjectProtocol {
+    func imageWithSize(size: CGSize, completionHandler: (UIImage?, [NSObject : AnyObject]?) -> Void) -> XXBMediaRequestID
 }
 

@@ -13,6 +13,7 @@ import Photos
 public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
     
     static let sharedInstance = XXBDataSouce()
+    static let sharedImageManager: PHImageManager = PHCachingImageManager()
     var tableView: UITableView?
     var collectionView: UICollectionView?
     var seleectPHFetchResult: PHFetchResult?
@@ -61,6 +62,25 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
         }
     }
     
+    public func mediaTableViewDataSouce(tableView: UITableView, mediaAssetOfCellAtIndexPath indexPath: NSIndexPath) -> XXBMediaAssetDataSouce? {
+        
+        if(indexPath.section >= self.sectionFetchResults.count) {
+            return nil
+        }
+        let fetchResult = sectionFetchResults[indexPath.section]
+        
+        if indexPath.section == 0 {
+            return fetchResult.firstObject as? XXBMediaAssetDataSouce
+        } else {
+            let collection = fetchResult[indexPath.row]
+            if ((collection as? PHAssetCollection) == nil) {
+                return nil;
+            }
+            let assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection as! PHAssetCollection, options: nil)
+            return assetsFetchResult.firstObject as? XXBMediaAssetDataSouce
+        }
+    }
+    
     //MARK: photoData
     
     func getAllPhotos () {
@@ -102,14 +122,14 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
             ]
         }
         
-        for category in allValues{
+        for category in allValues {
             //Do something
             let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: category, options: nil)
             let collection = smartAlbums.firstObject
             if ((collection as? PHAssetCollection) == nil) {
                 continue
             }
-            print(collection!.localizedTitle)
+            
             let assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection as! PHAssetCollection , options: nil)
             if assetsFetchResult.count < 0 {
             }
@@ -119,6 +139,9 @@ public class XXBDataSouce: NSObject ,XXBMediaTableViewDataSouce{
             //        PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
             //        [self.sectionFetchResults addObject:topLevelUserCollections];
         }
+        // 用户自己创建的相册
+        let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
+        sectionFetchResults.append(topLevelUserCollections)
         
     }
     //MARK: -

@@ -287,7 +287,6 @@ static id _instance = nil;
     }
     else
     {
-        result = [fetchResult firstObject];
         PHCollection *collection = fetchResult[indexPath.row];
         if (![collection isKindOfClass:[PHAssetCollection class]])
         {

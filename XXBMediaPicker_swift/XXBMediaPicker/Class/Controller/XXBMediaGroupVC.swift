@@ -48,9 +48,10 @@ public class XXBMediaGroupVC: UIViewController,UITableViewDataSource,UITableView
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID)
-        cell?.textLabel?.text = XXBDataSouce.sharedInstance.mediaTableViewDataSouce(tableView, titleOfCellAtIndexPath: indexPath)
-        return cell!
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID) as! XXBMediaGroupCell
+        cell.title = XXBDataSouce.sharedInstance.mediaTableViewDataSouce(tableView, titleOfCellAtIndexPath: indexPath)
+        cell.mediaAsset = XXBDataSouce.sharedInstance.mediaTableViewDataSouce(tableView, mediaAssetOfCellAtIndexPath: indexPath)
+        return cell
     }
     
     //MARK:-
