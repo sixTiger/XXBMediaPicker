@@ -202,6 +202,16 @@ static id _instance = nil;
             } completion:NULL];
         }
         
+#warning 当前选中的照片应该删除相应的选项
+        
+        NSArray *removeObjects  =  [collectionChanges removedObjects];
+        for (id<XXBMediaAssetDataSouce> media in removeObjects) {
+           NSUInteger index = [self indexOfAssetInSelectedMediaAsset:media];
+            if (index != NSNotFound ) {
+                //如果当前删除的是被选中的，从选中分组里边移除
+                [self.selectAssetArray removeObjectAtIndex:index];
+            }
+        }
     });
     
 }

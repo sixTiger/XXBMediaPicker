@@ -224,81 +224,46 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
                 self.tableView?.reloadData()
             }
             
+            let collectionChanges = changeInstance.changeDetailsForFetchResult(self.seleectPHFetchResult!)
+            if (collectionChanges == nil) {
+                /**
+                *  当前选中的
+                */
+                return;
+            }
+            
+            if !(collectionChanges!.hasIncrementalChanges) || (collectionChanges!.hasMoves)  {
+                //相册被移除
+            } else {
+//                self.collectionView?.performBatchUpdates({ () -> Void in
+                
+                    let removedIndexes = collectionChanges?.removedIndexes
+                    if removedIndexes?.count > 0 {
+                        let removeIndexPaths = removedIndexes!.XXB_indexPathsFromIndexesWithSection(0)
+                        self.collectionView?.deleteItemsAtIndexPaths(removeIndexPaths)
+                    }
+                    
+                    let insertedIndexes = collectionChanges?.insertedIndexes
+                    if insertedIndexes?.count > 0 {
+                        
+                        let insertedIndexPaths = insertedIndexes!.XXB_indexPathsFromIndexesWithSection(0)
+                        self.collectionView?.insertItemsAtIndexPaths(insertedIndexPaths)
+                    }
+                    
+                    let changedIndexes = collectionChanges?.changedIndexes
+                    if changedIndexes?.count > 0 {
+                        
+                        let changedIndexPaths = changedIndexes!.XXB_indexPathsFromIndexesWithSection(0)
+                        self.collectionView?.reloadItemsAtIndexPaths(changedIndexPaths)
+                    }
+                    
+//                    }, completion:nil)
+            }
+            
+            //FIXME: 相册被删除的时候应该考虑一下被选中的同样应该被移除
+            
         }
         
-        //
-        //            //        [self p_getAllPhotos];
-        //            //        NSLog(@"%@",self.sectionFetchResults);
-        //
-        //            // Loop through the section fetch results, replacing any fetch results that have been updated.
-        //            NSMutableArray *updatedSectionFetchResults = [self.sectionFetchResults mutableCopy];
-        //            __block BOOL reloadRequired = NO;
-        //            [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
-        //                PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
-        //
-        //                if (changeDetails != nil)
-        //                {
-        //                [updatedSectionFetchResults replaceObjectAtIndex:index withObject:[changeDetails fetchResultAfterChanges]];
-        //                reloadRequired = YES;
-        //                }
-        //                }];
-        //
-        //            if (reloadRequired)
-        //            {
-        //                self.sectionFetchResults = updatedSectionFetchResults;
-        //                [self.tableView reloadData];
-        //            }
-        //
-        //
-        //
-        //            PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
-        //            if (collectionChanges == nil)
-        //            {
-        //                /**
-        //                *  当前选中的
-        //                */
-        //                return;
-        //            }
-        //
-        //            /*
-        //            Change notifications may be made on a background queue. Re-dispatch to the
-        //            main queue before acting on the change as we'll be updating the UI.
-        //            */
-        //            // Get the new fetch result.
-        //            self.seleectPHFetchResult = [collectionChanges fetchResultAfterChanges];
-        //            //        [self.collectionView reloadData];
-        //
-        //            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
-        //            {
-        //                // Reload the collection view if the incremental diffs are not available
-        //                // 相册被移除
-        //
-        //            }
-        //            else
-        //            {
-        //                /*
-        //                Tell the collection view to animate insertions and deletions if we
-        //                have incremental diffs.
-        //                */
-        //                [self.collectionView performBatchUpdates:^{
-        //                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-        //                    if ([removedIndexes count] > 0) {
-        //                    [self.collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-        //                    }
-        //
-        //                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-        //                    if ([insertedIndexes count] > 0) {
-        //                    [self.collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-        //                    }
-        //                    
-        //                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-        //                    if ([changedIndexes count] > 0) {
-        //                    [self.collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
-        //                    }
-        //                    } completion:NULL];
-        //            }
-        //            
-        //            });
     }
     
     //MARK: -
