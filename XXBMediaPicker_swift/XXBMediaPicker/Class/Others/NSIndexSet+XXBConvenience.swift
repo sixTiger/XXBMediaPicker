@@ -12,8 +12,9 @@ extension NSIndexSet {
     
     func XXB_indexPathsFromIndexesWithSection(section: NSInteger) ->[NSIndexPath]{
         var indexpaths = [NSIndexPath]()
-        for (index, _) in self.enumerate() {
-            indexpaths.append(NSIndexPath(forRow: index, inSection: section))
+        for (index, value) in self.enumerate() {
+            print("index \(index),value\(value)")
+            indexpaths.append(NSIndexPath(forRow:value, inSection: section))
         }
         return indexpaths
     }

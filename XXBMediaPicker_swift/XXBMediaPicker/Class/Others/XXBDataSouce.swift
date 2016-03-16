@@ -205,6 +205,7 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
     public func photoLibraryDidChange(changeInstance: PHChange) {
         
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            let collectionChanges = changeInstance.changeDetailsForFetchResult(self.seleectPHFetchResult!)
             /**
              *  看一下当前的是否有新创建的相册
              */
@@ -214,7 +215,12 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
                 
                 let changeDetails = changeInstance.changeDetailsForFetchResult(collectionsFetchResult)
                 if (changeDetails != nil) {
-                    self.sectionFetchResults[index] = (changeDetails?.fetchResultAfterChanges)!
+                    if self.seleectPHFetchResult == self.sectionFetchResults[index] {
+                        self.sectionFetchResults[index] = (changeDetails?.fetchResultAfterChanges)!
+                        self.seleectPHFetchResult = self.sectionFetchResults[index];
+                    } else {
+                        self.sectionFetchResults[index] = (changeDetails?.fetchResultAfterChanges)!
+                    }
                     reloadRequired = true
                 }
             }
@@ -224,7 +230,6 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
                 self.tableView?.reloadData()
             }
             
-            let collectionChanges = changeInstance.changeDetailsForFetchResult(self.seleectPHFetchResult!)
             if (collectionChanges == nil) {
                 /**
                 *  当前选中的
@@ -235,8 +240,8 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
             if !(collectionChanges!.hasIncrementalChanges) || (collectionChanges!.hasMoves)  {
                 //相册被移除
             } else {
-//                self.collectionView?.performBatchUpdates({ () -> Void in
-                
+                self.collectionView?.performBatchUpdates({ () -> Void in
+                    
                     let removedIndexes = collectionChanges?.removedIndexes
                     if removedIndexes?.count > 0 {
                         let removeIndexPaths = removedIndexes!.XXB_indexPathsFromIndexesWithSection(0)
@@ -257,7 +262,7 @@ public class XXBDataSouce: NSObject, XXBMediaTableViewDataSouce, XXBMediaCollect
                         self.collectionView?.reloadItemsAtIndexPaths(changedIndexPaths)
                     }
                     
-//                    }, completion:nil)
+                    }, completion:nil)
             }
             
             //FIXME: 相册被删除的时候应该考虑一下被选中的同样应该被移除
