@@ -8,17 +8,41 @@
 
 #import "PHAsset+XXBMediaPHAsset.h"
 #import "XXBMediaPHDataSouce.h"
+#import <objc/runtime.h>
+
+@interface PHAsset()
+@property(nonatomic , strong) UIImage   *placehoderImage;
+@end
 
 @implementation PHAsset (XXBMediaPHAsset)
 
+static char XXBPlacehoderImage;
+
+- (void)setPlacehoderImage:(UIImage *)placehoderImage {
+    [self willChangeValueForKey:@"XXBPlacehoderImage"];
+    objc_setAssociatedObject(self, &XXBPlacehoderImage,
+                             placehoderImage,
+                             OBJC_ASSOCIATION_ASSIGN);
+    [self didChangeValueForKey:@"XXBPlacehoderImage"];
+}
+
+- (UIImage *)placehoderImage {
+    return objc_getAssociatedObject(self, &XXBPlacehoderImage);
+}
+
 - (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler
 {
+    if (self.placehoderImage != nil) {
+        completionHandler(self.placehoderImage,nil);
+        return 0;
+    }
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize realSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(scale, scale));
     options.synchronous = NO;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
     options.networkAccessAllowed = YES;
+    __weak typeof(self)weakSelf = self;
     return [[XXBMediaPHDataSouce sharedImageManager] requestImageForAsset:self
                                                                targetSize:realSize
                                                               contentMode:PHImageContentModeAspectFill
@@ -32,6 +56,8 @@
                                                                     return;
                                                                 }
                                                                 if (completionHandler){
+                                                                    __strong typeof(self)strongSelf = weakSelf;
+                                                                    strongSelf.placehoderImage = result;
                                                                     completionHandler(result, nil);
                                                                 }
                                                             }];
