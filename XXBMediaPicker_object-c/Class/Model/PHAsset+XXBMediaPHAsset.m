@@ -16,18 +16,16 @@
 
 @implementation PHAsset (XXBMediaPHAsset)
 
-static char XXBPlacehoderImage;
-
 - (void)setPlacehoderImage:(UIImage *)placehoderImage {
     [self willChangeValueForKey:@"XXBPlacehoderImage"];
-    objc_setAssociatedObject(self, &XXBPlacehoderImage,
+    objc_setAssociatedObject(self, @selector(placehoderImage),
                              placehoderImage,
-                             OBJC_ASSOCIATION_ASSIGN);
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self didChangeValueForKey:@"XXBPlacehoderImage"];
 }
 
 - (UIImage *)placehoderImage {
-    return objc_getAssociatedObject(self, &XXBPlacehoderImage);
+    return objc_getAssociatedObject(self,@selector(placehoderImage));
 }
 
 - (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler

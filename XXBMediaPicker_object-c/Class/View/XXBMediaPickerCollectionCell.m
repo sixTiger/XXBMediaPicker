@@ -45,7 +45,8 @@
     }
     
     _mediaAsset = mediaAsset;
-    __block XXBMediaRequestID requestKey = 0;
+    __block XXBMediaRequestID requestKey = -1;
+    self.tag = requestKey;
     //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
     requestKey = [_mediaAsset imageWithSize:self.frame.size completionHandler:^(UIImage *result, NSError *error) {
         if (error)
