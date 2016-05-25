@@ -33,13 +33,10 @@
 - (void)setMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset
 {
     NSInteger index = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:mediaAsset];
-    if (index != NSNotFound)
-    {
+    if (index != NSNotFound) {
         self.selected = YES;
         [self.bageButton setBadgeValue:index + 1];
-    }
-    else
-    {
+    } else {
         [self.bageButton setBadgeValue:0];
         self.selected = NO;
     }
@@ -55,16 +52,12 @@
             return;
         }
         // Did this request changed meanwhile
-        if (requestKey != self.tag)
-        {
+        if (requestKey != self.tag) {
             return;
         }
-        if ([NSThread isMainThread])
-        {
+        if ([NSThread isMainThread]) {
             self.imageView.image = result;
-        }
-        else
-        {
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.imageView.image = result;
             });
@@ -115,17 +108,14 @@
     }
 }
 
-- (void)setSelected:(BOOL)selected
-{
+- (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     self.coverView.backgroundColor = selected ? [UIColor colorWithWhite:1.0 alpha:0.3] : [UIColor clearColor];
     self.coverButton.selected = selected;
 }
 
-- (UIImageView *)imageView
-{
-    if (_imageView == nil)
-    {
+- (UIImageView *)imageView {
+    if (_imageView == nil) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
@@ -136,10 +126,8 @@
     return _imageView;
 }
 
-- (UIView *)coverView
-{
-    if (_coverView == nil)
-    {
+- (UIView *)coverView {
+    if (_coverView == nil) {
         UIView *coverView = [[UIView alloc] initWithFrame:self.contentView.bounds];
         [self.contentView insertSubview:coverView aboveSubview:self.imageView];
         coverView.autoresizingMask = (1 << 6) - 1;
@@ -148,10 +136,8 @@
     return _coverView;
 }
 
-- (UIButton *)coverButton
-{
-    if (_coverButton == nil)
-    {
+- (UIButton *)coverButton {
+    if (_coverButton == nil) {
         //右上角的小图标的尺寸
         CGFloat margin = 5.0;
         CGFloat width = 22;
@@ -167,10 +153,8 @@
     return _coverButton;
 }
 
-- (XXBBadgeValueBtn *)bageButton
-{
-    if (_bageButton == nil )
-    {
+- (XXBBadgeValueBtn *)bageButton {
+    if (_bageButton == nil ) {
         XXBBadgeValueBtn *bageButton = [[XXBBadgeValueBtn alloc] init];
         [self.coverView addSubview:bageButton];
         bageButton.frame = CGRectMake(5, 5, 10, 10);
@@ -180,10 +164,8 @@
 }
 
 
-- (UILabel *)messageLabel
-{
-    if (_messageLabel == nil)
-    {
+- (UILabel *)messageLabel {
+    if (_messageLabel == nil) {
         UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         messageLabel.font = [UIFont systemFontOfSize:12];
         messageLabel.textColor = [UIColor whiteColor];
@@ -199,11 +181,8 @@
     return _messageLabel;
 }
 
-- (UIView *)videoBgView
-{
-    if (_videoBgView == nil)
-    {
-        
+- (UIView *)videoBgView {
+    if (_videoBgView == nil) {
         UIView *videoBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         videoBgView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
         [self.contentView addSubview:videoBgView];
@@ -218,10 +197,8 @@
     return _videoBgView;
 }
 
-- (UIImageView *)videoIconView
-{
-    if (_videoIconView == nil)
-    {
+- (UIImageView *)videoIconView {
+    if (_videoIconView == nil) {
         UIImageView *videoIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         videoIconView.image = [UIImage imageNamed:@"XXBVideo_L_B"];
         videoIconView.contentMode = UIViewContentModeCenter;
@@ -237,13 +214,11 @@
     return _videoIconView;
 }
 
-- (NSString *)timeFromeNumber:(int )second
-{
+- (NSString *)timeFromeNumber:(int )second {
     int times[3];
     memset(times, 0, sizeof(times));
     int i = 0;
-    while (i < 2)
-    {
+    while (i < 2) {
         int time = second % 60;
         second /= 60;
         times[i] = time;
@@ -251,8 +226,7 @@
     }
     times[i] = second;
     NSString * time = @"";
-    while (i > 0)
-    {
+    while (i > 0) {
         if (i >= 2 && times[i] <= 0 && time.length <= 0) {
             i-- ;
             continue;
