@@ -31,41 +31,35 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 {
     [super viewWillDisappear:animated];
     XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
-    if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]])
-    {
+    if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]]) {
         [cell stop];
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.view setNeedsLayout];
     self.imagePickerTar.delegate = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.shouldScrollBottom)
-        {
+        if (self.shouldScrollBottom) {
             self.shouldScrollBottom = NO;
             [self p_scrollToBottom];
         }
     });
 }
 
-- (void)scrollToBottom
-{
+- (void)scrollToBottom {
     if ([[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] == 0)
         return;
     self.shouldScrollBottom = YES;
 }
 
-- (void)p_scrollToBottom
-{
+- (void)p_scrollToBottom {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0]- 1 inSection:0];
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
 }
 
-- (XXBImagePickerTabr *)imagePickerTar
-{
+- (XXBImagePickerTabr *)imagePickerTar {
     if (_imagePickerTar == nil) {
         XXBImagePickerTabr *imagePickerTar = [[XXBImagePickerTabr alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
         [self.view insertSubview:imagePickerTar aboveSubview:self.collectionView];
@@ -81,10 +75,8 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     return _imagePickerTar;
 }
 
-- (UICollectionView *)collectionView
-{
-    if (_collectionView == nil)
-    {
+- (UICollectionView *)collectionView {
+    if (_collectionView == nil) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         layout.minimumInteritemSpacing = 4;
@@ -116,62 +108,51 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 
 #pragma mark - collectionView delegate datasouce
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfSectionsInCollectionView];
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:section];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionViewCell *cell ;
     id<XXBMediaAssetDataSouce> mediaAsset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce mediaAssetOfIndexPath:indexPath];
-    if (mediaAsset == nil)
-    {
+    if (mediaAsset == nil) {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:videoCell forIndexPath:indexPath];
         [(XXBMediaPickerVideoCollectionCell *)cell start];
-    }
-    else
-    {
+    } else {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:nomalCell forIndexPath:indexPath];
         [(XXBMediaPickerCollectionCell *)cell setMediaAsset:mediaAsset];
     }
     return cell;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     XXBCollectionFootView *reusableview = nil;
     
-    if (kind == UICollectionElementKindSectionHeader)
-    {
+    if (kind == UICollectionElementKindSectionHeader) {
         
     }
-    if (kind == UICollectionElementKindSectionFooter)
-    {
-        
+    if (kind == UICollectionElementKindSectionFooter) {
         reusableview = [collectionView  dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:collectionFooter forIndexPath:indexPath];
         reusableview.number = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:indexPath.section] - 1;
     }
     return reusableview;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaItemAtIndexPath:indexPath];
     [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    self.imagePickerTar.selectCount = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce selectAsset].count;
 }
 
 #pragma mark - XXBImagePickerTabrDelegate
 
-- (void)imagePickerTabrFinishClick
-{
+- (void)imagePickerTabrFinishClick {
     
 }
 @end

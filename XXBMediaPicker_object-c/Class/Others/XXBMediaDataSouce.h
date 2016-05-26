@@ -43,6 +43,13 @@
  */
 - (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset;
 
+/**
+ *  当前选中的媒体资源
+ *
+ *  @return 当前选中的媒体资源数组
+ */
+- (NSArray *)selectAsset;
+
 @end
 
 @interface XXBMediaDataSouce : NSObject

@@ -27,10 +27,8 @@
 @implementation XXBMediaPHDataSouce
 
 static id _instance = nil;
-+ (id)allocWithZone:(struct _NSZone *)zone
-{
-    if (_instance == nil)
-    {
++ (id)allocWithZone:(struct _NSZone *)zone {
+    if (_instance == nil) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             _instance = [super allocWithZone:zone];
@@ -39,13 +37,11 @@ static id _instance = nil;
     return _instance;
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone {
     return _instance;
 }
 
-+ (instancetype)sharedXXBMediaPHDataSouce
-{
++ (instancetype)sharedXXBMediaPHDataSouce {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instance = [[super alloc] init];
@@ -54,8 +50,7 @@ static id _instance = nil;
 }
 
 
-+ (PHImageManager *) sharedImageManager
-{
++ (PHImageManager *) sharedImageManager {
     static id _sharedImageManager = nil;
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
@@ -64,50 +59,43 @@ static id _instance = nil;
     return _sharedImageManager;
 }
 
-- (instancetype)init
-{
-    if (self = [super init])
-    {
+- (instancetype)init {
+    if (self = [super init]) {
         [self p_getAllPhotos];
         [self p_registerPhotoServers];
     }
     return self;
 }
 
+#pragma mark - 获取系统的照片
 /**
  *  注册相册服务
  */
-- (void)p_registerPhotoServers
-{
+- (void)p_registerPhotoServers {
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
-- (void)p_getAllPhotos
-{
+- (void)p_getAllPhotos {
     [self.sectionFetchResults removeAllObjects];
     PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
     allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
     PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
     [self.sectionFetchResults addObject:allPhotos];
-    for (PHAssetCollectionSubtype i = 201; i < 212; i++)
-    {
-        if (i == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded || i == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
-        {
+    for (PHAssetCollectionSubtype i = 201; i < 212; i++) {
+        if (i == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded || i == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
             // 最近添加的忽略 相机交卷忽略
             continue;
         }
         
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:i options:nil];
         PHCollection *collection = [smartAlbums firstObject];
-        if (![collection isKindOfClass:[PHAssetCollection class]])
-        {
+        if (![collection isKindOfClass:[PHAssetCollection class]]) {
             return;
         }
         // Configure the AAPLAssetGridViewController with the asset collection.
         PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
         PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
-        if (assetsFetchResult.count > 0)
-        {
+        if (assetsFetchResult.count > 0) {
             [self.sectionFetchResults addObject:smartAlbums];
         }
     }
@@ -116,13 +104,11 @@ static id _instance = nil;
     [self.sectionFetchResults addObject:topLevelUserCollections];
     
 }
-- (void)dealloc
-{
+- (void)dealloc {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
 }
 
-- (void)photoLibraryDidChange:(PHChange *)changeInstance
-{
+- (void)photoLibraryDidChange:(PHChange *)changeInstance {
     /*
      Change notifications may be made on a background queue. Re-dispatch to the
      main queue before acting on the change as we'll be updating the UI.
@@ -140,24 +126,19 @@ static id _instance = nil;
         [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
             PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
             
-            if (changeDetails != nil)
-            {
+            if (changeDetails != nil) {
                 [updatedSectionFetchResults replaceObjectAtIndex:index withObject:[changeDetails fetchResultAfterChanges]];
                 reloadRequired = YES;
             }
         }];
         
-        if (reloadRequired)
-        {
+        if (reloadRequired) {
             self.sectionFetchResults = updatedSectionFetchResults;
             [self.tableView reloadData];
         }
         
-        
-        
         PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
-        if (collectionChanges == nil)
-        {
+        if (collectionChanges == nil) {
             /**
              *  当前选中的
              */
@@ -172,14 +153,11 @@ static id _instance = nil;
         self.seleectPHFetchResult = [collectionChanges fetchResultAfterChanges];
         //        [self.collectionView reloadData];
         
-        if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
-        {
+        if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
             // Reload the collection view if the incremental diffs are not available
             // 相册被移除
             
-        }
-        else
-        {
+        } else {
             /*
              Tell the collection view to animate insertions and deletions if we
              have incremental diffs.
@@ -216,11 +194,7 @@ static id _instance = nil;
     
 }
 
-
-
-
-- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset
-{
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset {
     NSUInteger position = [self.selectAssetArray indexOfObjectPassingTest:^BOOL(id<XXBMediaAssetDataSouce> loopAsset, NSUInteger idx, BOOL *stop) {
         return   [[mediaAsset identifier]  isEqual:[loopAsset identifier]];
     }];
@@ -229,77 +203,58 @@ static id _instance = nil;
 
 #pragma mark - layzeload
 
-- (NSMutableArray *)sectionFetchResults
-{
-    if (_sectionFetchResults == nil)
-    {
+- (NSMutableArray *)sectionFetchResults {
+    if (_sectionFetchResults == nil) {
         _sectionFetchResults = [NSMutableArray array];
     }
     return _sectionFetchResults;
 }
 
-- (NSMutableArray *)selectAssetArray
-{
-    if (_selectAssetArray == nil)
-    {
+- (NSMutableArray *)selectAssetArray {
+    if (_selectAssetArray == nil) {
         _selectAssetArray = [NSMutableArray array];
     }
     return _selectAssetArray;
 }
 #pragma mark - XXBMediaTableViewDataSouce
 
-- (NSInteger)numberOfSectionsInTableView
-{
+- (NSInteger)numberOfSectionsInTableView {
     return self.sectionFetchResults.count;
 }
 
-- (NSInteger)numberOfRowsInTableViewSection:(NSInteger)section
-{
+- (NSInteger)numberOfRowsInTableViewSection:(NSInteger)section {
     NSInteger numberOfRows = 0;
     
-    if (section == 0)
-    {
+    if (section == 0) {
         numberOfRows = 1;
-    }
-    else
-    {
+    } else {
         PHFetchResult *fetchResult = self.sectionFetchResults[section];
         numberOfRows = fetchResult.count;
     }
     return numberOfRows;
 }
 
-- (NSString *)titleOfIndex:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0)
-    {
+- (NSString *)titleOfIndex:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
         return  @"全部照片";
-    }
-    else
-    {
+    } else {
         PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
         PHCollection *collection = fetchResult[indexPath.row];
         return  collection.localizedTitle;
     }
 }
 
-- (id<XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath
-{
+- (id<XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath {
     if(indexPath.section >= self.sectionFetchResults.count) {
         return nil;
     }
     id<XXBMediaAssetDataSouce> result = nil;
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
-    
-    if (indexPath.section == 0)
-    {
+    if (indexPath.section == 0) {
         result = [fetchResult firstObject];
-    }
-    else
-    {
+    } else {
         PHCollection *collection = fetchResult[indexPath.row];
-        if (![collection isKindOfClass:[PHAssetCollection class]])
-        {
+        if (![collection isKindOfClass:[PHAssetCollection class]]) {
             return nil;
         }
         // Configure the AAPLAssetGridViewController with the asset collection.
@@ -310,19 +265,14 @@ static id _instance = nil;
     return result;
 }
 
-- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath {
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
     
-    if (indexPath.section == 0)
-    {
+    if (indexPath.section == 0) {
         self.seleectPHFetchResult = fetchResult;
-    }
-    else
-    {
+    } else {
         PHCollection *collection = fetchResult[indexPath.row];
-        if (![collection isKindOfClass:[PHAssetCollection class]])
-        {
+        if (![collection isKindOfClass:[PHAssetCollection class]]) {
             return;
         }
         // Configure the AAPLAssetGridViewController with the asset collection.
@@ -332,26 +282,21 @@ static id _instance = nil;
     }
 }
 
-- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row >= self.seleectPHFetchResult.count)
-    {
+- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= self.seleectPHFetchResult.count) {
         return;
     }
     PHAsset *asset = self.seleectPHFetchResult[indexPath.row];
     NSInteger index = [self indexOfAssetInSelectedMediaAsset:asset];
-    if (  index != NSNotFound)
-    {
+    if (  index != NSNotFound) {
         [self.selectAssetArray removeObject:asset];
         NSMutableArray *cellIndexArray = [NSMutableArray array];
         NSInteger count = self.selectAssetArray.count;
-        while (count > index)
-        {
+        while (count > index) {
             count --;
             PHAsset *asset = self.selectAssetArray[count];
             NSInteger assetIndex = [self.seleectPHFetchResult indexOfObject:asset];
-            if (assetIndex != NSNotFound)
-            {
+            if (assetIndex != NSNotFound) {
                 [cellIndexArray addObject:[NSIndexPath indexPathForRow:assetIndex inSection:0]];
             }
         }
@@ -360,32 +305,29 @@ static id _instance = nil;
          */
         [self.collectionView reloadItemsAtIndexPaths:cellIndexArray];
         
-    }
-    else
-    {
+    } else {
         [self.selectAssetArray addObject:self.seleectPHFetchResult[indexPath.row]];
     }
 }
 
+- (NSArray *)selectAsset {
+    return self.selectAssetArray;
+}
+
 #pragma mark - XXBMediaCollectionViewViewDataSouce
 
-- (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section
-{
+- (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section {
     return self.seleectPHFetchResult.count + 1;
 }
-- (NSInteger)numberOfSectionsInCollectionView
-{
+
+- (NSInteger)numberOfSectionsInCollectionView {
     return 1;
 }
 
-- (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row < self.seleectPHFetchResult.count)
-    {
+- (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.seleectPHFetchResult.count) {
         return self.seleectPHFetchResult[indexPath.row];;
-    }
-    else
-    {
+    } else {
         return nil;
     }
 }
