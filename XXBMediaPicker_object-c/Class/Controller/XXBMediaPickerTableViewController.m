@@ -18,16 +18,13 @@
 
 @implementation XXBMediaPickerTableViewController
 static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView reloadData];
 }
 
-- (UITableView *)tableView
-{
-    if (_tableView == nil)
-    {
+- (UITableView *)tableView {
+    if (_tableView == nil) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.rowHeight = 60;
@@ -43,26 +40,22 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     return _tableView;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
    return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInTableViewSection:section];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfSectionsInTableView];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    XXBMediaPickerTableViewCell *cell = (XXBMediaPickerTableViewCell *)[tableView dequeueReusableCellWithIdentifier:mediaPickerTableViewCellID];
     cell.title = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce titleOfIndex:indexPath];
     cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce imageOfIndex:indexPath];
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce didselectMediaGroupAtIndexPath:indexPath];
     [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce setCollectionView:self.mediaPickerCollectionController.collectionView];
@@ -71,10 +64,8 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [self.navigationController pushViewController:self.mediaPickerCollectionController animated:YES];
 }
 
-- (XXBMediaPickerCollectionController *)mediaPickerCollectionController
-{
-    if (_mediaPickerCollectionController == nil)
-    {
+- (XXBMediaPickerCollectionController *)mediaPickerCollectionController {
+    if (_mediaPickerCollectionController == nil) {
         _mediaPickerCollectionController = [XXBMediaPickerCollectionController new];
     }
     return _mediaPickerCollectionController;

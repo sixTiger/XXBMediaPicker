@@ -20,20 +20,17 @@
 
 @implementation XXBMediaPickerVideoCollectionCell
 
-- (void)start
-{
+- (void)start {
     self.contentView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
     self.iconImageView.image = [UIImage imageNamed:@"XXBMakePhoto"];
     [self performSelectorOnMainThread:@selector(p_getPhoto) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
 }
 
-- (void)stop
-{
+- (void)stop {
     [self performSelectorOnMainThread:@selector(p_stop) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
 }
 
-- (void)p_getPhoto
-{
+- (void)p_getPhoto {
     dispatch_async(self.cameraQueue, ^{
         AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
         if ( status != AVAuthorizationStatusAuthorized &&
@@ -74,26 +71,21 @@
     
 }
 
-- (void)p_stop
-{
-    if ([self.session isRunning])
-    {
+- (void)p_stop {
+    if ([self.session isRunning]) {
         [self.session stopRunning];
     }
 }
 
-- (dispatch_queue_t)cameraQueue
-{
+- (dispatch_queue_t)cameraQueue {
     if (_cameraQueue == nil) {
         _cameraQueue = dispatch_queue_create("camear", DISPATCH_QUEUE_SERIAL);
     }
     return _cameraQueue;
 }
 
-- (UIImageView *)videoLayer
-{
-    if (_videoLayer == nil)
-    {
+- (UIImageView *)videoLayer {
+    if (_videoLayer == nil) {
         UIImageView *videoLayer = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         [self.contentView addSubview:videoLayer];
         videoLayer.autoresizingMask = (1 << 6) - 1;
@@ -102,10 +94,8 @@
     return _videoLayer;
 }
 
-- (UIImageView *)iconImageView
-{
-    if (_iconImageView == nil)
-    {
+- (UIImageView *)iconImageView {
+    if (_iconImageView == nil) {
         UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         [self.contentView insertSubview:iconImageView aboveSubview:self.videoLayer];
         iconImageView.contentMode = UIViewContentModeCenter;

@@ -17,34 +17,26 @@
 @implementation XXBMediaPickerTableViewCell
 
 
-- (void)setTitle:(NSString *)title
-{
+- (void)setTitle:(NSString *)title {
     _title = [title copy];
     self.titleLabel.text = title;
 }
 
-- (void)setAsset:(id<XXBMediaAssetDataSouce>)asset
-{
+- (void)setAsset:(id<XXBMediaAssetDataSouce>)asset {
     _asset = asset;
-    
     __block XXBMediaRequestID requestKey = 0;
     requestKey = [_asset imageWithSize:CGSizeMake(80, 80) completionHandler:^(UIImage *result, NSError *error) {
-        if (error)
-        {
+        if (error) {
             NSLog(@"%@", [error localizedDescription]);
             return;
         }
         // 结果返回的时候判断是否已经重用了cell
-        if (requestKey != self.tag)
-        {
+        if (requestKey != self.tag) {
             return;
         }
-        if ([NSThread isMainThread])
-        {
+        if ([NSThread isMainThread]) {
             self.iconImageView.image = result;
-        }
-        else
-        {
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.iconImageView.image = result;
             });
@@ -53,8 +45,7 @@
     self.tag = requestKey;
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     CGFloat width = self.contentView.bounds.size.width;
     CGFloat height = self.contentView.bounds.size.height;
@@ -65,10 +56,8 @@
     self.lineView.frame = CGRectMake(0, height - 1, width, 0.5);
 }
 
-- (UILabel *)titleLabel
-{
-    if (_titleLabel == nil)
-    {
+- (UILabel *)titleLabel {
+    if (_titleLabel == nil) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [self.contentView addSubview:titleLabel];
         _titleLabel = titleLabel;
@@ -76,10 +65,8 @@
     return _titleLabel;
 }
 
-- (UIImageView *)iconImageView
-{
-    if (_iconImageView == nil)
-    {
+- (UIImageView *)iconImageView {
+    if (_iconImageView == nil) {
         UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [self.contentView addSubview:iconImageView];
         iconImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -90,10 +77,8 @@
     return _iconImageView;
 }
 
-- (UIImageView *)rightView
-{
-    if (_rightView == nil)
-    {
+- (UIImageView *)rightView {
+    if (_rightView == nil) {
         UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         rightView.contentMode = UIViewContentModeCenter;
         rightView.image = [UIImage imageNamed:@"XXBMakePhotoRow"];
@@ -103,10 +88,8 @@
     return _rightView;
 }
 
-- (UIView *)lineView
-{
-    if (_lineView == nil)
-    {
+- (UIView *)lineView {
+    if (_lineView == nil) {
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
         lineView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
         [self.contentView addSubview:lineView];

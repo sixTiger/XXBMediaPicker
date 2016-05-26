@@ -27,8 +27,7 @@ static NSString *nomalCell = @"XXBMediaPickerCollectionCell";
 static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 static NSString *collectionFooter = @"XXBCollectionFootView";
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
     if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]]) {

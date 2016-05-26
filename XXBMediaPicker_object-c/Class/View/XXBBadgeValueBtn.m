@@ -8,8 +8,7 @@
 
 #import "XXBBadgeValueBtn.h"
 @implementation XXBBadgeValueBtn
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
         [self setup];
     }

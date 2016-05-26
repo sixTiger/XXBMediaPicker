@@ -13,16 +13,13 @@
 @end
 @implementation XXBCollectionFootView
 
-- (void)setNumber:(NSInteger)number
-{
+- (void)setNumber:(NSInteger)number {
     _number = number;
     self.countNumberLabel.text = [NSString stringWithFormat:@"%@",@(number)];
 }
 
-- (UILabel *)countNumberLabel
-{
-    if(_countNumberLabel == nil)
-    {
+- (UILabel *)countNumberLabel {
+    if(_countNumberLabel == nil) {
         UILabel *countNumberLabel = [[UILabel alloc] initWithFrame:self.bounds];
         countNumberLabel.autoresizingMask = (1 << 6) - 1;
         countNumberLabel.textColor = [UIColor grayColor];

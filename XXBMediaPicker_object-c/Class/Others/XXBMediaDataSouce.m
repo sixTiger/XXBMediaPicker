@@ -12,10 +12,8 @@
 @implementation XXBMediaDataSouce
 
 static id _instance = nil;
-+ (id)allocWithZone:(struct _NSZone *)zone
-{
-    if (_instance == nil)
-    {
++ (id)allocWithZone:(struct _NSZone *)zone {
+    if (_instance == nil) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             _instance = [super allocWithZone:zone];
@@ -24,13 +22,11 @@ static id _instance = nil;
     return _instance;
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone {
     return _instance;
 }
 
-+ (instancetype)sharedMediaDataSouce
-{
++ (instancetype)sharedMediaDataSouce {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instance = [[super alloc] init];
@@ -38,17 +34,13 @@ static id _instance = nil;
     return _instance;
 }
 
-- (id<XXBMediaDataSouce>)dataSouce
-{
-    if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0)
-    {
+- (id<XXBMediaDataSouce>)dataSouce {
+    if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0) {
         /**
          *  ios8一下暂时没有支持
          */
         return nil;
-    }
-    else
-    {
+    } else {
         return [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce];
     }
 }
