@@ -22,6 +22,11 @@
     self.titleLabel.text = title;
 }
 
+- (void)setPlaceHoderImage:(UIImage *)placeHoderImage {
+    _placeHoderImage = placeHoderImage;
+    self.iconImageView.image = placeHoderImage;
+}
+
 - (void)setAsset:(id<XXBMediaAssetDataSouce>)asset {
     _asset = asset;
     __block XXBMediaRequestID requestKey = 0;

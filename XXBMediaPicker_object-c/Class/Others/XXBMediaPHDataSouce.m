@@ -244,7 +244,7 @@ static id _instance = nil;
     }
 }
 
-- (id<XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath {
+- (id<XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section >= self.sectionFetchResults.count) {
         return nil;
     }

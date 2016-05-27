@@ -13,4 +13,8 @@
 
 @property(nonatomic , copy) NSString                        *title;
 @property(nonatomic , strong) id<XXBMediaAssetDataSouce>    asset;
+/**
+ *  ALAset可以直接拿到头图
+ */
+@property(nonatomic , strong) UIImage                       *placeHoderImage;
 @end

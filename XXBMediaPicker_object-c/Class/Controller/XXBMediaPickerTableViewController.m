@@ -41,7 +41,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-   return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInTableViewSection:section];
+    return  [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce numberOfRowsInTableViewSection:section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -49,9 +49,13 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   XXBMediaPickerTableViewCell *cell = (XXBMediaPickerTableViewCell *)[tableView dequeueReusableCellWithIdentifier:mediaPickerTableViewCellID];
+    XXBMediaPickerTableViewCell *cell = (XXBMediaPickerTableViewCell *)[tableView dequeueReusableCellWithIdentifier:mediaPickerTableViewCellID];
     cell.title = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce titleOfIndex:indexPath];
-    cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce imageOfIndex:indexPath];
+    if ([[XXBMediaDataSouce sharedMediaDataSouce].dataSouce respondsToSelector:@selector(imageOfIndexPath:)]) {
+        cell.placeHoderImage = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce imageOfIndexPath:indexPath];
+    } else {
+        cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce mediaAssetOfIndexPath:indexPath];
+    }
     return cell;
 }
 

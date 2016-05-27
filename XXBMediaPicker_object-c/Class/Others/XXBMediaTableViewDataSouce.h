@@ -43,7 +43,11 @@
  *
  *  @return 第一个图片资源
  */
-- (id <XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath;
+- (id <XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+
+- (UIImage *)imageOfIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

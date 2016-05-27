@@ -10,7 +10,6 @@
 #import "XXBMediaAssetDataSouce.h"
 
 @protocol XXBMediaCollectionDataSouce <NSObject>
-@optional
 /**
  *  有多少组
  *

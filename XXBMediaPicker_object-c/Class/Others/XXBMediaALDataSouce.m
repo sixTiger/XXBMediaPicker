@@ -8,17 +8,29 @@
 
 #import "XXBMediaALDataSouce.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "ALAsset+XXBMediaALAsset.h"
 
 @interface XXBMediaALDataSouce ()
 
+/**
+ *  当前展示数据的 tableView
+ */
+@property(nonatomic , weak) UITableView             *tableView;
+/**
+ *  当前展示数据的 collectionView
+ */
+@property(nonatomic , weak) UICollectionView        *collectionView;
+
 @property(nonatomic , strong) ALAssetsLibrary       *assetsLibrary;
-@property (nonatomic, strong) ALAssetsGroup         *assetsGroup;
+@property (nonatomic, strong) ALAssetsGroup         *selectAssetsGroup;
 @property (nonatomic, strong) NSMutableArray        *groups;
-@property (nonatomic, assign) BOOL                  ignoreMediaNotifications;
+@property(nonatomic , strong) NSMutableArray        *assetArray;
 @property (nonatomic, strong) ALAssetsFilter        *assetsFilter;
 @property (nonatomic, strong) NSMutableDictionary   *observers;
-@property (nonatomic, assign) BOOL                  refreshGroups;
 @property (nonatomic, strong) NSMutableArray        *extraAssets;
+@property(nonatomic , strong) NSMutableArray        *selectedAssetArray;
+@property (nonatomic, assign) BOOL                  ignoreMediaNotifications;
+@property (nonatomic, assign) BOOL                  refreshGroups;
 @end
 
 @implementation XXBMediaALDataSouce
@@ -47,11 +59,15 @@ static id _instance = nil;
 
 - (instancetype)init {
     if (self = [super init]) {
-        
+        [self addNotifaction];
+        [self loadData];
     }
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)addNotifaction {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleLibraryNotification:)
@@ -59,8 +75,16 @@ static id _instance = nil;
                                                object:self.assetsLibrary];
 }
 
-- (void)handleLibraryNotification:(NSNotification *)note
-{
+- (void)loadData {
+    self.refreshGroups = YES;
+    [self loadDataWithSuccess:^{
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)handleLibraryNotification:(NSNotification *)note {
     if (![self shouldNotifyObservers:note]) {
         return;
     }
@@ -87,7 +111,7 @@ static id _instance = nil;
         self.refreshGroups = YES;
         return YES;
     }
-    NSURL *currentGroupID = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyURL];
+    NSURL *currentGroupID = [self.selectAssetsGroup valueForProperty:ALAssetsGroupPropertyURL];
     NSSet *groupsChanged = note.userInfo[ALAssetLibraryUpdatedAssetGroupsKey];
     NSSet *assetsChanged = note.userInfo[ALAssetLibraryUpdatedAssetsKey];
     if (  groupsChanged && [groupsChanged containsObject:currentGroupID]
@@ -131,8 +155,8 @@ static id _instance = nil;
             return;
         }
         if ([[group valueForProperty:ALAssetsGroupPropertyType] intValue] == ALAssetsGroupSavedPhotos){
-            if (!self.assetsGroup){
-                self.assetsGroup = group;
+            if (!self.selectAssetsGroup){
+                self.selectAssetsGroup = group;
             }
             [self.groups insertObject:group atIndex:0];
         } else {
@@ -153,7 +177,7 @@ static id _instance = nil;
 }
 
 - (void)loadAssetsWithSuccess:(XXBMediaChangesBlock)successBlock failure:(XXBMediaFailureBlock)failureBlock {
-    [self.assetsGroup setAssetsFilter:self.assetsFilter];
+    [self.selectAssetsGroup setAssetsFilter:self.assetsFilter];
     if (successBlock) {
         successBlock();
     }
@@ -161,6 +185,19 @@ static id _instance = nil;
 
 #pragma mark - layz Load
 
+- (NSMutableArray *)groups {
+    if (_groups == nil) {
+        _groups = [NSMutableArray array];
+    }
+    return _groups;
+}
+
+- (NSMutableArray *)assetArray {
+    if (_assetArray == nil) {
+        _assetArray = [NSMutableArray array];
+    }
+    return _assetArray;
+}
 - (ALAssetsLibrary *)assetsLibrary {
     if (_assetsLibrary == nil) {
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
@@ -168,7 +205,58 @@ static id _instance = nil;
     return _assetsLibrary;
 }
 
-#pragma mark - XXBMediaTableViewDataSouce 
+#pragma mark - XXBMediaDataSouce
+
+- (void)setCollectionView:(UICollectionView *)collectionView {
+    _collectionView = collectionView;
+}
+
+- (void)setTableView:(UITableView *)tableView {
+    _tableView = tableView;
+    [tableView reloadData];
+}
+
+/**
+ *  选中的对应的分组
+ *
+ *  @param indexParh
+ */
+- (void)didselectMediaGroupAtIndexPath:(NSIndexPath *)indexPath {
+    
+    self.selectAssetsGroup = self.groups[indexPath.row];
+    [self loadAssetsWithSuccess:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+/**
+ *  选中的对应的分组
+ *
+ *  @param indexPath
+ */
+- (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath {
+}
+
+/**
+ *  mediaAsset 在选中的数组中的下表
+ */
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset {
+    return 0;
+}
+
+/**
+ *  当前选中的媒体资源
+ *
+ *  @return 当前选中的媒体资源数组
+ */
+- (NSArray *)selectAsset {
+    return self.selectedAssetArray;
+}
+
+
+#pragma mark - XXBMediaTableViewDataSouce
 /**
  *  有多少组
  *
@@ -177,7 +265,7 @@ static id _instance = nil;
  *  @return 组数
  */
 - (NSInteger)numberOfSectionsInTableView {
-    return 0;
+    return self.groups.count;
 }
 /**
  *  对应的组里边有多少数据
@@ -197,7 +285,7 @@ static id _instance = nil;
  *  @return 标题
  */
 - (NSString *)titleOfIndex:(NSIndexPath *)indexPath {
-    return @"->>>>";
+    return [self.groups[indexPath.row] name];
 }
 
 /**
@@ -205,9 +293,45 @@ static id _instance = nil;
  *
  *  @return 第一个图片资源
  */
-- (id <XXBMediaAssetDataSouce>)imageOfIndex:(NSIndexPath *)indexPath {
+- (id <XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
+
+- (UIImage *)imageOfIndexPath:(NSIndexPath *)indexPath {
+    return [UIImage imageWithCGImage:[self.groups[indexPath.row] posterImage]];
+}
+
+#pragma mark - XXBMediaCollectionDataSouce
+
+- (NSInteger) numberOfSectionsInCollectionView {
+    return 1;
+}
+
+- (NSInteger) numberOfRowsInCollectionViewSection:(NSInteger)section {
+    return [self.selectAssetsGroup numberOfAssets] + 1;
+}
+
+/**
+ *  对应的indexPath 的 XXBMediaAsset
+ *
+ *  @param indexPath
+ *
+ *  @return XXBMediaAsset
+ */
+- (id<XXBMediaAssetDataSouce>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= [self.selectAssetsGroup numberOfAssets]) {
+        return nil;
+    }
+    __block ALAsset *asset;
+    [self.selectAssetsGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:indexPath.row]
+                                             options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                                                 if (result){
+                                                     asset = result;
+                                                 }
+                                             }];
+    return asset;
+}
+
 @end
 
 
@@ -218,8 +342,6 @@ static id _instance = nil;
 - (NSString *)name {
     return [self valueForProperty:ALAssetsGroupPropertyName];
 }
-
-
 
 - (id)baseGroup {
     return self;
