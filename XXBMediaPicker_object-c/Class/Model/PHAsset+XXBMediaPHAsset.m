@@ -28,8 +28,7 @@
     return objc_getAssociatedObject(self,@selector(placehoderImage));
 }
 
-- (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler
-{
+- (XXBMediaRequestID)imageWithSize:(CGSize)size completionHandler:(XXBMediaImageBlock)completionHandler {
     if (self.placehoderImage != nil) {
         completionHandler(self.placehoderImage,nil);
         return 0;
@@ -62,13 +61,11 @@
     
 }
 
-- (void)cancelImageRequest:(XXBMediaRequestID)requestID
-{
+- (void)cancelImageRequest:(XXBMediaRequestID)requestID {
     
 }
 
-- (XXBMediaType)mediaAssetType
-{
+- (XXBMediaType)mediaAssetType {
     XXBMediaType type = XXBMediaTypeUnknown;
     switch (self.mediaType) {
         case PHAssetMediaTypeUnknown:
@@ -95,20 +92,17 @@
             break;
     }
     
-    if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive)
-    {
+    if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive) {
         type = XXBMediaTypeLivePhoto;
     }
     return type;
 }
 
-- (double )mediaAssetTime
-{
+- (double )mediaAssetTime {
     return self.duration;
 }
 
-- (NSString *)identifier
-{
+- (NSString *)identifier {
     return self.localIdentifier;
 }
 

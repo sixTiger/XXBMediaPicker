@@ -1,17 +1,14 @@
 //
-//  XXBMediaDataSouce.m
+//  XXBMediaALDataSouce.m
 //  XXBMediaPicker
 //
-//  Created by xiaobing on 16/2/15.
+//  Created by xiaobing on 16/5/27.
 //  Copyright © 2016年 xiaobing. All rights reserved.
 //
 
-#import "XXBMediaDataSouce.h"
-#import "XXBMediaPHDataSouce.h"
 #import "XXBMediaALDataSouce.h"
 
-@implementation XXBMediaDataSouce
-
+@implementation XXBMediaALDataSouce
 static id _instance = nil;
 + (id)allocWithZone:(struct _NSZone *)zone {
     if (_instance == nil) {
@@ -27,22 +24,11 @@ static id _instance = nil;
     return _instance;
 }
 
-+ (instancetype)sharedMediaDataSouce {
++ (instancetype)sharedXXBMediaALDataSouce {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instance = [[super alloc] init];
     });
     return _instance;
-}
-
-- (id<XXBMediaDataSouce>)dataSouce {
-    if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0) {
-        /**
-         *  ios8一下暂时没有支持
-         */
-        return [XXBMediaALDataSouce sharedXXBMediaALDataSouce];
-    } else {
-        return [XXBMediaPHDataSouce sharedXXBMediaPHDataSouce];
-    }
 }
 @end
