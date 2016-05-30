@@ -42,6 +42,10 @@
 }
 
 - (NSString *)identifier {
-    return @"";
+    return [[self valueForProperty:ALAssetPropertyAssetURL] absoluteString];
+}
+
+- (BOOL)isEqual:(ALAsset *)object {
+    return [self.identifier isEqual:object.identifier];
 }
 @end

@@ -11,8 +11,8 @@
 
 
 @protocol XXBMediaTableViewDataSouce <NSObject>
+@required
 
-@optional
 /**
  *  有多少组
  *
@@ -21,6 +21,7 @@
  *  @return 组数
  */
 - (NSInteger)numberOfSectionsInTableView;
+
 /**
  *  对应的组里边有多少数据
  *
@@ -38,6 +39,8 @@
  */
 - (NSString *)titleOfIndex:(NSIndexPath *)indexPath;
 
+@optional
+
 /**
  *  返回对应的分组的第一个图片资源
  *
@@ -45,12 +48,14 @@
  */
 - (id <XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath;
 
-@optional
-
+/**
+ *  返回indexPath相册分组的封面图片
+ *
+ *  @param indexPath 当前的indexPath
+ *
+ *  @return 封面图片
+ */
 - (UIImage *)imageOfIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface XXBMediaTableViewDataSouce : NSObject
-
-@end

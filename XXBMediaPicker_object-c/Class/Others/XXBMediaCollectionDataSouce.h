@@ -10,6 +10,8 @@
 #import "XXBMediaAssetDataSouce.h"
 
 @protocol XXBMediaCollectionDataSouce <NSObject>
+@required
+
 /**
  *  有多少组
  *
@@ -39,6 +41,4 @@
 - (id<XXBMediaAssetDataSouce>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath;
 
 @end
-@interface XXBMediaCollectionDataSouce : NSObject
 
-@end
