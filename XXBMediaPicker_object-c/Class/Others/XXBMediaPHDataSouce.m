@@ -114,9 +114,6 @@ static id _instance = nil;
      main queue before acting on the change as we'll be updating the UI.
      */
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        //        [self p_getAllPhotos];
-        //        NSLog(@"%@",self.sectionFetchResults);
         /**
          *  看一下当前的是否有新创建的相册
          */
