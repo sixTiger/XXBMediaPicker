@@ -54,7 +54,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     if ([[XXBMediaDataSouce sharedMediaDataSouce].dataSouce respondsToSelector:@selector(imageOfIndexPath:)]) {
         cell.placeHoderImage = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce imageOfIndexPath:indexPath];
     } else {
-        cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce mediaAssetOfIndexPath:indexPath];
+        cell.asset = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce mediaGroupAssetOFIndexPath:indexPath];
     }
     return cell;
 }
