@@ -8,7 +8,7 @@
 
 #import "XXBMediaPickerController.h"
 #import "XXBMediaPickerTableViewController.h"
-#import "XXBMediaDataSouce.h"
+#import "XXBMediaDataSource.h"
 
 
 @interface XXBMediaPickerController ()<XXBMediaPickerTableViewControllerDelegate>
@@ -52,6 +52,6 @@
     return _mediaPickerTableViewController;
 }
 - (void)mediaPickerTableViewControllerFinishDidClick:(XXBMediaPickerTableViewController *)mediaPickerTableViewController {
-//    XXBMediaDataSouce *mediaDataSouce
+//    XXBMediaDataSource *mediaDataSouce
 }
 @end

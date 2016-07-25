@@ -27,7 +27,7 @@
     self.iconImageView.image = placeHoderImage;
 }
 
-- (void)setAsset:(id<XXBMediaAssetDataSouce>)asset {
+- (void)setAsset:(id<XXBMediaAssetDataSource>)asset {
     _asset = asset;
     __block XXBMediaRequestID requestKey = 0;
     requestKey = [_asset imageWithSize:CGSizeMake(80, 80) completionHandler:^(UIImage *result, NSError *error) {

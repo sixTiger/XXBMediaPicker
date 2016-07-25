@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 #import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
 
-@interface PHAsset (XXBMediaPHAsset)<XXBMediaAssetDataSouce>
+@interface PHAsset (XXBMediaPHAsset)<XXBMediaAssetDataSource>
 @property(nonatomic , strong , readonly) UIImage   *placehoderImage;
 @end

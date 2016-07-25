@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 
 @interface XXBMediaPickerCollectionCell : UICollectionViewCell
 
-@property (nonatomic, strong) id<XXBMediaAssetDataSouce> mediaAsset;
+@property (nonatomic, strong) id<XXBMediaAssetDataSource> mediaAsset;
 
 @end

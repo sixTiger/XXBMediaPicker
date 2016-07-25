@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 @interface XXBCollectionFootView : UICollectionReusableView
 /**
  *  要显示的数字

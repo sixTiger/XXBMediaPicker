@@ -8,7 +8,7 @@
 
 #import "XXBMediaPickerCollectionCell.h"
 #import "PHAsset+XXBMediaPHAsset.h"
-#import "XXBMediaDataSouce.h"
+#import "XXBMediaDataSource.h"
 #import "XXBBadgeValueBtn.h"
 
 @interface XXBMediaPickerCollectionCell ()
@@ -29,8 +29,8 @@
     self.contentView.backgroundColor = [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:1.0];
 }
 
-- (void)setMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset {
-    NSInteger index = [[XXBMediaDataSouce sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:mediaAsset];
+- (void)setMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
+    NSInteger index = [[XXBMediaDataSource sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:mediaAsset];
     if (index != NSNotFound) {
         self.selected = YES;
         [self.bageButton setBadgeValue:index + 1];

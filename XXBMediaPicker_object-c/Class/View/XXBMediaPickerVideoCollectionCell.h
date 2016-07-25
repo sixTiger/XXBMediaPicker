@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXBMediaPHDataSouce.h"
+#import "XXBMediaPHDataSource.h"
 
 @interface XXBMediaPickerVideoCollectionCell : UICollectionViewCell
 

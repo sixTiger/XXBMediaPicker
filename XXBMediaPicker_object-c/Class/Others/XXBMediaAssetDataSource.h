@@ -1,5 +1,5 @@
 //
-//  XXBMediaAssetDataSouce.h
+//  XXBMediaAssetDataSource.h
 //  XXBMediaPicker
 //
 //  Created by xiaobing on 16/2/4.
@@ -17,11 +17,11 @@ typedef enum : NSUInteger {
     XXBMediaTypeLivePhoto   = 4,
 } XXBMediaType;
 
-@protocol XXBMediaAssetDataSouce <NSObject>
+@protocol XXBMediaAssetDataSource <NSObject>
 
 typedef void (^XXBMediaChangesBlock)();
 typedef void (^XXBMediaFailureBlock)(NSError *error);
-typedef void (^XXBMediaAddedBlock)(id<XXBMediaAssetDataSouce> media, NSError *error);
+typedef void (^XXBMediaAddedBlock)(id<XXBMediaAssetDataSource> media, NSError *error);
 typedef void (^XXBMediaImageBlock)(UIImage *result, NSError *error);
 typedef int32_t XXBMediaRequestID;
 
@@ -33,6 +33,6 @@ typedef int32_t XXBMediaRequestID;
 - (NSString *)identifier;
 @end
 
-@interface XXBMediaAssetDataSouce : NSObject
+@interface XXBMediaAssetDataSource : NSObject
 
 @end

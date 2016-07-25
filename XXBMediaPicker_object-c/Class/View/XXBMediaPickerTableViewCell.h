@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 
 @interface XXBMediaPickerTableViewCell : UITableViewCell
 
 @property(nonatomic , copy) NSString                        *title;
-@property(nonatomic , strong) id<XXBMediaAssetDataSouce>    asset;
+@property(nonatomic , strong) id<XXBMediaAssetDataSource>    asset;
 /**
  *  ALAset可以直接拿到头图
  */

@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 
-@protocol XXBMediaCollectionDataSouce <NSObject>
+@protocol XXBMediaCollectionDataSource <NSObject>
 @required
 
 /**
@@ -38,7 +38,7 @@
  *
  *  @return XXBMediaAsset
  */
-- (id<XXBMediaAssetDataSouce>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath;
+- (id<XXBMediaAssetDataSource>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

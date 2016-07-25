@@ -7,7 +7,7 @@
 //
 
 #import "PHAsset+XXBMediaPHAsset.h"
-#import "XXBMediaPHDataSouce.h"
+#import "XXBMediaPHDataSource.h"
 #import <objc/runtime.h>
 
 @interface PHAsset()
@@ -40,7 +40,7 @@
     options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
     options.networkAccessAllowed = YES;
     __weak typeof(self)weakSelf = self;
-    return [[XXBMediaPHDataSouce sharedImageManager] requestImageForAsset:self
+    return [[XXBMediaPHDataSource sharedImageManager] requestImageForAsset:self
                                                                targetSize:realSize
                                                               contentMode:PHImageContentModeAspectFill
                                                                   options:options

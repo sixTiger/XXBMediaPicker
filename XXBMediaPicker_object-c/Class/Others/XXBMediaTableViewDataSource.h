@@ -1,5 +1,5 @@
 //
-//  XXBMediaTableViewDataSouce.h
+//  XXBMediaTableViewDataSource.h
 //  XXBMediaPicker
 //
 //  Created by xiaobing on 16/2/3.
@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
 
 
-@protocol XXBMediaTableViewDataSouce <NSObject>
+@protocol XXBMediaTableViewDataSource <NSObject>
 @required
 
 /**
@@ -46,7 +46,7 @@
  *
  *  @return 第一个图片资源
  */
-- (id <XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath;
+- (id <XXBMediaAssetDataSource>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  返回indexPath相册分组的封面图片

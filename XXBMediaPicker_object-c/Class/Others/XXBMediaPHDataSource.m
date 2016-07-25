@@ -6,11 +6,11 @@
 //  Copyright © 2016年 xiaobing. All rights reserved.
 //
 
-#import "XXBMediaPHDataSouce.h"
+#import "XXBMediaPHDataSource.h"
 #import "NSIndexSet+Convenience.h"
 #import "PHAsset+XXBMediaPHAsset.h"
 
-@interface XXBMediaPHDataSouce ()<PHPhotoLibraryChangeObserver>
+@interface XXBMediaPHDataSource ()<PHPhotoLibraryChangeObserver>
 /**
  *  当前展示数据的 tableView
  */
@@ -24,7 +24,7 @@
 @property(nonatomic , strong) NSMutableArray        *selectAssetArray;
 @end
 
-@implementation XXBMediaPHDataSouce
+@implementation XXBMediaPHDataSource
 
 static id _instance = nil;
 + (id)allocWithZone:(struct _NSZone *)zone {
@@ -41,7 +41,7 @@ static id _instance = nil;
     return _instance;
 }
 
-+ (instancetype)sharedXXBMediaPHDataSouce {
++ (instancetype)sharedXXBMediaPHDataSource {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instance = [[super alloc] init];
@@ -179,7 +179,7 @@ static id _instance = nil;
         NSArray *removeObjects  =  [collectionChanges removedObjects];
         // FIXME:  message
         // 当前选中的照片应该删除相应的选项
-        for (id<XXBMediaAssetDataSouce> media in removeObjects) {
+        for (id<XXBMediaAssetDataSource> media in removeObjects) {
             NSUInteger index = [self indexOfAssetInSelectedMediaAsset:media];
             if (index != NSNotFound ) {
                 //如果当前删除的是被选中的，从选中分组里边移除
@@ -191,8 +191,8 @@ static id _instance = nil;
     
 }
 
-- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset {
-    NSUInteger position = [self.selectAssetArray indexOfObjectPassingTest:^BOOL(id<XXBMediaAssetDataSouce> loopAsset, NSUInteger idx, BOOL *stop) {
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
+    NSUInteger position = [self.selectAssetArray indexOfObjectPassingTest:^BOOL(id<XXBMediaAssetDataSource> loopAsset, NSUInteger idx, BOOL *stop) {
         return   [[mediaAsset identifier]  isEqual:[loopAsset identifier]];
     }];
     return position;
@@ -241,11 +241,11 @@ static id _instance = nil;
     }
 }
 
-- (id<XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
+- (id<XXBMediaAssetDataSource>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section >= self.sectionFetchResults.count) {
         return nil;
     }
-    id<XXBMediaAssetDataSouce> result = nil;
+    id<XXBMediaAssetDataSource> result = nil;
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
     if (indexPath.section == 0) {
         result = [fetchResult firstObject];

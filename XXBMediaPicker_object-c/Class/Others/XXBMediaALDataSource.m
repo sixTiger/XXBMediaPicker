@@ -1,16 +1,16 @@
 //
-//  XXBMediaALDataSouce.m
+//  XXBMediaALDataSource.m
 //  XXBMediaPicker
 //
 //  Created by xiaobing on 16/5/27.
 //  Copyright © 2016年 xiaobing. All rights reserved.
 //
 
-#import "XXBMediaALDataSouce.h"
+#import "XXBMediaALDataSource.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ALAsset+XXBMediaALAsset.h"
 
-@interface XXBMediaALDataSouce ()
+@interface XXBMediaALDataSource ()
 
 /**
  *  当前展示数据的 tableView
@@ -30,7 +30,7 @@
 @property(nonatomic , assign) BOOL                  refreshCollectionView;
 @end
 
-@implementation XXBMediaALDataSouce
+@implementation XXBMediaALDataSource
 static id _instance = nil;
 + (id)allocWithZone:(struct _NSZone *)zone {
     if (_instance == nil) {
@@ -46,7 +46,7 @@ static id _instance = nil;
     return _instance;
 }
 
-+ (instancetype)sharedXXBMediaALDataSouce {
++ (instancetype)sharedXXBMediaALDataSource {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instance = [[super alloc] init];
@@ -249,7 +249,7 @@ static id _instance = nil;
 /**
  *  mediaAsset 在选中的数组中的下表
  */
-- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset {
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
     return [self.selectedAssetArray indexOfObject:mediaAsset];
 }
 
@@ -300,7 +300,7 @@ static id _instance = nil;
  *
  *  @return 第一个图片资源
  */
-- (id <XXBMediaAssetDataSouce>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
+- (id <XXBMediaAssetDataSource>)mediaGroupAssetOFIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
@@ -325,7 +325,7 @@ static id _instance = nil;
  *
  *  @return XXBMediaAsset
  */
-- (id<XXBMediaAssetDataSouce>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath {
+- (id<XXBMediaAssetDataSource>) mediaAssetOfIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row >= [self.selectAssetsGroup numberOfAssets]) {
         return nil;
     }

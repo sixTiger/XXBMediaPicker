@@ -1,5 +1,5 @@
 //
-//  XXBMediaDataSouce.h
+//  XXBMediaDataSource.h
 //  XXBMediaPicker
 //
 //  Created by xiaobing on 16/2/15.
@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XXBMediaAssetDataSouce.h"
-#import "XXBMediaTableViewDataSouce.h"
-#import "XXBMediaCollectionDataSouce.h"
-#import "XXBMediaAssetDataSouce.h"
+#import "XXBMediaAssetDataSource.h"
+#import "XXBMediaTableViewDataSource.h"
+#import "XXBMediaCollectionDataSource.h"
+#import "XXBMediaAssetDataSource.h"
 
-@protocol XXBMediaDataSouce <NSObject>
+@protocol XXBMediaDataSource <NSObject>
 
 /**
  *  设置 collectionView
@@ -41,7 +41,7 @@
 /**
  *  mediaAsset 在选中的数组中的下表
  */
-- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSouce>)mediaAsset;
+- (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset;
 
 /**
  *  当前选中的媒体资源
@@ -52,9 +52,9 @@
 
 @end
 
-@interface XXBMediaDataSouce : NSObject
+@interface XXBMediaDataSource : NSObject
 
 + (instancetype ) sharedMediaDataSouce;
 
-@property(nonatomic , strong) id<XXBMediaDataSouce,XXBMediaTableViewDataSouce,XXBMediaCollectionDataSouce> dataSouce;
+@property(nonatomic , strong) id<XXBMediaDataSource,XXBMediaTableViewDataSource,XXBMediaCollectionDataSource> dataSouce;
 @end
