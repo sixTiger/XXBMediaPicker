@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class XXBMediaPickerTableViewController;
+
+@protocol XXBMediaPickerTableViewControllerDelegate <NSObject>
+
+- (void)mediaPickerTableViewControllerFinishDidClick:(XXBMediaPickerTableViewController *)mediaPickerTableViewController;
+
+@end
+
 @interface XXBMediaPickerTableViewController : UIViewController
 
+@property(nonatomic ,weak) id<XXBMediaPickerTableViewControllerDelegate> delegate;
 @end

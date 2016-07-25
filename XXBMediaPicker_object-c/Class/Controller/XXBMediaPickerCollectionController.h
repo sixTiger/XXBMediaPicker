@@ -7,10 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+@class XXBMediaPickerCollectionController;
+
+@protocol XXBMediaPickerCollectionControllerDelegate <NSObject>
+
+- (void)mediaPickerCollectionControllerFinishDidclick:(XXBMediaPickerCollectionController *)mediaPickerCollectionController;
+
+@end
 
 @interface XXBMediaPickerCollectionController : UIViewController
 
 @property(nonatomic , weak , readonly) UICollectionView        *collectionView;
+
+@property(nonatomic ,weak) id<XXBMediaPickerCollectionControllerDelegate> delegate;
 
 - (void)scrollToBottom;
 @end

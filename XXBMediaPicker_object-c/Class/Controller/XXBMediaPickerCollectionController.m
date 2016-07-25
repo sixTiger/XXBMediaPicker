@@ -152,6 +152,6 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 #pragma mark - XXBImagePickerTabrDelegate
 
 - (void)imagePickerTabrFinishClick {
-    
+    [self.delegate mediaPickerCollectionControllerFinishDidclick:self];
 }
 @end

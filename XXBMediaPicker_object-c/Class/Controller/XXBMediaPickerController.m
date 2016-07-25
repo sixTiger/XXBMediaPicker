@@ -7,13 +7,21 @@
 //
 
 #import "XXBMediaPickerController.h"
-#import "XXBMediaTableViewDataSouce.h"
 #import "XXBMediaPickerTableViewController.h"
+#import "XXBMediaDataSouce.h"
+
+
+@interface XXBMediaPickerController ()<XXBMediaPickerTableViewControllerDelegate>
+
+@property(nonatomic ,strong) XXBMediaPickerTableViewController *mediaPickerTableViewController;
+@end
 
 @implementation XXBMediaPickerController
 
+@dynamic delegate;
+
 - (instancetype)init {
-    if (self = [super initWithRootViewController:[XXBMediaPickerTableViewController new]]) {
+    if (self = [super initWithRootViewController:self.mediaPickerTableViewController]) {
     }
     return self;
 }
@@ -25,9 +33,25 @@
 }
 
 - (void)p_cancaleClick {
+    __weak typeof(self) weakSlelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        
+        __strong typeof(weakSlelf) strongSelf = weakSlelf;
+        if ([strongSelf.delegate respondsToSelector:@selector(mediaPickerControllerCancleDidClick:)]) {
+            [strongSelf.delegate mediaPickerControllerCancleDidClick:self];
+        }
     }];
 }
 
+#pragma mark - layz load
+
+- (XXBMediaPickerTableViewController *)mediaPickerTableViewController {
+    if (_mediaPickerTableViewController == nil) {
+        _mediaPickerTableViewController = [[XXBMediaPickerTableViewController alloc] init];
+        _mediaPickerTableViewController.delegate = self;
+    }
+    return _mediaPickerTableViewController;
+}
+- (void)mediaPickerTableViewControllerFinishDidClick:(XXBMediaPickerTableViewController *)mediaPickerTableViewController {
+//    XXBMediaDataSouce *mediaDataSouce
+}
 @end

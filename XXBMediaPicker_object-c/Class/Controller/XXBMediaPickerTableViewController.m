@@ -11,7 +11,7 @@
 #import "XXBMediaPickerCollectionController.h"
 #import "XXBMediaPickerTableViewCell.h"
 
-@interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource,XXBMediaPickerCollectionControllerDelegate>
 @property(nonatomic , weak) UITableView                             *tableView;
 @property(nonatomic , strong) XXBMediaPickerCollectionController    *mediaPickerCollectionController;
 @end
@@ -71,7 +71,12 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 - (XXBMediaPickerCollectionController *)mediaPickerCollectionController {
     if (_mediaPickerCollectionController == nil) {
         _mediaPickerCollectionController = [XXBMediaPickerCollectionController new];
+        _mediaPickerCollectionController.delegate = self;
     }
     return _mediaPickerCollectionController;
+}
+
+- (void)mediaPickerCollectionControllerFinishDidclick:(XXBMediaPickerCollectionController *)mediaPickerCollectionController {
+    [self.delegate mediaPickerTableViewControllerFinishDidClick:self];
 }
 @end
