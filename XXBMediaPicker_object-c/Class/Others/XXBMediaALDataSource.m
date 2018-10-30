@@ -232,6 +232,9 @@ static id _instance = nil;
  *  @param indexPath
  */
 - (void)didselectMediaItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= [self.selectAssetsGroup numberOfAssets]) {
+        return ;
+    }
     __block ALAsset *asset;
     [self.selectAssetsGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:indexPath.row]
                                              options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {

@@ -11,11 +11,11 @@
 
 @interface XXBMediaPickerVideoCollectionCell ()
 
-@property (nonatomic, strong) dispatch_queue_t              cameraQueue;
-@property (nonatomic, strong) AVCaptureSession              *session;
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer    *captureVideoPreviewLayer;
-@property (weak, nonatomic)  UIImageView                    *videoLayer;
-@property(nonatomic , weak) UIImageView                     *iconImageView;
+@property(nonatomic, strong) dispatch_queue_t               cameraQueue;
+@property(nonatomic, strong) AVCaptureSession               *session;
+@property(nonatomic, strong) AVCaptureVideoPreviewLayer     *captureVideoPreviewLayer;
+@property(nonatomic, weak) UIImageView                      *videoLayer;
+@property(nonatomic, weak) UIImageView                      *iconImageView;
 @end
 
 @implementation XXBMediaPickerVideoCollectionCell
@@ -23,11 +23,15 @@
 - (void)start {
     self.contentView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
     self.iconImageView.image = [UIImage imageNamed:@"XXBMakePhoto"];
-    [self performSelectorOnMainThread:@selector(p_getPhoto) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
+    dispatch_async(self.cameraQueue, ^{
+        [self p_getPhoto];
+    });
 }
 
 - (void)stop {
-    [self performSelectorOnMainThread:@selector(p_stop) withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
+    dispatch_async(self.cameraQueue, ^{
+        [self p_stop];
+    });
 }
 
 - (void)p_getPhoto {
@@ -59,12 +63,14 @@
         if (!self.session.isRunning){
             [self.session startRunning];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.captureVideoPreviewLayer removeFromSuperlayer];
-                CALayer *viewLayer = self.videoLayer.layer;
-                self.captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-                self.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-                self.captureVideoPreviewLayer.frame = viewLayer.bounds;
-                [viewLayer addSublayer:self.captureVideoPreviewLayer];
+                if (self.captureVideoPreviewLayer == nil) {
+                    [self.captureVideoPreviewLayer removeFromSuperlayer];
+                    CALayer *viewLayer = self.videoLayer.layer;
+                    self.captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+                    self.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+                    self.captureVideoPreviewLayer.frame = viewLayer.bounds;
+                    [viewLayer addSublayer:self.captureVideoPreviewLayer];                    
+                }
             });
         }
     });

@@ -19,7 +19,7 @@ typedef enum : NSUInteger {
 
 @protocol XXBMediaAssetDataSource <NSObject>
 
-typedef void (^XXBMediaChangesBlock)();
+typedef void (^XXBMediaChangesBlock)(void);
 typedef void (^XXBMediaFailureBlock)(NSError *error);
 typedef void (^XXBMediaAddedBlock)(id<XXBMediaAssetDataSource> media, NSError *error);
 typedef void (^XXBMediaImageBlock)(UIImage *result, NSError *error);

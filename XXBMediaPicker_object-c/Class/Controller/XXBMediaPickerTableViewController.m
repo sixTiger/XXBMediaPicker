@@ -6,7 +6,7 @@
 //  Copyright © 2016年 xiaobing. All rights reserved.
 //
 
-#import "XXBMediaPIckerTableViewController.h"
+#import "XXBMediaPickerTableViewController.h"
 #import "XXBMediaDataSource.h"
 #import "XXBMediaPickerCollectionController.h"
 #import "XXBMediaPickerTableViewCell.h"

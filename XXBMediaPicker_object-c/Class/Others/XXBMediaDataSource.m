@@ -36,16 +36,13 @@ static id _instance = nil;
 }
 
 - (id<XXBMediaDataSource>)dataSouce {
-
-#warning  调试阶段暂时只支持ALasset
-    return [XXBMediaALDataSource sharedXXBMediaALDataSource];
-//    if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0) {
-//        /**
-//         *  ios8一下暂时没有支持
-//         */
-//        return [XXBMediaALDataSource sharedXXBMediaALDataSource];
-//    } else {
-//        return [XXBMediaPHDataSource sharedXXBMediaPHDataSource];
-//    }
+    if ([[UIDevice currentDevice] systemVersion].floatValue < 8.0) {
+        /**
+         *  ios8一下暂时没有支持
+         */
+        return [XXBMediaALDataSource sharedXXBMediaALDataSource];
+    } else {
+        return [XXBMediaPHDataSource sharedXXBMediaPHDataSource];
+    }
 }
 @end

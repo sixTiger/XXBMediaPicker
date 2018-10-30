@@ -52,6 +52,8 @@
     return _mediaPickerTableViewController;
 }
 - (void)mediaPickerTableViewControllerFinishDidClick:(XXBMediaPickerTableViewController *)mediaPickerTableViewController {
-//    XXBMediaDataSource *mediaDataSouce
+    if ([self.delegate respondsToSelector:@selector(mediaPickerControllerFinishDidClick:andSlectedMedias:)]) {
+        [self.delegate mediaPickerControllerFinishDidClick:self andSlectedMedias: [[XXBMediaDataSource sharedMediaDataSouce].dataSouce selectAsset]];
+    }
 }
 @end

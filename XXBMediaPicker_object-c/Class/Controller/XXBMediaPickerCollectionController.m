@@ -43,8 +43,13 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
         if (self.shouldScrollBottom) {
             self.shouldScrollBottom = NO;
             [self p_scrollToBottom];
+            XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
+            if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]]) {
+                [cell stop];
+            }
         }
     });
+    
 }
 
 - (void)scrollToBottom {
