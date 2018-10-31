@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class XXBMediaPickerTableViewController;
+@class XXBMediaPickerTableViewController, XXBMediaPickerConfigure;
 
 @protocol XXBMediaPickerTableViewControllerDelegate <NSObject>
 
@@ -18,5 +18,7 @@
 
 @interface XXBMediaPickerTableViewController : UIViewController
 
-@property(nonatomic ,weak) id<XXBMediaPickerTableViewControllerDelegate> delegate;
+@property(nonatomic ,weak) id<XXBMediaPickerTableViewControllerDelegate>    delegate;
+
+@property(nonatomic, strong) XXBMediaPickerConfigure                        *mediaPickerConfigure;
 @end

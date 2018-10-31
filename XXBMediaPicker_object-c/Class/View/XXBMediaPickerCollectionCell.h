@@ -11,6 +11,16 @@
 
 @interface XXBMediaPickerCollectionCell : UICollectionViewCell
 
-@property (nonatomic, strong) id<XXBMediaAssetDataSource> mediaAsset;
+@property (nonatomic, strong) id<XXBMediaAssetDataSource>   mediaAsset;
+
+/**
+ 是否显示角标
+ */
+@property(nonatomic, assign) BOOL                           enableBage;
+
+/**
+ 是否显示蒙层
+ */
+@property(nonatomic, assign) BOOL                           showCoverView;
 
 @end

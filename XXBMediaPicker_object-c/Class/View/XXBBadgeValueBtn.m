@@ -23,6 +23,7 @@
 }
 
 - (void)setup {
+    self.enable = YES;
     self.hidden = YES;
     self.userInteractionEnabled = NO;
     self.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -36,7 +37,7 @@
         return;
     }
     _badgeValue = badgeValue;
-    if (_badgeValue > 0) {
+    if (_badgeValue > 0 && self.enable) {
         NSString *bageString = [NSString stringWithFormat:@"%@",@(_badgeValue)];
         /**
          *  有值并且值不等于1 的情况向才进行相关设置

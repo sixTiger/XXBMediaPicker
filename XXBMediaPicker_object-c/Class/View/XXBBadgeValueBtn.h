@@ -9,5 +9,14 @@
 #import <UIKit/UIKit.h>
 #define maxBadgeValue 99
 @interface XXBBadgeValueBtn : UIButton
-@property(nonatomic , assign)NSInteger badgeValue;
+
+/**
+ 角标数字
+ */
+@property(nonatomic , assign)NSInteger  badgeValue;
+
+/**
+ 是否可以用
+ */
+@property(nonatomic, assign) BOOL       enable;
 @end

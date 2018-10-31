@@ -257,6 +257,21 @@ static id _instance = nil;
 }
 
 /**
+ 当前资源是否是选中的
+ 
+ @param mediaAsset 资源
+ @return 是否选中
+ */
+- (BOOL)isSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
+    NSInteger index = [self indexOfAssetInSelectedMediaAsset:mediaAsset];
+    if (index == NSNotFound) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+/**
  *  当前选中的媒体资源
  *
  *  @return 当前选中的媒体资源数组

@@ -23,6 +23,8 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [self.tableView reloadData];
 }
 
+#pragma mark - layzload
+
 - (UITableView *)tableView {
     if (_tableView == nil) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -39,6 +41,13 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     }
     return _tableView;
 }
+
+- (void)setMediaPickerConfigure:(XXBMediaPickerConfigure *)mediaPickerConfigure {
+    _mediaPickerConfigure = mediaPickerConfigure;
+    self.mediaPickerCollectionController.mediaPickerConfigure = mediaPickerConfigure;
+}
+
+#pragma mark - UITableViewDelegate UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return  [[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInTableViewSection:section];

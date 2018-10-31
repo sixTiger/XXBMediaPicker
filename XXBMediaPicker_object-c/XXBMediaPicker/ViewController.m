@@ -7,8 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "XXBMediaPickerController.h"
-#import <Photos/Photos.h>
+#import "XXBMediaPicker.h"
 
 @interface ViewController ()<XXBMediaPickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 @property(nonatomic , weak)UICollectionView     *collectionView;
@@ -24,9 +23,11 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"open" style:UIBarButtonItemStylePlain target:self action:@selector(p_choosePhotos)];
 }
 
-- (void)p_choosePhotos
-{
-    XXBMediaPickerController * mediaPickerController = [[XXBMediaPickerController alloc] init];
+- (void)p_choosePhotos {
+    XXBMediaPickerConfigure *mediaPickerConfigure = [[XXBMediaPickerConfigure alloc] init];
+    mediaPickerConfigure.enableBageValue = NO;
+    mediaPickerConfigure.maxSelectCount = 2;
+    XXBMediaPickerController * mediaPickerController = [XXBMediaPickerController mediaPickerControllerWithConfigure:mediaPickerConfigure];
     mediaPickerController.delegate = self;
     [self presentViewController:mediaPickerController animated:YES completion:nil];
 }

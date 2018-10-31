@@ -42,6 +42,7 @@
 		62A2857E1C631AB000EF8BD8 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A2857D1C631AB000EF8BD8 /* NSIndexSet+Convenience.m */; };
 		62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */; };
 		62DC4BDB1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BDA1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m */; };
+		78BDD33721888B1500C2ACC5 /* XXBMediaPickerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,9 @@
 		62DC4BD61C61D7C400968A0F /* XXBMediaTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaTableViewDataSource.h; sourceTree = "<group>"; };
 		62DC4BD91C61DA9E00968A0F /* XXBMediaPickerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerTableViewController.h; sourceTree = "<group>"; };
 		62DC4BDA1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerTableViewController.m; sourceTree = "<group>"; };
+		78BDD332218889CF00C2ACC5 /* XXBMediaPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaPicker.h; sourceTree = "<group>"; };
+		78BDD33521888B1500C2ACC5 /* XXBMediaPickerConfigure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerConfigure.h; sourceTree = "<group>"; };
+		78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerConfigure.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +163,7 @@
 		6261D2E61C520FA100D7959D /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				78BDD332218889CF00C2ACC5 /* XXBMediaPicker.h */,
 				6261D2E81C520FA100D7959D /* Model */,
 				629F4AB81C719822001CEB32 /* View */,
 				6261D2E71C520FA100D7959D /* Controller */,
@@ -184,6 +189,8 @@
 		6261D2E81C520FA100D7959D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				78BDD33521888B1500C2ACC5 /* XXBMediaPickerConfigure.h */,
+				78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */,
 				62A285761C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.h */,
 				62A285771C6303F400EF8BD8 /* PHAsset+XXBMediaPHAsset.m */,
 				620C19F91CF84DDE00F967E0 /* ALAsset+XXBMediaALAsset.h */,
@@ -336,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				629F4AE31C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m in Sources */,
+				78BDD33721888B1500C2ACC5 /* XXBMediaPickerConfigure.m in Sources */,
 				6261D2ED1C52100A00D7959D /* XXBMediaPickerController.m in Sources */,
 				6261D2D71C520F4200D7959D /* ViewController.m in Sources */,
 				62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */,

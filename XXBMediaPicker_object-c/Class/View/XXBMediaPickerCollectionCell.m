@@ -12,14 +12,20 @@
 #import "XXBBadgeValueBtn.h"
 
 @interface XXBMediaPickerCollectionCell ()
+
 @property(nonatomic , weak) UIImageView         *imageView;
 
 @property(nonatomic , weak) UIView              *coverView;
-@property(nonatomic , weak)UIButton             *coverButton;
+/**
+ 选中的对号
+ */
+@property(nonatomic , weak)UIButton             *selectButton;
 @property(nonatomic , weak)XXBBadgeValueBtn     *bageButton;
 @property(nonatomic , weak) UILabel             *messageLabel;
 @property(nonatomic , weak) UIView              *videoBgView;
 @property(nonatomic , weak) UIImageView         *videoIconView;
+@property(nonatomic, assign) BOOL               mediaSelected;
+
 @end
 
 @implementation XXBMediaPickerCollectionCell
@@ -32,17 +38,16 @@
 - (void)setMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
     NSInteger index = [[XXBMediaDataSource sharedMediaDataSouce].dataSouce indexOfAssetInSelectedMediaAsset:mediaAsset];
     if (index != NSNotFound) {
-        self.selected = YES;
+        self.mediaSelected = YES;
         [self.bageButton setBadgeValue:index + 1];
     } else {
         [self.bageButton setBadgeValue:0];
-        self.selected = NO;
+        self.mediaSelected = NO;
     }
     
     _mediaAsset = mediaAsset;
     __block XXBMediaRequestID requestKey = -1;
     self.tag = requestKey;
-    //    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
     requestKey = [_mediaAsset imageWithSize:self.frame.size completionHandler:^(UIImage *result, NSError *error) {
         if (error)
         {
@@ -106,10 +111,12 @@
     }
 }
 
-- (void)setSelected:(BOOL)selected {
-    [super setSelected:selected];
-    self.coverView.backgroundColor = selected ? [UIColor colorWithWhite:1.0 alpha:0.3] : [UIColor clearColor];
-    self.coverButton.selected = selected;
+- (void)setMediaSelected:(BOOL)mediaSelected {
+    _mediaSelected = mediaSelected;
+    if (mediaSelected) {
+        self.coverView.backgroundColor = [UIColor clearColor];
+    }
+    self.selectButton.selected = mediaSelected;
 }
 
 - (UIImageView *)imageView {
@@ -134,21 +141,21 @@
     return _coverView;
 }
 
-- (UIButton *)coverButton {
-    if (_coverButton == nil) {
+- (UIButton *)selectButton{
+    if (_selectButton == nil) {
         //右上角的小图标的尺寸
         CGFloat margin = 5.0;
         CGFloat width = 22;
-        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        coverButton.frame = CGRectMake(self.bounds.size.width - width - margin,  margin , width , width);
-        [self.coverView addSubview:coverButton];
+        UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        selectButton.frame = CGRectMake(self.bounds.size.width - width - margin,  margin , width , width);
+        [self.coverView addSubview:selectButton];
         //FIXME: 预先展示的图片可以去掉
-        [coverButton setImage:[UIImage imageNamed:@"XXBPhoto"] forState:UIControlStateNormal];
-        [coverButton setImage:[UIImage imageNamed:@"XXBPhotoSelected"] forState:UIControlStateSelected];
-        coverButton.userInteractionEnabled = NO;
-        _coverButton =coverButton;
+        [selectButton setImage:[UIImage imageNamed:@"XXBPhoto"] forState:UIControlStateNormal];
+        [selectButton setImage:[UIImage imageNamed:@"XXBPhotoSelected"] forState:UIControlStateSelected];
+        selectButton.userInteractionEnabled = NO;
+        _selectButton =selectButton;
     }
-    return _coverButton;
+    return _selectButton;
 }
 
 - (XXBBadgeValueBtn *)bageButton {
@@ -234,5 +241,19 @@
     }
     time = [NSString stringWithFormat:@"%@%02d",time,times[i]];
     return time;
+}
+
+- (void)setEnableBage:(BOOL)enableBage {
+    _enableBage = enableBage;
+    self.bageButton.enable = enableBage;
+}
+
+- (void)setShowCoverView:(BOOL)showCoverView {
+    _showCoverView = showCoverView;
+    if (!showCoverView || self.mediaSelected) {
+        self.coverView.backgroundColor = [UIColor clearColor];
+    } else {
+        self.coverView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+    }
 }
 @end

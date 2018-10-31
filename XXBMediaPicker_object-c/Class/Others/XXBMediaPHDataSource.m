@@ -11,16 +11,24 @@
 #import "PHAsset+XXBMediaPHAsset.h"
 
 @interface XXBMediaPHDataSource ()<PHPhotoLibraryChangeObserver>
+
 /**
  *  当前展示数据的 tableView
  */
 @property(nonatomic , weak) UITableView             *tableView;
+
 /**
  *  当前展示数据的 collectionView
  */
 @property(nonatomic , weak) UICollectionView        *collectionView;
+
 @property(nonatomic , strong) NSMutableArray        *sectionFetchResults;
+
 @property(nonatomic , strong) PHFetchResult         *seleectPHFetchResult;
+
+/**
+ 当前选中的Asset
+ */
 @property(nonatomic , strong) NSMutableArray        *selectAssetArray;
 @end
 
@@ -187,8 +195,6 @@ static id _instance = nil;
             }
         }
     });
-    // FIXME:  message
-    
 }
 
 - (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
@@ -198,6 +204,20 @@ static id _instance = nil;
     return position;
 }
 
+/**
+ 当前资源是否是选中的
+ 
+ @param mediaAsset 资源
+ @return 是否选中
+ */
+- (BOOL)isSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {
+    NSInteger index = [self indexOfAssetInSelectedMediaAsset:mediaAsset];
+    if (index == NSNotFound) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
 #pragma mark - layzeload
 
 - (NSMutableArray *)sectionFetchResults {
@@ -301,7 +321,6 @@ static id _instance = nil;
          *  刷新列表防止顺序错乱
          */
         [self.collectionView reloadItemsAtIndexPaths:cellIndexArray];
-        
     } else {
         [self.selectAssetArray addObject:self.seleectPHFetchResult[indexPath.row]];
     }

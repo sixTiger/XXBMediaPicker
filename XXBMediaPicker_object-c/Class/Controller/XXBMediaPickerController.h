@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class XXBMediaPickerController;
+@class XXBMediaPickerController, XXBMediaPickerConfigure;
 
 @protocol XXBMediaPickerControllerDelegate <UINavigationControllerDelegate>
 
@@ -23,6 +23,22 @@
 @end
 
 @interface XXBMediaPickerController : UINavigationController
+
+
+/**
+ 初始化媒体选择器
+
+ @return 初始化好的媒体选择器
+ */
++ (XXBMediaPickerController *)mediaPickerController;
+
+/**
+ 初始化媒体选择器
+
+ @param mediaPickerConfigure 媒体选择器的配置
+ @return 初始化好的媒体选择器
+ */
++ (XXBMediaPickerController *)mediaPickerControllerWithConfigure:(XXBMediaPickerConfigure *)mediaPickerConfigure;
 
 /**
  *  是否展示左上角标
