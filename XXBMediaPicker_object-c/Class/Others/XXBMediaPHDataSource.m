@@ -9,6 +9,7 @@
 #import "XXBMediaPHDataSource.h"
 #import "NSIndexSet+Convenience.h"
 #import "PHAsset+XXBMediaPHAsset.h"
+#import "XXBMediaConsts.h"
 
 @interface XXBMediaPHDataSource ()<PHPhotoLibraryChangeObserver>
 
@@ -22,8 +23,14 @@
  */
 @property(nonatomic , weak) UICollectionView        *collectionView;
 
+/**
+ 当前所有的分组
+ */
 @property(nonatomic , strong) NSMutableArray        *sectionFetchResults;
 
+/**
+ 当前选中的组
+ */
 @property(nonatomic , strong) PHFetchResult         *seleectPHFetchResult;
 
 /**
@@ -84,50 +91,63 @@ static id _instance = nil;
 }
 
 - (void)p_getAllPhotos {
-    [self.sectionFetchResults removeAllObjects];
-    PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
-    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
-    [self.sectionFetchResults addObject:allPhotos];
-    for (PHAssetCollectionSubtype i = 201; i < 212; i++) {
-        if (i == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded || i == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
-            // 最近添加的忽略 相机交卷忽略
-            continue;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSDate *date = [NSDate date];
+        @synchronized (self.sectionFetchResults) {
+            [self.sectionFetchResults removeAllObjects];
+        }
+        PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
+        allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+        PHFetchResult *allPhotos = [PHAsset fetchAssetsWithOptions:allPhotosOptions];
+        @synchronized (self.sectionFetchResults) {
+            [self.sectionFetchResults addObject:allPhotos];
+        }
+        for (PHAssetCollectionSubtype i = 201; i < 212; i++) {
+            if (i == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded || i == PHAssetCollectionSubtypeSmartAlbumUserLibrary) {
+                // 最近添加的忽略 相机交卷忽略
+                continue;
+            }
+            
+            PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:i options:nil];
+            PHCollection *collection = [smartAlbums firstObject];
+            if (![collection isKindOfClass:[PHAssetCollection class]]) {
+                return;
+            }
+            // Configure the AAPLAssetGridViewController with the asset collection.
+            PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
+            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+            if (assetsFetchResult.count > 0) {
+                @synchronized (self.sectionFetchResults) {
+                    [self.sectionFetchResults addObject:smartAlbums];
+                }
+            }
         }
         
-        PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:i options:nil];
-        PHCollection *collection = [smartAlbums firstObject];
-        if (![collection isKindOfClass:[PHAssetCollection class]]) {
-            return;
+        PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+        @synchronized (self.sectionFetchResults) {
+            [self.sectionFetchResults addObject:topLevelUserCollections];
         }
-        // Configure the AAPLAssetGridViewController with the asset collection.
-        PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
-        PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
-        if (assetsFetchResult.count > 0) {
-            [self.sectionFetchResults addObject:smartAlbums];
-        }
-    }
-    
-    PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
-    [self.sectionFetchResults addObject:topLevelUserCollections];
-    
+        NSLog(@"XXB: %@",@([[NSDate date] timeIntervalSinceDate:date]));
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //图片库资源加载完成通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaLoadMediaCompletion object:nil userInfo:nil];
+        });
+    });
 }
 - (void)dealloc {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
 }
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance {
-    /*
-     Change notifications may be made on a background queue. Re-dispatch to the
-     main queue before acting on the change as we'll be updating the UI.
+    
+    /**
+     *  看一下当前的是否有新创建的相册
      */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        /**
-         *  看一下当前的是否有新创建的相册
-         */
-        // Loop through the section fetch results, replacing any fetch results that have been updated.
-        NSMutableArray *updatedSectionFetchResults = [self.sectionFetchResults mutableCopy];
-        __block BOOL reloadRequired = NO;
+    // Loop through the section fetch results, replacing any fetch results that have been updated.
+    __block BOOL reloadRequired = NO;
+    @synchronized (self.sectionFetchResults) {
+        NSMutableArray *updatedSectionFetchResults;
+        updatedSectionFetchResults = [self.sectionFetchResults mutableCopy];
         [self.sectionFetchResults enumerateObjectsUsingBlock:^(PHFetchResult *collectionsFetchResult, NSUInteger index, BOOL *stop) {
             PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
             
@@ -136,37 +156,48 @@ static id _instance = nil;
                 reloadRequired = YES;
             }
         }];
-        
         if (reloadRequired) {
             self.sectionFetchResults = updatedSectionFetchResults;
+        }
+    }
+    if (reloadRequired) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-        }
-        
-        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
-        if (collectionChanges == nil) {
-            /**
-             *  当前选中的
-             */
-            return;
-        }
-        
-        /*
-         Change notifications may be made on a background queue. Re-dispatch to the
-         main queue before acting on the change as we'll be updating the UI.
+        });
+    }
+    
+    
+    PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.seleectPHFetchResult];
+    if (collectionChanges == nil) {
+        /**
+         *  当前选中的
          */
-        // Get the new fetch result.
+        return;
+    }
+    
+    /*
+     Change notifications may be made on a background queue. Re-dispatch to the
+     main queue before acting on the change as we'll be updating the UI.
+     */
+    // Get the new fetch result.
+    @synchronized (self.seleectPHFetchResult) {
         self.seleectPHFetchResult = [collectionChanges fetchResultAfterChanges];
-        //        [self.collectionView reloadData];
+    }
+    
+    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
         
-        if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
-            // Reload the collection view if the incremental diffs are not available
-            // 相册被移除
-            
-        } else {
-            /*
-             Tell the collection view to animate insertions and deletions if we
-             have incremental diffs.
-             */
+        // Reload the collection view if the incremental diffs are not available
+        //如果删除/插入/更改的详细信息描述了对此获取结果的更改，则为YES。
+        // NO表示更改范围太大，UI客户端应执行完全重新加载，无法提供增量更改
+        //或者
+        // 相册被移除
+        
+    } else {
+        /*
+         Tell the collection view to animate insertions and deletions if we
+         have incremental diffs.
+         */
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView performBatchUpdates:^{
                 NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
                 if ([removedIndexes count] > 0) {
@@ -183,18 +214,19 @@ static id _instance = nil;
                     [self.collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
                 }
             } completion:NULL];
-        }
-        NSArray *removeObjects  =  [collectionChanges removedObjects];
-        // FIXME:  message
-        // 当前选中的照片应该删除相应的选项
-        for (id<XXBMediaAssetDataSource> media in removeObjects) {
-            NSUInteger index = [self indexOfAssetInSelectedMediaAsset:media];
-            if (index != NSNotFound ) {
-                //如果当前删除的是被选中的，从选中分组里边移除
+        });
+    }
+    NSArray *removeObjects  =  [collectionChanges removedObjects];
+    // 当前选中的照片应该删除相应的选项
+    for (id<XXBMediaAssetDataSource> media in removeObjects) {
+        NSUInteger index = [self indexOfAssetInSelectedMediaAsset:media];
+        if (index != NSNotFound ) {
+            //如果当前删除的是被选中的，从选中分组里边移除
+            @synchronized (self.selectAssetArray) {
                 [self.selectAssetArray removeObjectAtIndex:index];
             }
         }
-    });
+    }
 }
 
 - (NSUInteger)indexOfAssetInSelectedMediaAsset:(id<XXBMediaAssetDataSource>)mediaAsset {

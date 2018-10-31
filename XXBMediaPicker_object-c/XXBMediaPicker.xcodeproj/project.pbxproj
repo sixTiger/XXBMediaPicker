@@ -43,6 +43,7 @@
 		62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B404D31C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m */; };
 		62DC4BDB1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BDA1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m */; };
 		78BDD33721888B1500C2ACC5 /* XXBMediaPickerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */; };
+		78FC8F75218A0AD5004B6212 /* XXBMediaConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FC8F74218A0AD5004B6212 /* XXBMediaConsts.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +107,8 @@
 		78BDD332218889CF00C2ACC5 /* XXBMediaPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaPicker.h; sourceTree = "<group>"; };
 		78BDD33521888B1500C2ACC5 /* XXBMediaPickerConfigure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaPickerConfigure.h; sourceTree = "<group>"; };
 		78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerConfigure.m; sourceTree = "<group>"; };
+		78FC8F73218A0AD5004B6212 /* XXBMediaConsts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaConsts.h; sourceTree = "<group>"; };
+		78FC8F74218A0AD5004B6212 /* XXBMediaConsts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaConsts.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +216,8 @@
 				629F4ADF1C71B7F3001CEB32 /* XXBMediaDataSource.m */,
 				620C19F61CF84A1800F967E0 /* XXBMediaALDataSource.h */,
 				620C19F71CF84A1800F967E0 /* XXBMediaALDataSource.m */,
+				78FC8F73218A0AD5004B6212 /* XXBMediaConsts.h */,
+				78FC8F74218A0AD5004B6212 /* XXBMediaConsts.m */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -353,6 +358,7 @@
 				6261D2D41C520F4200D7959D /* AppDelegate.m in Sources */,
 				62A2857E1C631AB000EF8BD8 /* NSIndexSet+Convenience.m in Sources */,
 				629F4AC41C719822001CEB32 /* XXBMediaPickerVideoCollectionCell.m in Sources */,
+				78FC8F75218A0AD5004B6212 /* XXBMediaConsts.m in Sources */,
 				6261D2D11C520F4200D7959D /* main.m in Sources */,
 				620C19F81CF84A1800F967E0 /* XXBMediaALDataSource.m in Sources */,
 				6261D2F01C52107B00D7959D /* XXBMediaPHDataSource.m in Sources */,

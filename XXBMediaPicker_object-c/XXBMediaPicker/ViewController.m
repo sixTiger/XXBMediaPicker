@@ -24,6 +24,7 @@
 }
 
 - (void)p_choosePhotos {
+    
     XXBMediaPickerConfigure *mediaPickerConfigure = [[XXBMediaPickerConfigure alloc] init];
     mediaPickerConfigure.enableBageValue = NO;
     mediaPickerConfigure.maxSelectCount = 2;
@@ -32,6 +33,15 @@
     [self presentViewController:mediaPickerController animated:YES completion:nil];
 }
 
+- (void)p_choosePhotos2 {
+    
+    XXBMediaPickerConfigure *mediaPickerConfigure = [[XXBMediaPickerConfigure alloc] init];
+    mediaPickerConfigure.enableBageValue = NO;
+    mediaPickerConfigure.maxSelectCount = 2;
+    XXBMediaPickerController * mediaPickerController = [XXBMediaPickerController mediaPickerControllerWithConfigure:mediaPickerConfigure];
+    mediaPickerController.delegate = self;
+    [self presentViewController:mediaPickerController animated:YES completion:nil];
+}
 - (void)mediaPickerControllerCancleDidClick:(XXBMediaPickerController *)mediaPickerController {
     
 }
@@ -104,5 +114,4 @@
     }
     return _photoArray;
 }
-
 @end

@@ -11,18 +11,10 @@
 #import <objc/runtime.h>
 
 @interface PHAsset()
-@property(nonatomic , strong) UIImage   *placehoderImage;
+
 @end
 
 @implementation PHAsset (XXBMediaPHAsset)
-
-- (void)setPlacehoderImage:(UIImage *)placehoderImage {
-    [self willChangeValueForKey:@"XXBPlacehoderImage"];
-    objc_setAssociatedObject(self, @selector(placehoderImage),
-                             placehoderImage,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [self didChangeValueForKey:@"XXBPlacehoderImage"];
-}
 
 - (UIImage *)placehoderImage {
     return objc_getAssociatedObject(self,@selector(placehoderImage));
@@ -39,7 +31,6 @@
     options.synchronous = NO;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
     options.networkAccessAllowed = YES;
-    __weak typeof(self)weakSelf = self;
     return [[XXBMediaPHDataSource sharedImageManager] requestImageForAsset:self
                                                                targetSize:realSize
                                                               contentMode:PHImageContentModeAspectFill
@@ -52,9 +43,7 @@
                                                                     }
                                                                     return;
                                                                 }
-                                                                if (completionHandler){
-                                                                    __strong typeof(weakSelf)strongSelf = weakSelf;
-                                                                    strongSelf.placehoderImage = result;
+                                                                if (completionHandler) {
                                                                     completionHandler(result, nil);
                                                                 }
                                                             }];

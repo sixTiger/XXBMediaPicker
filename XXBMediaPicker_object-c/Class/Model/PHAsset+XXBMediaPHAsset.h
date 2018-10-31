@@ -13,5 +13,5 @@
 
 
 @interface PHAsset (XXBMediaPHAsset)<XXBMediaAssetDataSource>
-@property(nonatomic , strong , readonly) UIImage   *placehoderImage;
+
 @end
