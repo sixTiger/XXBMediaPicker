@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kXXBMediaLoadMediaCompletion;
+extern NSString *const kXXBMediaLoadMediaSectionCompletion;
 
 @interface XXBMediaConsts : NSObject
+
 @end

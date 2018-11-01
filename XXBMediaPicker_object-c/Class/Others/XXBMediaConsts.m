@@ -8,7 +8,7 @@
 
 #import "XXBMediaConsts.h"
 
-NSString *const kXXBMediaLoadMediaCompletion = @"kXXBMediaLoadMediaCompletion";
+NSString *const kXXBMediaLoadMediaSectionCompletion = @"kXXBMediaLoadMediaSectionCompletion";
 
 @implementation XXBMediaConsts
 

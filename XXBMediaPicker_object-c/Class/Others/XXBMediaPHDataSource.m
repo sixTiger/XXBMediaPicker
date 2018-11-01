@@ -141,7 +141,7 @@ static id _instance = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             
             //图片库资源加载完成通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaLoadMediaCompletion object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaLoadMediaSectionCompletion object:nil userInfo:nil];
         });
     });
 }

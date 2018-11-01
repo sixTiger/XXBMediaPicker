@@ -111,7 +111,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 }
 
 - (void)addNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLoadMediaCompletion:) name:kXXBMediaLoadMediaCompletion object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLoadMediaCompletion:) name:kXXBMediaLoadMediaSectionCompletion object:nil];
 }
 
 - (void)mediaLoadMediaCompletion:(NSNotification *)notification {
