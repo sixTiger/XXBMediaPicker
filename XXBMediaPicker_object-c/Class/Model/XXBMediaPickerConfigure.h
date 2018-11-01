@@ -21,6 +21,11 @@
 @property(nonatomic, assign) BOOL       enableBageValue;
 
 /**
+ 记录上次选中的相册
+ */
+@property(nonatomic, assign) BOOL       rememberLastSelectGroup;
+
+/**
  是否允许选中原始照片
  */
 @property(nonatomic, assign) BOOL       enableSelectOriginalPic;

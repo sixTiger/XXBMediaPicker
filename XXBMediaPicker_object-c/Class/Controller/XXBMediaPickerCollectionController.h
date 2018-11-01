@@ -17,11 +17,11 @@
 
 @interface XXBMediaPickerCollectionController : UIViewController
 
-@property(nonatomic , weak , readonly) UICollectionView                     *collectionView;
-
 @property(nonatomic ,weak) id<XXBMediaPickerCollectionControllerDelegate>   delegate;
 
 @property(nonatomic, strong) XXBMediaPickerConfigure                        *mediaPickerConfigure;
 
 - (void)scrollToBottom;
+
+- (void)reload;
 @end

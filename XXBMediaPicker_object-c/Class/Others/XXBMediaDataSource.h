@@ -15,11 +15,18 @@
 @protocol XXBMediaDataSource <NSObject>
 
 /**
- 是否正在加载资源
+ 是否正在加载分组数组资源
 
  @return 是/否
  */
-- (BOOL)isLoadingDataSource;
+- (BOOL)isLoadingSectionsData;
+
+/**
+ 是否正在加载分组数组资源
+ 
+ @return 是/否
+ */
+- (BOOL)isLoadingSelectSectionData;
 
 /**
  *  设置 collectionView

@@ -15,10 +15,12 @@
 #import "XXBMediaConsts.h"
 
 @interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource,XXBMediaPickerCollectionControllerDelegate>
-@property(nonatomic , weak) UITableView                             *tableView;
-@property(nonatomic , strong) XXBMediaPickerCollectionController    *mediaPickerCollectionController;
-@property(nonatomic, weak) XXBMediaLoadingView                      *loadingView;
 
+@property(nonatomic , weak) UITableView                             *tableView;
+
+@property(nonatomic , strong) XXBMediaPickerCollectionController    *mediaPickerCollectionController;
+
+@property(nonatomic, weak) XXBMediaLoadingView                      *loadingView;
 @end
 
 @implementation XXBMediaPickerTableViewController
@@ -27,7 +29,8 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [super viewDidLoad];
     [self addNotification];
     [self.tableView reloadData];
-    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingDataSource]) {
+    [self showMediaPickerCollectionControlleAnimated:NO];
+    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingSectionsData]) {
         [self.loadingView startAnimating];
     }
 }
@@ -36,6 +39,11 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [self removeNotification];
 }
 
+- (void)showMediaPickerCollectionControlleAnimated:(BOOL)animated {
+    [self.mediaPickerCollectionController scrollToBottom];
+    [self.mediaPickerCollectionController reload];
+    [self.navigationController pushViewController:self.mediaPickerCollectionController animated:animated];
+}
 #pragma mark - layzload
 
 - (UITableView *)tableView {
@@ -92,10 +100,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[XXBMediaDataSource sharedMediaDataSouce].dataSouce didselectMediaGroupAtIndexPath:indexPath];
-    [[XXBMediaDataSource sharedMediaDataSouce].dataSouce setCollectionView:self.mediaPickerCollectionController.collectionView];
-    [self.mediaPickerCollectionController.collectionView reloadData];
-    [self.mediaPickerCollectionController scrollToBottom];
-    [self.navigationController pushViewController:self.mediaPickerCollectionController animated:YES];
+    [self showMediaPickerCollectionControlleAnimated:YES];
 }
 
 - (XXBMediaPickerCollectionController *)mediaPickerCollectionController {
@@ -111,10 +116,10 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 }
 
 - (void)addNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLoadMediaCompletion:) name:kXXBMediaLoadMediaSectionCompletion object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaSectionsDataCompletion object:nil];
 }
 
-- (void)mediaLoadMediaCompletion:(NSNotification *)notification {
+- (void)mediaSectionsDataCompletion:(NSNotification *)notification {
     [[self tableView] reloadData];
     [self.loadingView stopAnimating];
 }

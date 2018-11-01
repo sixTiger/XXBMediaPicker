@@ -202,6 +202,10 @@ static id _instance = nil;
 }
 #pragma mark - XXBMediaDataSouce
 
+- (BOOL)isLoadingSectionsData {
+    return NO;
+}
+
 - (void)setCollectionView:(UICollectionView *)collectionView {
     _collectionView = collectionView;
 }

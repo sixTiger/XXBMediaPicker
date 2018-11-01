@@ -21,10 +21,12 @@
  */
 @property(nonatomic , weak)UIButton             *selectButton;
 @property(nonatomic , weak)XXBBadgeValueBtn     *bageButton;
-@property(nonatomic , weak) UILabel             *messageLabel;
-@property(nonatomic , weak) UIView              *videoBgView;
-@property(nonatomic , weak) UIImageView         *videoIconView;
-@property(nonatomic, assign) BOOL               mediaSelected;
+@property(nonatomic , weak)UILabel              *messageLabel;
+@property(nonatomic , weak)UIView               *videoBgView;
+@property(nonatomic , weak)UIImageView          *videoIconView;
+@property(nonatomic, assign)BOOL                mediaSelected;
+@property(nonatomic, assign)XXBMediaRequestID   requestKey;
+
 
 @end
 
@@ -44,30 +46,28 @@
         [self.bageButton setBadgeValue:0];
         self.mediaSelected = NO;
     }
-    
+    if ([_mediaAsset isEqual:mediaAsset]) {
+        return;
+    } else {
+        [_mediaAsset cancelImageRequest:self.requestKey];
+    }
     _mediaAsset = mediaAsset;
-    __block XXBMediaRequestID requestKey = -1;
-    self.tag = requestKey;
-    requestKey = [_mediaAsset imageWithSize:self.frame.size completionHandler:^(UIImage *result, NSError *error) {
+    __weak typeof(self) weakSelf = self;
+    self.requestKey = [_mediaAsset imageWithSize:self.frame.size completionHandler:^(UIImage *result, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if (error)
         {
             NSLog(@"%@", [error localizedDescription]);
             return;
         }
-        // Did this request changed meanwhile
-        if (requestKey != self.tag) {
-            return;
-        }
         if ([NSThread isMainThread]) {
-            self.imageView.image = result;
+            strongSelf.imageView.image = result;
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.imageView.image = result;
+                strongSelf.imageView.image = result;
             });
         }
     }];
-    self.tag = requestKey;
-    
     XXBMediaType mediaType = [mediaAsset mediaAssetType];
     switch (mediaType) {
         case XXBMediaTypeUnknown:

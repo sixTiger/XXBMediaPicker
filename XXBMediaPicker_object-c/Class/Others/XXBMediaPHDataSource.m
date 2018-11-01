@@ -16,7 +16,7 @@
 /**
  是否正在加载资源
  */
-@property(nonatomic, assign) BOOL                   isLoadingDataSource;
+@property(nonatomic, assign) BOOL                   isLoadingSectionsData;
 
 /**
  *  当前展示数据的 tableView
@@ -96,10 +96,9 @@ static id _instance = nil;
 
 - (void)p_getAllPhotos {
     @synchronized (self) {
-        self.isLoadingDataSource = YES;
+        self.isLoadingSectionsData = YES;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSDate *date = [NSDate date];
         @synchronized (self.sectionFetchResults) {
             [self.sectionFetchResults removeAllObjects];
         }
@@ -129,19 +128,19 @@ static id _instance = nil;
                 }
             }
         }
-        
+        self.seleectPHFetchResult = [self.sectionFetchResults firstObject];
         PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
         @synchronized (self.sectionFetchResults) {
             [self.sectionFetchResults addObject:topLevelUserCollections];
         }
 
         @synchronized (self) {
-            self.isLoadingDataSource = NO;
+            self.isLoadingSectionsData = NO;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             
             //图片库资源加载完成通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaLoadMediaSectionCompletion object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaSectionsDataCompletion object:nil userInfo:nil];
         });
     });
 }
@@ -295,9 +294,13 @@ static id _instance = nil;
 }
 
 - (NSString *)titleOfIndex:(NSIndexPath *)indexPath {
+    
     if (indexPath.section == 0) {
-        return  @"全部照片";
+        PHFetchResult *fetchResult = [self.sectionFetchResults firstObject];
+        return  [NSString stringWithFormat:@"全部照片 (%ld)",[fetchResult count]];
     } else {
+        //TODO:Xiaobing - <添加照片总数>
+        NSDate *date = [NSDate date];
         PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
         PHCollection *collection = fetchResult[indexPath.row];
         return  collection.localizedTitle;
@@ -373,10 +376,15 @@ static id _instance = nil;
     return self.selectAssetArray;
 }
 
+- (BOOL)isLoadingSelectSectionData {
+    return NO;
+}
+
+
 #pragma mark - XXBMediaCollectionViewViewDataSouce
 
 - (NSInteger)numberOfRowsInCollectionViewSection:(NSInteger)section {
-    return self.seleectPHFetchResult.count + 1;
+    return self.seleectPHFetchResult.count;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView {
@@ -385,7 +393,7 @@ static id _instance = nil;
 
 - (id)mediaAssetOfIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.seleectPHFetchResult.count) {
-        return self.seleectPHFetchResult[indexPath.row];;
+        return [self.seleectPHFetchResult objectAtIndex:indexPath.row];
     } else {
         return nil;
     }

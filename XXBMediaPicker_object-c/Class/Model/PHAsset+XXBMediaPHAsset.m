@@ -51,7 +51,7 @@
 }
 
 - (void)cancelImageRequest:(XXBMediaRequestID)requestID {
-    
+    [[XXBMediaPHDataSource sharedImageManager] cancelImageRequest:requestID];
 }
 
 - (XXBMediaType)mediaAssetType {

@@ -12,14 +12,17 @@
 #import "XXBCollectionFootView.h"
 #import "XXBImagePickerTabr.h"
 #import "XXBMediaPickerConfigure.h"
+#import "XXBMediaConsts.h"
+#import "XXBMediaLoadingView.h"
 
 @interface XXBMediaPickerCollectionController ()<UICollectionViewDataSource,UICollectionViewDelegate,XXBImagePickerTabrDelegate>
 
-@property(nonatomic, weak) UICollectionView         *collectionView;
+@property(nonatomic, weak)UICollectionView          *collectionView;
 @property(nonatomic, weak)XXBImagePickerTabr        *imagePickerTar;
-@property(nonatomic, assign) BOOL                   shouldScrollBottom;
-@property(nonatomic, assign) NSInteger              selectCount;
-
+@property(nonatomic, assign)BOOL                    shouldReloadData;
+@property(nonatomic, assign)BOOL                    shouldScrollBottom;
+@property(nonatomic, assign)NSInteger               selectCount;
+@property(nonatomic, weak)XXBMediaLoadingView       *loadingView;
 @end
 
 
@@ -29,9 +32,22 @@ static NSString *nomalCell = @"XXBMediaPickerCollectionCell";
 static NSString *videoCell = @"XXBMediaPickerVideoCollectionCell";
 static NSString *collectionFooter = @"XXBCollectionFootView";
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self addNotification];
+    [self.collectionView reloadData];
+    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingSectionsData]) {
+        [self.loadingView startAnimating];
+    }
+}
+
+- (void)dealloc {
+    [self removeNotification];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
+    XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] inSection:0]];
     if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]]) {
         [cell stop];
     }
@@ -41,18 +57,15 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     [super viewWillAppear:animated];
     [self.view setNeedsLayout];
     self.imagePickerTar.delegate = self;
+    if (self.shouldReloadData) {
+        [self.collectionView reloadData];
+        self.shouldReloadData = NO;
+    }
     self.selectCount = [[XXBMediaDataSource sharedMediaDataSouce].dataSouce selectAsset].count;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.shouldScrollBottom) {
-            self.shouldScrollBottom = NO;
-            [self p_scrollToBottom];
-            XXBMediaPickerVideoCollectionCell *cell = (XXBMediaPickerVideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0] - 1 inSection:0]];
-            if ([cell isKindOfClass:[XXBMediaPickerVideoCollectionCell class]]) {
-                [cell stop];
-            }
-        }
-    });
-    
+    if (self.shouldScrollBottom) {
+        [self p_scrollToBottom];
+        self.shouldScrollBottom = NO;
+    }
 }
 
 - (void)scrollToBottom {
@@ -61,9 +74,21 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     self.shouldScrollBottom = YES;
 }
 
+- (void)reload {
+    self.shouldReloadData = YES;
+}
+
 - (void)p_scrollToBottom {
+    [self performSelectorOnMainThread:@selector(p_collectionViewScrollToBottom) withObject:nil waitUntilDone:NO];
+}
+
+- (void)p_collectionViewScrollToBottom {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:0]- 1 inSection:0];
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+}
+
+- (BOOL)canSelectMedia {
+    return  self.selectCount < self.mediaPickerConfigure.maxSelectCount;
 }
 
 #pragma mark - collectionView delegate datasouce
@@ -73,7 +98,7 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:section];
+    return [[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:section] + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -179,7 +204,9 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:[UIScreen mainScreen].bounds collectionViewLayout:layout];
         collectionView.backgroundColor = [UIColor colorWithRed:232/255.0 green:232/255.0 blue:232/255.0 alpha:1.0];
         [self.view addSubview:collectionView];
+        
         _collectionView = collectionView;
+        [[XXBMediaDataSource sharedMediaDataSouce].dataSouce setCollectionView:collectionView];
         
         [collectionView registerClass:[XXBMediaPickerCollectionCell class] forCellWithReuseIdentifier:nomalCell];
         [collectionView registerClass:[XXBMediaPickerVideoCollectionCell class] forCellWithReuseIdentifier:videoCell];
@@ -197,12 +224,32 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     return _collectionView;
 }
 
-- (BOOL)canSelectMedia {
-    return  self.selectCount < self.mediaPickerConfigure.maxSelectCount;
-    
+- (XXBMediaLoadingView *)loadingView {
+    if (_loadingView == nil) {
+        XXBMediaLoadingView *loadingView = [[XXBMediaLoadingView alloc] initWithFrame:self.view.bounds];
+        [self.view addSubview:loadingView];
+        _loadingView = loadingView;
+    }
+    return _loadingView;
 }
 
 - (void)showExcessMaxCountAlert {
 //    UIAlertController *alertController = [UIAlertController ]
+}
+
+#pragma mark - notification
+
+- (void)addNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaSectionsDataCompletion object:nil];
+}
+
+- (void)mediaSectionsDataCompletion:(NSNotification *)notification {
+    [self.loadingView stopAnimating];
+    [self.collectionView reloadData];
+    [self p_scrollToBottom];
+}
+
+- (void)removeNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
