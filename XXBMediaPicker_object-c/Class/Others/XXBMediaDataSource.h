@@ -15,6 +15,13 @@
 @protocol XXBMediaDataSource <NSObject>
 
 /**
+ 是否正在加载资源
+
+ @return 是/否
+ */
+- (BOOL)isLoadingDataSource;
+
+/**
  *  设置 collectionView
  */
 - (void)setCollectionView:(UICollectionView *)collectionView;

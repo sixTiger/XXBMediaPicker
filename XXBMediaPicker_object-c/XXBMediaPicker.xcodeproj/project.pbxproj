@@ -44,6 +44,7 @@
 		62DC4BDB1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DC4BDA1C61DA9E00968A0F /* XXBMediaPickerTableViewController.m */; };
 		78BDD33721888B1500C2ACC5 /* XXBMediaPickerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */; };
 		78FC8F75218A0AD5004B6212 /* XXBMediaConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FC8F74218A0AD5004B6212 /* XXBMediaConsts.m */; };
+		78FC8F78218A9738004B6212 /* XXBMediaLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FC8F77218A9738004B6212 /* XXBMediaLoadingView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,8 @@
 		78BDD33621888B1500C2ACC5 /* XXBMediaPickerConfigure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaPickerConfigure.m; sourceTree = "<group>"; };
 		78FC8F73218A0AD5004B6212 /* XXBMediaConsts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaConsts.h; sourceTree = "<group>"; };
 		78FC8F74218A0AD5004B6212 /* XXBMediaConsts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaConsts.m; sourceTree = "<group>"; };
+		78FC8F76218A9738004B6212 /* XXBMediaLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXBMediaLoadingView.h; sourceTree = "<group>"; };
+		78FC8F77218A9738004B6212 /* XXBMediaLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXBMediaLoadingView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +240,8 @@
 				629F4AC01C719822001CEB32 /* XXBMediaPickerVideoCollectionCell.m */,
 				629F4AE11C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.h */,
 				629F4AE21C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m */,
+				78FC8F76218A9738004B6212 /* XXBMediaLoadingView.h */,
+				78FC8F77218A9738004B6212 /* XXBMediaLoadingView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 			files = (
 				629F4AE31C71BDC2001CEB32 /* XXBMediaPickerTableViewCell.m in Sources */,
 				78BDD33721888B1500C2ACC5 /* XXBMediaPickerConfigure.m in Sources */,
+				78FC8F78218A9738004B6212 /* XXBMediaLoadingView.m in Sources */,
 				6261D2ED1C52100A00D7959D /* XXBMediaPickerController.m in Sources */,
 				6261D2D71C520F4200D7959D /* ViewController.m in Sources */,
 				62B404D41C61FBCC001D2BB9 /* XXBMediaPickerCollectionController.m in Sources */,

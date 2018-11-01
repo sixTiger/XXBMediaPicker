@@ -10,17 +10,30 @@
 #import "XXBMediaDataSource.h"
 #import "XXBMediaPickerCollectionController.h"
 #import "XXBMediaPickerTableViewCell.h"
+#import "XXBMediaLoadingView.h"
+#import "XXBMediaDataSource.h"
+#import "XXBMediaConsts.h"
 
 @interface XXBMediaPickerTableViewController ()<UITableViewDelegate,UITableViewDataSource,XXBMediaPickerCollectionControllerDelegate>
 @property(nonatomic , weak) UITableView                             *tableView;
 @property(nonatomic , strong) XXBMediaPickerCollectionController    *mediaPickerCollectionController;
+@property(nonatomic, weak) XXBMediaLoadingView                      *loadingView;
+
 @end
 
 @implementation XXBMediaPickerTableViewController
 static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addNotification];
     [self.tableView reloadData];
+    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingDataSource]) {
+        [self.loadingView startAnimating];
+    }
+}
+
+- (void)dealloc {
+    [self removeNotification];
 }
 
 #pragma mark - layzload
@@ -36,10 +49,18 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
         tableView.dataSource = self;
         [tableView registerClass:[XXBMediaPickerTableViewCell class] forCellReuseIdentifier:mediaPickerTableViewCellID];
         [[XXBMediaDataSource sharedMediaDataSouce].dataSouce setTableView:tableView];
-        
         _tableView = tableView;
     }
     return _tableView;
+}
+
+- (XXBMediaLoadingView *)loadingView {
+    if (_loadingView == nil) {
+        XXBMediaLoadingView *loadingView = [[XXBMediaLoadingView alloc] initWithFrame:self.view.bounds];
+        [self.view addSubview:loadingView];
+        _loadingView = loadingView;
+    }
+    return _loadingView;
 }
 
 - (void)setMediaPickerConfigure:(XXBMediaPickerConfigure *)mediaPickerConfigure {
@@ -87,5 +108,18 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 
 - (void)mediaPickerCollectionControllerFinishDidclick:(XXBMediaPickerCollectionController *)mediaPickerCollectionController {
     [self.delegate mediaPickerTableViewControllerFinishDidClick:self];
+}
+
+- (void)addNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLoadMediaCompletion:) name:kXXBMediaLoadMediaCompletion object:nil];
+}
+
+- (void)mediaLoadMediaCompletion:(NSNotification *)notification {
+    [[self tableView] reloadData];
+    [self.loadingView stopAnimating];
+}
+
+- (void)removeNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end

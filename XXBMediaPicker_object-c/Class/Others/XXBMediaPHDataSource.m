@@ -14,6 +14,11 @@
 @interface XXBMediaPHDataSource ()<PHPhotoLibraryChangeObserver>
 
 /**
+ 是否正在加载资源
+ */
+@property(nonatomic, assign) BOOL                   isLoadingDataSource;
+
+/**
  *  当前展示数据的 tableView
  */
 @property(nonatomic , weak) UITableView             *tableView;
@@ -64,7 +69,6 @@ static id _instance = nil;
     return _instance;
 }
 
-
 + (PHImageManager *) sharedImageManager {
     static id _sharedImageManager = nil;
     static dispatch_once_t _onceToken;
@@ -91,6 +95,9 @@ static id _instance = nil;
 }
 
 - (void)p_getAllPhotos {
+    @synchronized (self) {
+        self.isLoadingDataSource = YES;
+    }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSDate *date = [NSDate date];
         @synchronized (self.sectionFetchResults) {
@@ -127,8 +134,12 @@ static id _instance = nil;
         @synchronized (self.sectionFetchResults) {
             [self.sectionFetchResults addObject:topLevelUserCollections];
         }
-        NSLog(@"XXB: %@",@([[NSDate date] timeIntervalSinceDate:date]));
+
+        @synchronized (self) {
+            self.isLoadingDataSource = NO;
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             //图片库资源加载完成通知
             [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaLoadMediaCompletion object:nil userInfo:nil];
         });
