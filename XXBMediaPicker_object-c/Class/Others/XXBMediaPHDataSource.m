@@ -14,9 +14,15 @@
 @interface XXBMediaPHDataSource ()<PHPhotoLibraryChangeObserver>
 
 /**
- 是否正在加载资源
+ 是否正在加载全部资源
  */
-@property(nonatomic, assign) BOOL                   isLoadingSectionsData;
+@property(nonatomic, assign) BOOL                   isLoadingAllSectionsData;
+
+/**
+ 是否正在加载选中的资源资源
+ */
+@property(nonatomic, assign) BOOL                   isLoadingSelectSectionsData;
+
 
 /**
  *  当前展示数据的 tableView
@@ -42,6 +48,8 @@
  当前选中的Asset
  */
 @property(nonatomic , strong) NSMutableArray        *selectAssetArray;
+
+@property(nonatomic, copy) NSString                 *selectlocalPHCollectionIdentifier;
 @end
 
 @implementation XXBMediaPHDataSource
@@ -80,8 +88,20 @@ static id _instance = nil;
 
 - (instancetype)init {
     if (self = [super init]) {
-        [self p_getAllPhotos];
-        [self p_registerPhotoServers];
+        [self authorizationStatusAuthorized:^(PHAuthorizationStatus status) {
+            switch (status) {
+                case PHAuthorizationStatusAuthorized:
+                {
+                    [self loadLastSelectlocalPHCollectionIdentifier];
+                    [self p_loadPhotos];
+                    [self p_registerPhotoServers];
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+        }];
     }
     return self;
 }
@@ -94,9 +114,37 @@ static id _instance = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
-- (void)p_getAllPhotos {
+- (void)p_loadPhotos {
+    [self p_loadLastSelectData:^{
+        [self p_loadAllPhotos];
+    }];
+}
+
+- (void)p_loadLastSelectData:(void (^)(void))completion {
     @synchronized (self) {
-        self.isLoadingSectionsData = YES;
+        self.isLoadingSelectSectionsData = YES;
+    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self loadLocalSelectlocalPHCollection:^(BOOL haveData) {
+            if (haveData) {
+                //图片库资源加载完成通知
+                @synchronized (self) {
+                    self.isLoadingSelectSectionsData = NO;
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaCurrentSelectSectionsDataCompletion object:nil userInfo:nil];
+                });
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }];
+    });
+}
+
+- (void)p_loadAllPhotos {
+    @synchronized (self) {
+        self.isLoadingAllSectionsData = YES;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         @synchronized (self.sectionFetchResults) {
@@ -128,19 +176,24 @@ static id _instance = nil;
                 }
             }
         }
-        self.seleectPHFetchResult = [self.sectionFetchResults firstObject];
         PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
         @synchronized (self.sectionFetchResults) {
             [self.sectionFetchResults addObject:topLevelUserCollections];
         }
-
+        if (self.seleectPHFetchResult == nil) {
+            self.seleectPHFetchResult = [self.sectionFetchResults firstObject];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //默认选中全部照片
+                [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaCurrentSelectSectionsDataCompletion object:nil userInfo:nil];
+            });
+        }
         @synchronized (self) {
-            self.isLoadingSectionsData = NO;
+            self.isLoadingAllSectionsData = NO;
+            self.isLoadingSelectSectionsData = NO;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             //图片库资源加载完成通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaSectionsDataCompletion object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaAllSectionsDataCompletion object:nil userInfo:nil];
         });
     });
 }
@@ -275,7 +328,45 @@ static id _instance = nil;
     }
     return _selectAssetArray;
 }
+
+- (void)setSelectlocalPHCollectionIdentifier:(NSString *)selectlocalPHCollectionIdentifier {
+    _selectlocalPHCollectionIdentifier = selectlocalPHCollectionIdentifier;
+    [self saveLastSelectlocalPHCollectionIdentifier];
+}
 #pragma mark - XXBMediaTableViewDataSouce
+
+- (BOOL)isAviable {
+    PHAuthorizationStatus photoStatus = [PHPhotoLibrary authorizationStatus];
+    BOOL aviable = NO;
+    switch (photoStatus) {
+        case PHAuthorizationStatusAuthorized:
+        {
+            aviable = YES;
+            break;
+        }
+        case PHAuthorizationStatusNotDetermined:
+        {
+            aviable = NO;
+            break;
+        }
+        case PHAuthorizationStatusRestricted:
+        {
+            aviable = NO;
+            break;
+        }
+        case PHAuthorizationStatusDenied:
+        {
+            aviable = NO;
+            break;
+        }
+        default:
+        {
+            aviable = NO;
+            break;
+        }
+    }
+    return aviable;
+}
 
 - (NSInteger)numberOfSectionsInTableView {
     return self.sectionFetchResults.count;
@@ -332,12 +423,14 @@ static id _instance = nil;
     PHFetchResult *fetchResult = self.sectionFetchResults[indexPath.section];
     
     if (indexPath.section == 0) {
+        self.selectlocalPHCollectionIdentifier = nil;
         self.seleectPHFetchResult = fetchResult;
     } else {
         PHCollection *collection = fetchResult[indexPath.row];
         if (![collection isKindOfClass:[PHAssetCollection class]]) {
             return;
         }
+        self.selectlocalPHCollectionIdentifier = collection.localIdentifier;
         // Configure the AAPLAssetGridViewController with the asset collection.
         PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
         PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
@@ -376,10 +469,6 @@ static id _instance = nil;
     return self.selectAssetArray;
 }
 
-- (BOOL)isLoadingSelectSectionData {
-    return NO;
-}
-
 
 #pragma mark - XXBMediaCollectionViewViewDataSouce
 
@@ -396,6 +485,51 @@ static id _instance = nil;
         return [self.seleectPHFetchResult objectAtIndex:indexPath.row];
     } else {
         return nil;
+    }
+}
+
+#pragma mark - private
+
+- (void)saveLastSelectlocalPHCollectionIdentifier {
+    [[NSUserDefaults standardUserDefaults] setObject:self.selectlocalPHCollectionIdentifier forKey:kXXBMediaLastSelectlocalPHCollectionIdentifier];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)loadLastSelectlocalPHCollectionIdentifier {
+    self.selectlocalPHCollectionIdentifier = [[NSUserDefaults standardUserDefaults] valueForKey:kXXBMediaLastSelectlocalPHCollectionIdentifier];
+}
+
+- (void)loadLocalSelectlocalPHCollection:(void (^)(BOOL haveData))completion  {
+    if (self.selectlocalPHCollectionIdentifier) {
+        // 读取本地记录的历史
+        PHAssetCollection *assetCollection = [[PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[self.selectlocalPHCollectionIdentifier] options:nil] firstObject];
+        if (assetCollection) {
+            PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+            self.seleectPHFetchResult = assetsFetchResult;
+            completion(YES);
+        } else {
+            completion(NO);
+        }
+    } else {
+        completion(NO);
+    }
+}
+
+
+/**
+ 申请授权
+ 
+ @param completion 申请完的回调
+ */
+- (void)authorizationStatusAuthorized:(void (^)(PHAuthorizationStatus status))completion {
+    PHAuthorizationStatus state = [PHPhotoLibrary authorizationStatus];
+    if (state == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXXBMediaAuthorizationStatusChange object:nil userInfo:nil];
+            completion(status);
+        }];
+    } else {
+        completion(state);
     }
 }
 @end

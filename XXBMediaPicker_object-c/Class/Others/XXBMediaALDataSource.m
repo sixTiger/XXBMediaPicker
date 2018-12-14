@@ -202,7 +202,17 @@ static id _instance = nil;
 }
 #pragma mark - XXBMediaDataSouce
 
-- (BOOL)isLoadingSectionsData {
+
+- (BOOL)isLoadingSelectSectionsData {
+    return NO;
+}
+
+- (BOOL)isAviable {
+    return YES;
+}
+
+
+- (BOOL)isLoadingAllSectionsData {
     return NO;
 }
 
@@ -283,7 +293,6 @@ static id _instance = nil;
 - (NSArray *)selectAsset {
     return self.selectedAssetArray;
 }
-
 
 #pragma mark - XXBMediaTableViewDataSouce
 /**

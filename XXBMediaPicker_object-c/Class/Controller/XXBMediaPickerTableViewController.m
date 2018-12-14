@@ -30,7 +30,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
     [self addNotification];
     [self.tableView reloadData];
     [self showMediaPickerCollectionControlleAnimated:NO];
-    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingSectionsData]) {
+    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingAllSectionsData]) {
         [self.loadingView startAnimating];
     }
 }
@@ -116,7 +116,7 @@ static NSString *mediaPickerTableViewCellID = @"XXBMediaPickerTableViewCell";
 }
 
 - (void)addNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaSectionsDataCompletion object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaAllSectionsDataCompletion object:nil];
 }
 
 - (void)mediaSectionsDataCompletion:(NSNotification *)notification {

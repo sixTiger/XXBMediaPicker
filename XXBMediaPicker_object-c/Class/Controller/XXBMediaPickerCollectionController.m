@@ -36,7 +36,7 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     [super viewDidLoad];
     [self addNotification];
     [self.collectionView reloadData];
-    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingSectionsData]) {
+    if ([[XXBMediaDataSource sharedMediaDataSouce].dataSouce isLoadingSelectSectionsData]) {
         [self.loadingView startAnimating];
     }
 }
@@ -125,7 +125,7 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
     }
     if (kind == UICollectionElementKindSectionFooter) {
         reusableview = [collectionView  dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:collectionFooter forIndexPath:indexPath];
-        reusableview.number = [[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:indexPath.section] - 1;
+        reusableview.number = [[XXBMediaDataSource sharedMediaDataSouce].dataSouce numberOfRowsInCollectionViewSection:indexPath.section];
     }
     return reusableview;
 }
@@ -240,7 +240,7 @@ static NSString *collectionFooter = @"XXBCollectionFootView";
 #pragma mark - notification
 
 - (void)addNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaSectionsDataCompletion object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaSectionsDataCompletion:) name:kXXBMediaCurrentSelectSectionsDataCompletion object:nil];
 }
 
 - (void)mediaSectionsDataCompletion:(NSNotification *)notification {
